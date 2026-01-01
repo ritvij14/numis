@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-monet is a natural-language monetary parser for JavaScript/TypeScript. It converts free-form text containing monetary expressions into structured data with `{ amount: number, currency: string }`. The library targets Node >= 18 and modern browsers with dual ESM/CJS builds.
+monet.js is a natural-language monetary parser for JavaScript/TypeScript. It converts free-form text containing monetary expressions into structured data with `{ amount: number, currency: string }`. The library targets Node >= 18 and modern browsers with dual ESM/CJS builds.
 
 ## Commands
 

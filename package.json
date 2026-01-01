@@ -1,5 +1,5 @@
 {
-  "name": "monet",
+  "name": "monet.js",
   "version": "0.1.0",
   "description": "Natural-language Monetary Parser",
   "type": "module",
