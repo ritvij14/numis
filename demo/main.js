@@ -9,12 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
       output.textContent = "(parsed JSON will appear here)";
       return;
     }
-    if (!window.monetJs || !window.monetJs.parseMoney) {
-      output.textContent = "monetJs library not loaded";
+    if (!window.numis || !window.numis.parseMoney) {
+      output.textContent = "numis library not loaded";
       return;
     }
     try {
-      const result = window.monetJs.parseMoney(text) || null;
+      const result = window.numis.parseMoney(text) || null;
       output.textContent = JSON.stringify(result, null, 2);
     } catch (err) {
       output.textContent = `Error: ${err.message}`;
