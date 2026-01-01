@@ -1,5 +1,5 @@
 {
-  "name": "monet-js",
+  "name": "@ritvij14/monet",
   "version": "0.1.0",
   "description": "Natural-language Monetary Parser",
   "type": "module",
@@ -23,7 +23,7 @@
     "test": "jest",
     "prepare": "npm run build",
     "changeset": "changeset",
-    "release": "changeset publish",
+    "release": "changeset publish --provenance",
     "dev:demo": "npm --prefix demo run dev",
     "build:demo": "npm --prefix demo run build"
   },
