@@ -1,6 +1,6 @@
-# monet-js Demo Website
+# numis Demo Website
 
-This is a minimal Vite-powered React demo site showcasing the **monet-js** library (UMD build).
+This is a minimal Vite-powered React demo site showcasing the **numis** library (UMD build).
 
 ## Available Scripts
 
@@ -29,4 +29,4 @@ npm run build
 # copy demo/dist contents to your gh-pages branch or configure GitHub Pages to serve /demo/dist
 ```
 
-The built bundle expects to be served from the site root ("/"). If deploying to a sub-path, adjust `vite.config.js` with `base: '/monet/'` (or similar).
+The built bundle expects to be served from the site root ("/"). If deploying to a sub-path, adjust `vite.config.js` with `base: '/numis/'` (or similar).

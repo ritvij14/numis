@@ -6,9 +6,9 @@ import typescript from "@rollup/plugin-typescript";
 export default {
   input: "src/index.ts",
   output: {
-    file: "dist/umd/monet-js.min.js",
+    file: "dist/umd/numis.min.js",
     format: "umd",
-    name: "monetJs",
+    name: "numis",
     sourcemap: true,
     exports: "named",
   },

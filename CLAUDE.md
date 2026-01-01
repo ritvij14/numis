@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-monet.js is a natural-language monetary parser for JavaScript/TypeScript. It converts free-form text containing monetary expressions into structured data with `{ amount: number, currency: string }`. The library targets Node >= 18 and modern browsers with dual ESM/CJS builds.
+numis is a natural-language monetary parser for JavaScript/TypeScript. It converts free-form text containing monetary expressions into structured data with `{ amount: number, currency: string }`. The library targets Node >= 18 and modern browsers with dual ESM/CJS builds.
 
 ## Commands
 
@@ -86,17 +86,15 @@ Exports `parseMoney()` as the main entry point, plus individual pattern matchers
 
 - `dist/esm/` - ES modules
 - `dist/cjs/` - CommonJS modules
-- `dist/umd/monet-js.min.js` - Minified UMD bundle for browser/demo
+- `dist/umd/numis.min.js` - Minified UMD bundle for browser/demo
 
-## Releasing
+## Publishing
 
-Uses Changesets for automated semantic versioning:
-1. Run `npm run changeset` in feature branch
-2. Commit the generated `.changeset/` file
-3. Merge PR to main
-4. GitHub Actions creates a "Version Packages" PR
-5. Merging that PR publishes to npm
+Manual publishing to npm:
+1. Update the version in `package.json`
+2. Commit and push changes
+3. Run `npm run publish:npm` to publish the package
 
 ## Task Management
 
-This project uses Taskmaster for task tracking. Check `.taskmaster/tasks/tasks.json` for current tasks and `.taskmaster/docs/monet_spec.md` for the full specification.
+This project uses Taskmaster for task tracking. Check `.taskmaster/tasks/tasks.json` for current tasks and `.taskmaster/docs/` for specifications.

@@ -1,4 +1,4 @@
-# Monet.js
+# numis
 
 Natural-language monetary parser for JavaScript/TypeScript.
 
@@ -40,6 +40,6 @@ parseMoney("$12.50");
 ### GitHub Pages Demo
 
 The demo site is automatically deployed to GitHub Pages on every push to `main`:
-- **Live URL:** https://ritvij14.github.io/monet-js/
+- **Live URL:** https://ritvij14.github.io/numis/
 - **Automatic:** Triggered on `main` branch pushes
 - **Manual trigger:** Use GitHub Actions "Deploy Demo to GitHub Pages" workflow for on-demand deployments
