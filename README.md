@@ -5,11 +5,11 @@ Natural-language monetary parser for JavaScript/TypeScript.
 ## Getting Started
 
 ```bash
-npm install @ritvij14/monet
+npm install monet
 ```
 
 ```ts
-import { parseMoney } from "@ritvij14/monet";
+import { parseMoney } from "monet";
 
 parseMoney("$12.50");
 // => { value: 12.5, currency: 'USD' }
