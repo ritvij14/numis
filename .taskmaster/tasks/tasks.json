@@ -4,7 +4,7 @@
       {
         "id": 1,
         "title": "Setup Git Repository and Basic Structure",
-        "description": "Set up the basic Git repository structure for the monet-js library.",
+        "description": "Set up the basic Git repository structure for the numis library.",
         "details": "Initialize a git repository. Create basic project directories (e.g., `src`, `test`). Add a `.gitignore` file.",
         "testStrategy": "Verify repository is initialized and basic structure is present.",
         "priority": "high",
@@ -614,8 +614,8 @@
         "id": 32,
         "title": "Build Live Demo Website (Vite)",
         "description": "Build the live demo website using Vite, consuming the UMD bundle.",
-        "details": "Set up a new project directory for the demo site (e.g., `demo`). Use Vite to serve static HTML, CSS, and minimal vanilla JS. The JS should import and use the generated UMD bundle of `monet-js` to provide real-time parsing functionality.\n<info added on 2025-07-01T09:29:55.720Z>\nClarification: The Vite demo should be an entirely separate project located in the `demo/` directory, with its own `package.json`, dependencies, and `vite.config.js`. The demo’s build/dev scripts must not run as part of the library’s main `build` or `prepare` steps. The root package remains focused solely on building the NPM package.\n\nImplementation adjustments:\n• All Vite config and dependencies live inside `demo/`.\n• Root `package.json` scripts only expose optional `dev:demo` and `build:demo` that delegate into `demo/` (e.g., `npm --prefix demo run dev`).\n• The existing library build/prepare flow remains unchanged.\n\nSubtasks 32.1–32.6 remain valid but implicitly operate within the isolated `demo/` project structure.\n</info added on 2025-07-01T09:29:55.720Z>",
-        "testStrategy": "Run the Vite development server for the demo site. Open the site in a browser and verify that the `monet-js` library is loaded and the real-time parsing feature works as expected.",
+        "details": "Set up a new project directory for the demo site (e.g., `demo`). Use Vite to serve static HTML, CSS, and minimal vanilla JS. The JS should import and use the generated UMD bundle of `numis` to provide real-time parsing functionality.\n<info added on 2025-07-01T09:29:55.720Z>\nClarification: The Vite demo should be an entirely separate project located in the `demo/` directory, with its own `package.json`, dependencies, and `vite.config.js`. The demo’s build/dev scripts must not run as part of the library’s main `build` or `prepare` steps. The root package remains focused solely on building the NPM package.\n\nImplementation adjustments:\n• All Vite config and dependencies live inside `demo/`.\n• Root `package.json` scripts only expose optional `dev:demo` and `build:demo` that delegate into `demo/` (e.g., `npm --prefix demo run dev`).\n• The existing library build/prepare flow remains unchanged.\n\nSubtasks 32.1–32.6 remain valid but implicitly operate within the isolated `demo/` project structure.\n</info added on 2025-07-01T09:29:55.720Z>",
+        "testStrategy": "Run the Vite development server for the demo site. Open the site in a browser and verify that the `numis` library is loaded and the real-time parsing feature works as expected.",
         "priority": "medium",
         "dependencies": [
           28
@@ -633,9 +633,9 @@
           },
           {
             "id": 2,
-            "title": "Integrate monet-js UMD bundle",
-            "description": "Add the generated monet-js UMD script into the Vite demo project.",
-            "details": "1. Ensure the build step for monet-js UMD (Task 28) outputs `dist/umd/monet-js.min.js`.\n2. Copy or link the UMD file into demo/public (or use Vite static asset import).\n3. Include `<script src=\"/monet-js.min.js\"></script>` in `index.html` and verify `window.monetJs` exists.",
+            "title": "Integrate numis UMD bundle",
+            "description": "Add the generated numis UMD script into the Vite demo project.",
+            "details": "1. Ensure the build step for numis UMD (Task 28) outputs `dist/umd/numis.min.js`.\n2. Copy or link the UMD file into demo/public (or use Vite static asset import).\n3. Include `<script src=\"/numis.min.js\"></script>` in `index.html` and verify `window.monetJs` exists.",
             "status": "done",
             "dependencies": [],
             "parentTaskId": 32
@@ -651,8 +651,8 @@
           },
           {
             "id": 4,
-            "title": "Wire monet-js parsing logic",
-            "description": "Hook up the UI to call monet-js parse function and display structured results.",
+            "title": "Wire numis parsing logic",
+            "description": "Hook up the UI to call numis parse function and display structured results.",
             "details": "1. In `main.js`, add event listener on textarea or button.\n2. Call `window.monetJs.parseMoney(text)`.\n3. Format returned object as JSON using `JSON.stringify(result,null,2)` and inject into `output` pre.\n4. Handle errors gracefully.",
             "status": "done",
             "dependencies": [],
@@ -689,7 +689,7 @@
             "id": 8,
             "title": "Convert demo to Vite React app",
             "description": "Rebuild demo using Vite + React for richer example.",
-            "details": "1. Add React, ReactDOM, and @vitejs/plugin-react as dependencies in demo/package.json.\n2. Update vite.config.js to use react plugin.\n3. Move UI into React components (App.jsx) with textarea, result panel.\n4. Render via main.jsx.\n5. Keep monet-js UMD bundle in public and access via window.monetJs.\n6. Style using existing CSS.\n7. Update README instructions.\n<info added on 2025-07-01T12:38:16.956Z>\n8. Import RegexPipeline from monet-js and use `new RegexPipeline().run()` instead of `parseMoney` (as `parseMoney` is not yet exported).\n</info added on 2025-07-01T12:38:16.956Z>",
+            "details": "1. Add React, ReactDOM, and @vitejs/plugin-react as dependencies in demo/package.json.\n2. Update vite.config.js to use react plugin.\n3. Move UI into React components (App.jsx) with textarea, result panel.\n4. Render via main.jsx.\n5. Keep numis UMD bundle in public and access via window.monetJs.\n6. Style using existing CSS.\n7. Update README instructions.\n<info added on 2025-07-01T12:38:16.956Z>\n8. Import RegexPipeline from numis and use `new RegexPipeline().run()` instead of `parseMoney` (as `parseMoney` is not yet exported).\n</info added on 2025-07-01T12:38:16.956Z>",
             "status": "done",
             "dependencies": [],
             "parentTaskId": 32
@@ -728,8 +728,8 @@
       {
         "id": 35,
         "title": "Build Production Demo Using Published NPM Package",
-        "description": "Create a production-ready demo that installs and uses the published monet-js package from npm.",
-        "details": "This task should be completed after all other features are implemented and the package is published to npm. The demo should install the monet-js package from npm rather than using local imports, ensuring proper dependency resolution and demonstrating real-world usage. This approach will solve the current ESM import issues and provide a genuine showcase of how users would integrate the library.\n\nSteps:\n1. Publish the monet-js package to npm (either public or as a scoped package)\n2. Update the demo project to install the package from npm\n3. Modify imports in the demo to use the npm package rather than local paths\n4. Update the vite.config.js to remove the local path aliases\n5. Test the demo to ensure it works correctly with the published package\n6. Document the process in the README",
+        "description": "Create a production-ready demo that installs and uses the published numis package from npm.",
+        "details": "This task should be completed after all other features are implemented and the package is published to npm. The demo should install the numis package from npm rather than using local imports, ensuring proper dependency resolution and demonstrating real-world usage. This approach will solve the current ESM import issues and provide a genuine showcase of how users would integrate the library.\n\nSteps:\n1. Publish the numis package to npm (either public or as a scoped package)\n2. Update the demo project to install the package from npm\n3. Modify imports in the demo to use the npm package rather than local paths\n4. Update the vite.config.js to remove the local path aliases\n5. Test the demo to ensure it works correctly with the published package\n6. Document the process in the README",
         "testStrategy": "Verify that the demo runs correctly with the published npm package. Ensure all features work as expected and that there are no dependency resolution issues.",
         "status": "pending",
         "dependencies": [
@@ -740,8 +740,8 @@
       },
       {
         "id": 36,
-        "title": "Optimize monet-js for Demo and Bundle Size",
-        "description": "Optimize monet-js for demo-ready one-call parsing with minimal bundle size. This includes lazy initialization, tree-shaking improvements, and updating demo usage to showcase the optimized library.",
+        "title": "Optimize numis for Demo and Bundle Size",
+        "description": "Optimize numis for demo-ready one-call parsing with minimal bundle size. This includes lazy initialization, tree-shaking improvements, and updating demo usage to showcase the optimized library.",
         "details": "1.  **Lazy Initialization:** Implement lazy initialization for non-core components and parsers. This will reduce the initial bundle size by deferring the loading of less frequently used features until they are actually needed.\n2.  **Tree-Shaking Analysis:** Analyze the current bundle using a tree-shaking analyzer (e.g., webpack-bundle-analyzer) to identify opportunities for further size reduction.  Focus on removing dead code and ensuring that only necessary modules are included in the final bundle.\n3.  **Code Splitting:** Explore code splitting strategies to further reduce the initial load time.  Consider splitting the bundle into smaller chunks based on functionality or usage patterns.\n4.  **Dependency Optimization:** Review and update dependencies to ensure they are the latest versions and that they are not contributing unnecessarily to the bundle size.  Consider replacing larger dependencies with smaller, more focused alternatives where appropriate.\n5.  **Demo Update:** Update the demo to showcase the optimized library and its one-call parsing capabilities.  Ensure the demo is easy to use and provides clear examples of how to use the library effectively.\n6.  **Documentation:** Update documentation to reflect the changes made during optimization, including any new APIs or usage patterns.",
         "testStrategy": "1.  **Bundle Size Verification:** Measure the bundle size before and after optimization to ensure that the changes have resulted in a significant reduction in size.  Use tools like webpack-bundle-analyzer to compare the bundle contents.\n2.  **Performance Testing:** Conduct performance testing to ensure that the optimizations have not negatively impacted the parsing speed or overall performance of the library.  Focus on testing the one-call parsing functionality with a variety of inputs.\n3.  **Functional Testing:** Run existing unit tests to ensure that all existing functionality continues to work as expected after the optimizations.\n4.  **Demo Testing:** Thoroughly test the updated demo to ensure that it is easy to use, provides clear examples, and accurately showcases the optimized library.\n5.  **Tree-Shaking Verification:** Verify that tree-shaking is working correctly by inspecting the generated bundle and ensuring that unused code has been removed.",
         "status": "done",

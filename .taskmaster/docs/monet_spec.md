@@ -1,7 +1,7 @@
 <context>
 # Overview
 
-The **Natural-language Monetary Parser** (`monet-js`) is an open-source, lightweight JavaScript/TypeScript library that converts free-form text containing monetary expressions into structured data. It recognises ten common patterns (plain numbers, numbers with separators, symbols, abbreviations, worded numbers, fractional worded numbers, numeric-word combos, slang terms, contextual phrases, regional formats) and outputs an object `{ amount: number, currency: string }`. The parser is built for **Node ≥ 18** and modern browsers, ships **dual ESM/CJS**, and provides **TypeScript typings**.
+The **Natural-language Monetary Parser** (`numis`) is an open-source, lightweight JavaScript/TypeScript library that converts free-form text containing monetary expressions into structured data. It recognises ten common patterns (plain numbers, numbers with separators, symbols, abbreviations, worded numbers, fractional worded numbers, numeric-word combos, slang terms, contextual phrases, regional formats) and outputs an object `{ amount: number, currency: string }`. The parser is built for **Node ≥ 18** and modern browsers, ships **dual ESM/CJS**, and provides **TypeScript typings**.
 
 # Core Features
 
@@ -15,7 +15,7 @@ The **Natural-language Monetary Parser** (`monet-js`) is an open-source, lightwe
 
 # User Experience
 
-- **Node usage**: `import { parseMoney } from 'monet-js';`
+- **Node usage**: `import { parseMoney } from 'numis';`
 - **Browser usage**: import via bundler (ESM); demo site includes minified UMD build via `<script>` tag.
 - **Helpful errors** guiding developers when inputs are unsupported.
 - **Live demo website** showing real-time parsing and JSON output.

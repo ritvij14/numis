@@ -7,7 +7,7 @@ alwaysApply: true
 # Project folder structure.
 
 ```
-kendal-app
+numis
 ├── eslint.config.cjs
 ├── jest.config.js
 ├── package-lock.json
@@ -16,17 +16,10 @@ kendal-app
 ├── rollup.config.js
 ├── tsconfig.cjs.json
 ├── tsconfig.json
-├── .changeset
-│   ├── config.json
-│   ├── README.md
-├── .cursor
-│   ├── rules
 ├── .github
 │   ├── workflows
 │   │   ├── ci.yml
-│   │   ├── release.yml
-├── .scripts
-│   ├── update_structure.sh
+│   │   ├── deploy-pages.yml
 ├── .taskmaster
 │   ├── config.json
 │   ├── state.json
@@ -270,8 +263,8 @@ kendal-app
 │   │   ├── regexPipeline.d.ts
 │   │   ├── regexPipeline.js
 │   ├── umd
-│   │   ├── monet-js.min.js
-│   │   ├── monet-js.min.js.map
+│   │   ├── numis.min.js
+│   │   ├── numis.min.js.map
 ├── src
 │   ├── currencyData.ts
 │   ├── errors.ts
