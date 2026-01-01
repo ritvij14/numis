@@ -23,7 +23,7 @@
     "test": "jest",
     "prepare": "npm run build",
     "changeset": "changeset",
-    "release": "changeset publish --access public --provenance",
+    "release": "changeset publish",
     "dev:demo": "npm --prefix demo run dev",
     "build:demo": "npm --prefix demo run build"
   },
