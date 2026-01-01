@@ -6,6 +6,7 @@ export interface CurrencyInfo {
   number: string; // ISO 4217 numeric code, e.g. "840"
   currency: string; // Official currency name, e.g. "US Dollar"
   countries: string[]; // List of countries that use the currency
+  digits?: number; // Number of decimal digits (e.g., 2 for most currencies, 0 for JPY)
 }
 
 /**

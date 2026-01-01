@@ -198,13 +198,6 @@ const wordsToNumber = (words: string): number | null => {
   return total + current;
 };
 
-/** Map shorthand suffixes (k, m, b) to multipliers. */
-const SUFFIX_MULTIPLIER: Record<string, number> = {
-  k: 1_000,
-  m: 1_000_000,
-  b: 1_000_000_000,
-};
-
 /** 1) Currency detection step */
 const currencyDetectionStep: PipelineStep = (input, ctx) => {
   const out = clone(ctx);

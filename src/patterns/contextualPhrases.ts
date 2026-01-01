@@ -72,7 +72,7 @@ function minorScaleForCurrency(
   if (minor.currency && minor.currency !== currency) return null;
 
   const currencyInfo = getCurrencyByCode(currency);
-  const digits = (currencyInfo as any)?.digits ?? 2;
+  const digits = currencyInfo?.digits ?? 2;
   if (digits === 0) return null;
 
   return 10 ** digits;
