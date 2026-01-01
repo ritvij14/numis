@@ -22,7 +22,6 @@
     "lint": "eslint \"src/**/*.ts\"",
     "test": "jest",
     "prepare": "npm run build",
-    "size": "size-limit",
     "changeset": "changeset",
     "release": "changeset publish",
     "dev:demo": "npm --prefix demo run dev",

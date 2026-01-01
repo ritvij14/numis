@@ -1,12 +1,10 @@
-import { RegexPipeline } from "monet-lib/index.js";
+import { parseMoney } from "monet-lib";
 import { useEffect, useState } from "react";
 import "../style.css";
 
 export default function App() {
   const [text, setText] = useState("");
   const [result, setResult] = useState("(parsed JSON will appear here)");
-
-  const pipeline = RegexPipeline.default();
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -15,7 +13,7 @@ export default function App() {
         return;
       }
       try {
-        const parsed = pipeline.run(text) || null;
+        const parsed = parseMoney(text) || null;
         setResult(JSON.stringify(parsed, null, 2));
       } catch (err) {
         setResult(`Error: ${err.message}`);

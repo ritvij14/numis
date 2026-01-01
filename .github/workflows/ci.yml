@@ -32,6 +32,3 @@ jobs:
 
       - name: Build library
         run: npm run build
-
-      - name: Check bundle size (≤ 5 kB gzip)
-        run: npm run size

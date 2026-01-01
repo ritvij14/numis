@@ -4,6 +4,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react()],
+  base: process.env.NODE_ENV === "production" ? "/monet-js/" : "/",
   resolve: {
     alias: {
       "monet-lib": resolve(__dirname, "../dist/esm"),

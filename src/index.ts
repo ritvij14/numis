@@ -4,6 +4,7 @@ export {
   getCurrencyByCode,
   getCurrencyByNumber,
 } from "./currencyData";
+export { getNameToCodeMap } from "./currencyMapBuilder";
 export { MoneyParseError, ValueOverflowError } from "./errors";
 export { parseMoney } from "./parseMoney";
 export {

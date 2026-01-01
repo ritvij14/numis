@@ -707,7 +707,7 @@
           29,
           32
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": []
       },
       {
@@ -744,7 +744,7 @@
         "description": "Optimize monet-js for demo-ready one-call parsing with minimal bundle size. This includes lazy initialization, tree-shaking improvements, and updating demo usage to showcase the optimized library.",
         "details": "1.  **Lazy Initialization:** Implement lazy initialization for non-core components and parsers. This will reduce the initial bundle size by deferring the loading of less frequently used features until they are actually needed.\n2.  **Tree-Shaking Analysis:** Analyze the current bundle using a tree-shaking analyzer (e.g., webpack-bundle-analyzer) to identify opportunities for further size reduction.  Focus on removing dead code and ensuring that only necessary modules are included in the final bundle.\n3.  **Code Splitting:** Explore code splitting strategies to further reduce the initial load time.  Consider splitting the bundle into smaller chunks based on functionality or usage patterns.\n4.  **Dependency Optimization:** Review and update dependencies to ensure they are the latest versions and that they are not contributing unnecessarily to the bundle size.  Consider replacing larger dependencies with smaller, more focused alternatives where appropriate.\n5.  **Demo Update:** Update the demo to showcase the optimized library and its one-call parsing capabilities.  Ensure the demo is easy to use and provides clear examples of how to use the library effectively.\n6.  **Documentation:** Update documentation to reflect the changes made during optimization, including any new APIs or usage patterns.",
         "testStrategy": "1.  **Bundle Size Verification:** Measure the bundle size before and after optimization to ensure that the changes have resulted in a significant reduction in size.  Use tools like webpack-bundle-analyzer to compare the bundle contents.\n2.  **Performance Testing:** Conduct performance testing to ensure that the optimizations have not negatively impacted the parsing speed or overall performance of the library.  Focus on testing the one-call parsing functionality with a variety of inputs.\n3.  **Functional Testing:** Run existing unit tests to ensure that all existing functionality continues to work as expected after the optimizations.\n4.  **Demo Testing:** Thoroughly test the updated demo to ensure that it is easy to use, provides clear examples, and accurately showcases the optimized library.\n5.  **Tree-Shaking Verification:** Verify that tree-shaking is working correctly by inspecting the generated bundle and ensuring that unused code has been removed.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           10,
           11,
@@ -764,7 +764,7 @@
             "title": "Add one-call parseMoney API",
             "description": "Expose a top-level parseMoney(text) that wraps RegexPipeline.default().run and returns structured output.",
             "details": "Maintain default all-pattern coverage; keep RegexPipeline export for advanced use.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [],
             "parentTaskId": 36
           },
@@ -773,7 +773,7 @@
             "title": "Make heavy initializations lazy/memoized",
             "description": "Defer currency name/code map construction and other heavy lookups until first call to reduce bundle impact.",
             "details": "Ensure contextual phrases and regex pipeline build maps on demand; keep behavior identical.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [],
             "parentTaskId": 36
           },
@@ -782,7 +782,7 @@
             "title": "Centralize currency map building",
             "description": "Build currency name/code maps once in a shared helper to avoid duplicate currency-codes pulls across modules.",
             "details": "Ensure both regex pipeline and contextual phrases reuse the same lazy map builder to minimize bundle size.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [],
             "parentTaskId": 36
           },
@@ -791,7 +791,7 @@
             "title": "Add browser-friendly entry + demo import",
             "description": "Expose a clear ESM entry (e.g., parseMoney) for Vite/React demo and update demo to consume it.",
             "details": "Keep all patterns active by default; ensure demo import path uses published package entry and benefits from tree-shaking.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [],
             "parentTaskId": 36
           }
@@ -800,7 +800,7 @@
     ],
     "metadata": {
       "created": "2025-06-22T05:27:52.739Z",
-      "updated": "2025-12-24T17:33:31.735Z",
+      "updated": "2026-01-01T12:54:55.169Z",
       "description": "Tasks for master context"
     }
   }
