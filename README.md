@@ -29,12 +29,17 @@ parseMoney("$12.50");
   - `five euros and fifty cents`
   - `10 pounds and 5 pence`
 
-## Releasing
+## Publishing
 
-We use **Changesets** for automated semantic-versioning and publishing.
+### Manual Publishing to NPM
 
-1. Run `npm run changeset` in your feature branch and follow the prompts to describe the change (select patch/minor/major).
-2. Commit the generated file (in `.changeset/`).
-3. Merge your PR into `main`.
-4. GitHub Actions will create/maintain a "Version Packages" PR containing the version bump & changelog.
-5. When that PR is merged and CI passes, the library is published to npm automatically.
+1. Update the version in `package.json` manually
+2. Commit and push your changes
+3. Run `npm run publish:npm` to publish the package
+
+### GitHub Pages Demo
+
+The demo site is automatically deployed to GitHub Pages on every push to `main`:
+- **Live URL:** https://ritvij14.github.io/monet-js/
+- **Automatic:** Triggered on `main` branch pushes
+- **Manual trigger:** Use GitHub Actions "Deploy Demo to GitHub Pages" workflow for on-demand deployments
