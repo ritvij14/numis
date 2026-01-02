@@ -1,15 +1,9 @@
 import react from "@vitejs/plugin-react";
-import { resolve } from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react()],
   base: process.env.NODE_ENV === "production" ? "/numis/" : "/",
-  resolve: {
-    alias: {
-      "numis-lib": resolve(__dirname, "../dist/esm"),
-    },
-  },
   build: {
     outDir: "dist",
     emptyOutDir: true,
@@ -17,8 +11,5 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true,
-    fs: {
-      allow: [".."], // allow serving files outside demo/
-    },
   },
 });

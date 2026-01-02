@@ -1,5 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 import { RegexPipeline } from "../src/regexPipeline";
+import { ValueOverflowError } from "../src/errors";
 
 describe("RegexPipeline", () => {
   test("detects currency symbol and numeric amount", () => {
@@ -74,5 +75,73 @@ describe("RegexPipeline", () => {
     const rupee = pipeline.run("He paid 100 rupees");
     expect(rupee.currency).toBe("INR");
     expect(rupee.amount).toBe(100);
+  });
+
+  describe("Value Overflow Detection", () => {
+    test("throws ValueOverflowError for plain numbers exceeding MAX_SAFE_INTEGER", () => {
+      const pipeline = RegexPipeline.default();
+      const maxSafe = Number.MAX_SAFE_INTEGER.toString();
+      const overMax = (Number.MAX_SAFE_INTEGER + 1).toString();
+
+      expect(() => pipeline.run(`I paid ${overMax} USD`)).toThrow(
+        ValueOverflowError
+      );
+      expect(() => pipeline.run(`I paid ${overMax} USD`)).toThrow(
+        /exceeds maximum safe integer/
+      );
+    });
+
+    test("accepts numbers at MAX_SAFE_INTEGER", () => {
+      const pipeline = RegexPipeline.default();
+      const maxSafe = Number.MAX_SAFE_INTEGER.toString();
+
+      const result = pipeline.run(`I paid ${maxSafe} USD`);
+      expect(result.amount).toBe(Number.MAX_SAFE_INTEGER);
+    });
+
+    test("throws ValueOverflowError for contextual phrases with large numbers", () => {
+      const pipeline = RegexPipeline.default();
+
+      // Use a number that actually exceeds MAX_SAFE_INTEGER (9,007,199,254,740,991)
+      // 100 quadrillion = 100,000,000,000,000,000
+      expect(() =>
+        pipeline.run("100000000000000000 dollars")
+      ).toThrow(ValueOverflowError);
+
+      // Also test with currency symbol
+      expect(() =>
+        pipeline.run("$100000000000000000")
+      ).toThrow(ValueOverflowError);
+    });
+
+    test("throws ValueOverflowError for large numeric values", () => {
+      const pipeline = RegexPipeline.default();
+
+      // String representation of a number exceeding MAX_SAFE_INTEGER
+      expect(() => pipeline.run("9007199254740992 USD")).toThrow(
+        ValueOverflowError
+      );
+
+      expect(() => pipeline.run("10000000000000000 dollars")).toThrow(
+        ValueOverflowError
+      );
+    });
+
+    test("accepts worded numbers below MAX_SAFE_INTEGER", () => {
+      const pipeline = RegexPipeline.default();
+
+      // "one billion" = 1,000,000,000 which is well below MAX_SAFE_INTEGER
+      const result = pipeline.run("I have one billion dollars");
+      expect(result.amount).toBe(1_000_000_000);
+      expect(result.currency).toBe("USD");
+    });
+
+    test("handles decimal numbers without overflow", () => {
+      const pipeline = RegexPipeline.default();
+
+      const result = pipeline.run("9007199254740990.99 EUR");
+      expect(result.amount).toBe(9007199254740990.99);
+      expect(result.currency).toBe("EUR");
+    });
   });
 });

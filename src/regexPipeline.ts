@@ -95,6 +95,7 @@ export class RegexPipeline {
 // ---------------------------------------------------------------------------
 import { getCurrencyByCode } from "./currencyData";
 import { getNameToCodeMap } from "./currencyMapBuilder";
+import { ValueOverflowError } from "./errors";
 import { matchContextualPhrase } from "./patterns/contextualPhrases";
 import { matchNumericWordCombo } from "./patterns/numericWordCombos";
 import { matchSlangTerm } from "./patterns/slangTerms";
@@ -195,7 +196,16 @@ const wordsToNumber = (words: string): number | null => {
       return null;
     }
   }
-  return total + current;
+  const result = total + current;
+
+  // Check for overflow
+  if (result > Number.MAX_SAFE_INTEGER) {
+    throw new ValueOverflowError(
+      `Number ${result} exceeds maximum safe integer (${Number.MAX_SAFE_INTEGER})`
+    );
+  }
+
+  return result;
 };
 
 /** 1) Currency detection step */
@@ -281,7 +291,13 @@ const numericDetectionStep: PipelineStep = (input, ctx) => {
   // ---------------------------------------------------------------------
   const numMatch = /(?:\b|^)(\d+(?:\.\d+)?)(?:\b|$)/.exec(cleaned);
   if (numMatch) {
-    out.amount = parseFloat(numMatch[1]);
+    const value = parseFloat(numMatch[1]);
+    if (value > Number.MAX_SAFE_INTEGER) {
+      throw new ValueOverflowError(
+        `Number ${value} exceeds maximum safe integer (${Number.MAX_SAFE_INTEGER})`
+      );
+    }
+    out.amount = value;
     return out;
   }
 

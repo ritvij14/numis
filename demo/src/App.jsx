@@ -1,4 +1,4 @@
-import { parseMoney } from "numis-lib";
+import { parseMoney } from "numis";
 import { useEffect, useState } from "react";
 import "../style.css";
 
