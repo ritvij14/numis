@@ -1,11 +1,16 @@
 {
   "name": "numis",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Natural-language Monetary Parser",
   "type": "module",
   "exports": {
     "import": "./dist/esm/index.js",
     "require": "./dist/cjs/index.js"
+  },
+  "homepage": "https://numis.ritvij.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ritvij14/numis.git"
   },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",

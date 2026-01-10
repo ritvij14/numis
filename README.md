@@ -63,6 +63,6 @@ The result includes a `currencyWasDefault` flag (set to `true`) when the default
 
 The demo site is automatically deployed to GitHub Pages on every push to `main`:
 
-- **Live URL:** https://ritvij14.github.io/numis/
+- **Live URL:** https://numis.ritvij.dev
 - **Automatic:** Triggered on `main` branch pushes
 - **Manual trigger:** Use GitHub Actions "Deploy Demo to GitHub Pages" workflow for on-demand deployments
