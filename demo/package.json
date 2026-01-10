@@ -13,7 +13,7 @@
     "@vitejs/plugin-react": "^4.3.0"
   },
   "dependencies": {
-    "numis": "^0.1.0",
+    "numis": "file:..",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
   }

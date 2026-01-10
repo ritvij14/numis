@@ -191,16 +191,17 @@ describe("parseMoney - Property-Based Tests", () => {
     });
   });
 
-  describe("Invariant: Parsed amount is always a non-negative number or undefined", () => {
-    test("amount is non-negative when present", () => {
+  describe("Invariant: Parsed amount is always a valid number or undefined", () => {
+    test("amount is a valid number when present", () => {
       fc.assert(
         fc.property(fc.string(), (input) => {
           try {
             const result = parseMoney(input);
             if (result.amount !== undefined) {
               expect(typeof result.amount).toBe("number");
-              expect(result.amount).toBeGreaterThanOrEqual(0);
               expect(Number.isFinite(result.amount)).toBe(true);
+              // Amount can be positive, negative, or zero
+              expect(Math.abs(result.amount)).toBeGreaterThanOrEqual(0);
             }
           } catch (e) {
             expect(e).toBeInstanceOf(ValueOverflowError);

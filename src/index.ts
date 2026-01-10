@@ -8,6 +8,7 @@ export { getNameToCodeMap } from "./currencyMapBuilder";
 export { MoneyParseError, ValueOverflowError } from "./errors";
 export { parseAll, ParseAllResult } from "./parseAll";
 export { parseMoney } from "./parseMoney";
+export { ParseOptions } from "./types";
 export {
   AbbreviationParseResult,
   matchAbbreviation,
@@ -38,4 +39,9 @@ export {
   normalizeRegionalNumber,
   parseRegionalFormat,
 } from "./patterns/regionalFormats";
-export { PipelineContext, PipelineStep, RegexPipeline } from "./regexPipeline";
+export {
+  PipelineContext,
+  PipelineStep,
+  RegexPipeline,
+  RunOptions,
+} from "./regexPipeline";

@@ -12,9 +12,13 @@
  * - "twenty-three"
  * - "one hundred fifty"
  * - "two thousand five hundred"
+ * - "quarter million" (250,000)
+ * - "half of a billion" (500,000,000)
+ * - "two thirds of a million" (666,666.67)
  *
  * This parser converts English worded numbers into their numeric equivalents.
- * It handles basic numbers (0-19), tens (20-90), and scale words (hundred, thousand, million, billion).
+ * It handles basic numbers (0-19), tens (20-90), scale words (hundred, thousand, million, billion, trillion),
+ * and fractional magnitudes (half million, quarter billion, etc.).
  */
 
 import { ValueOverflowError } from "../errors";
@@ -67,6 +71,7 @@ const SCALES: Record<string, number> = {
   thousand: 1000,
   million: 1000000,
   billion: 1000000000,
+  trillion: 1000000000000,
 };
 
 /**
@@ -157,6 +162,10 @@ function tokenize(input: string): string[] {
  * - "three quarters" -> 0.75
  * - "one third" -> 0.333...
  * - "two thirds" -> 0.666...
+ * - "quarter million" -> 250000
+ * - "half billion" -> 500000000
+ * - "quarter of a million" -> 250000
+ * - "two thirds of a billion" -> 666666666.67
  *
  * @param input - The fractional worded number string to parse
  * @returns The parsed numeric value
@@ -181,6 +190,19 @@ export function parseFractionalWordedNumber(input: string): number {
     throw new Error(`Invalid fractional worded number: "${input}"`);
   }
 
+  // Helper function to find and extract magnitude word from tokens
+  const extractMagnitude = (
+    toks: string[],
+    startIndex: number
+  ): { magnitude: number; magnitudeIndex: number } | null => {
+    for (let i = startIndex; i < toks.length; i++) {
+      if (toks[i] in SCALES) {
+        return { magnitude: SCALES[toks[i]], magnitudeIndex: i };
+      }
+    }
+    return null;
+  };
+
   // Case 1: Single fraction word (e.g., "half", "quarter", "third")
   if (filteredTokens.length === 1) {
     const word = filteredTokens[0];
@@ -198,6 +220,64 @@ export function parseFractionalWordedNumber(input: string): number {
       const fraction = FRACTIONS[fractionWord];
       return multiplier * fraction;
     }
+    // Fall through to check for fraction + magnitude pattern
+  }
+
+  // Case 3: Fraction + magnitude (e.g., "quarter million", "half billion")
+  // Also handles: Fraction + "of" + magnitude (e.g., "quarter of million")
+  // Look for a fraction word in the first 1-2 tokens
+  let fractionValue: number | null = null;
+  let fractionEndIndex = -1;
+
+  // Try single fraction word (e.g., "quarter million")
+  if (filteredTokens[0] in FRACTIONS) {
+    fractionValue = FRACTIONS[filteredTokens[0]];
+    fractionEndIndex = 0;
+  }
+  // Try multiplier + fraction (e.g., "two thirds million")
+  else if (
+    filteredTokens.length >= 2 &&
+    filteredTokens[0] in FRACTION_MULTIPLIERS &&
+    filteredTokens[1] in FRACTIONS
+  ) {
+    const multiplier = FRACTION_MULTIPLIERS[filteredTokens[0]];
+    const fraction = FRACTIONS[filteredTokens[1]];
+    fractionValue = multiplier * fraction;
+    fractionEndIndex = 1;
+  }
+
+  if (fractionValue !== null && fractionEndIndex !== -1) {
+    // Look for magnitude word after the fraction
+    let searchStartIndex = fractionEndIndex + 1;
+
+    // Handle "of" token between fraction and magnitude (e.g., "quarter of million")
+    if (
+      searchStartIndex < filteredTokens.length &&
+      filteredTokens[searchStartIndex] === "of"
+    ) {
+      searchStartIndex++;
+    }
+
+    // Extract magnitude if present
+    const magnitudeInfo = extractMagnitude(filteredTokens, searchStartIndex);
+    if (magnitudeInfo) {
+      const result = fractionValue * magnitudeInfo.magnitude;
+
+      // Check for overflow
+      if (result > Number.MAX_SAFE_INTEGER) {
+        throw new ValueOverflowError(
+          `Number ${result} exceeds maximum safe integer (${Number.MAX_SAFE_INTEGER})`
+        );
+      }
+
+      return result;
+    }
+  }
+
+  // If we have exactly 2 tokens and tried the multiplier+fraction pattern above,
+  // throw the appropriate error
+  if (filteredTokens.length === 2) {
+    const [multiplierWord, fractionWord] = filteredTokens;
     throw new Error(
       `Invalid fractional pattern: "${multiplierWord} ${fractionWord}"`
     );
@@ -292,13 +372,16 @@ export function parseWordedNumber(input: string): number {
 function buildFractionalWordedNumberRegex(): RegExp {
   const fractionWords = Object.keys(FRACTIONS).join("|");
   const multiplierWords = Object.keys(FRACTION_MULTIPLIERS).join("|");
+  const scaleWords = Object.keys(SCALES).join("|");
 
   // Match patterns like:
   // - "half", "quarter", "third"
   // - "a half", "a quarter"
   // - "two thirds", "three quarters"
   // - "two-thirds", "three-quarters" (with hyphens)
-  const pattern = `(?:a\\s+)?(?:(?:${multiplierWords})(?:[\\s-])+)?(?:${fractionWords})`;
+  // - "quarter million", "half billion" (with magnitude)
+  // - "quarter of a million", "two thirds of a billion" (with "of a" + magnitude)
+  const pattern = `(?:a\\s+)?(?:(?:${multiplierWords})(?:[\\s-])+)?(?:${fractionWords})(?:\\s+(?:of\\s+)?(?:a\\s+)?(?:${scaleWords}))?`;
 
   return new RegExp(`\\b(${pattern})\\b`, "gi");
 }

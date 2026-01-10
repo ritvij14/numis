@@ -1072,11 +1072,257 @@
             "parentTaskId": 36
           }
         ]
+      },
+      {
+        "id": 37,
+        "title": "Implement Example Prompts UI Component",
+        "description": "Create a UI component for the demo website that displays random example monetary expressions, allowing users to populate the input field with a click.",
+        "details": "1.  Create a new UI component (e.g., `ExamplePrompts.vue` or `example-prompts.js`) within the Vite demo project.\n2.  Define an array of diverse example monetary expressions (strings) covering various patterns (symbols, abbreviations, worded numbers, regional formats, etc.). Aim for at least 10-15 examples.\n3.  Implement logic to randomly select 3 examples from the array when the component is mounted or refreshed.\n4.  Display the selected examples as clickable elements (e.g., buttons or styled divs).\n5.  Attach a click event listener to each example element. When clicked, the selected example should populate the main input field of the demo website.\n6.  Style the component to visually integrate with the existing demo website design.\n7.  Ensure the component is responsive and works well on different screen sizes.\n8.  Consider adding a \"Refresh Examples\" button to allow users to generate a new set of random examples.\n9.  The example prompts should cover a range of currency formats and amounts to showcase the parser's capabilities. Examples: [\"$100\", \"EUR 50\", \"GBP 20.50\", \"100 CAD\", \"one hundred dollars\", \"half a dollar\", \"10k\", \"1.234,56 €\", \"buck\", \"1,000,000\", \"USD 12.50\", \"£1000\", \"5m\", \"quarter pound\"]",
+        "testStrategy": "1.  Verify that the Example Prompts component is displayed correctly on the demo website.\n2.  Confirm that 3 random examples are displayed each time the component is loaded or refreshed (if a refresh button is implemented).\n3.  Click each example prompt and verify that the corresponding text is correctly populated into the main input field of the demo website.\n4.  Test with different screen sizes to ensure the component is responsive and the examples are displayed correctly.\n5.  Check that the example prompts cover a variety of currency formats and amounts.\n6.  Manually test a large number of example selections to ensure randomness and that no errors occur.",
+        "status": "done",
+        "dependencies": [
+          10,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          19,
+          20,
+          32
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define Example Monetary Expressions",
+            "description": "Create an array of diverse example monetary expressions (strings) covering various patterns (symbols, abbreviations, worded numbers, regional formats, etc.). Aim for at least 15 examples.",
+            "dependencies": [],
+            "details": "Create a `const` array named `examplePrompts` in a new file (e.g., `src/components/examplePromptsData.js`). This array should contain strings representing monetary amounts in various formats. Include examples like: ['$100', 'EUR 50', 'GBP 20.50', '100 CAD', 'one hundred dollars', 'half a dollar', '10k', '1.234,56 €', 'buck', '1,000,000', 'USD 12.50', '£1000', '5m', 'quarter pound', '20 quid']. Export the array.",
+            "status": "done",
+            "testStrategy": "Manually inspect the `examplePromptsData.js` file to ensure the array contains a diverse set of monetary expressions."
+          },
+          {
+            "id": 2,
+            "title": "Build Example Prompts Component",
+            "description": "Create a new UI component (e.g., `ExamplePrompts.vue` or `example-prompts.js`) within the Vite demo project. This component will display the example prompts.",
+            "dependencies": [],
+            "details": "Create a new Vue component file (e.g., `src/components/ExamplePrompts.vue`). Import the `examplePrompts` array from `src/components/examplePromptsData.js`. In the component's `data` or `reactive` section, create a variable to hold the randomly selected prompts. Implement a method to randomly select 3 examples from the `examplePrompts` array when the component is mounted or when a 'Refresh Examples' button is clicked. Display the selected examples as clickable elements (e.g., buttons or styled divs).",
+            "status": "done",
+            "testStrategy": "Verify that the component renders without errors and displays 3 example prompts from the array. Check that the prompts are different each time the component is mounted or refreshed."
+          },
+          {
+            "id": 3,
+            "title": "Implement Click Handler",
+            "description": "Attach a click event listener to each example element. When clicked, the selected example should populate the main input field of the demo website.",
+            "dependencies": [],
+            "details": "In the `ExamplePrompts.vue` component, add a click event listener to each clickable example element. The click handler should retrieve the text content of the clicked element and use it to update the value of the main input field in the parent component. Use Vue's event emission (`$emit`) to communicate the selected example to the parent component. The parent component should then update the input field.",
+            "status": "done",
+            "testStrategy": "Click each example prompt and verify that the main input field is populated with the corresponding text. Ensure that the input field is updated correctly for all example prompts."
+          },
+          {
+            "id": 4,
+            "title": "Style the Example Prompts Component",
+            "description": "Style the component to visually integrate with the existing demo website design. Ensure the component is responsive and works well on different screen sizes.",
+            "dependencies": [],
+            "details": "Apply CSS styles to the `ExamplePrompts.vue` component to match the overall design of the demo website. Use CSS classes or inline styles to format the example prompts, the 'Refresh Examples' button (if implemented), and the container element. Ensure the component is responsive by using media queries or a responsive CSS framework (e.g., Bootstrap, Tailwind CSS).",
+            "status": "done",
+            "testStrategy": "Inspect the component in different browsers and screen sizes to ensure it is visually appealing and responsive. Verify that the styles are consistent with the rest of the demo website."
+          },
+          {
+            "id": 5,
+            "title": "Integrate and Test the Feature",
+            "description": "Integrate the Example Prompts component into the main demo website and test the complete feature.",
+            "dependencies": [],
+            "details": "Import the `ExamplePrompts.vue` component into the main demo website component. Place the component in a suitable location on the page. Implement the logic in the parent component to receive the selected example from the `ExamplePrompts` component and update the input field accordingly. Test the entire feature by clicking on the example prompts and verifying that the input field is updated correctly. Test the 'Refresh Examples' button (if implemented) to ensure it generates new random examples.",
+            "status": "done",
+            "testStrategy": "Perform end-to-end testing of the feature by interacting with the Example Prompts component and verifying that the input field is updated correctly. Test the feature on different browsers and screen sizes. Verify that the 'Refresh Examples' button (if implemented) works as expected."
+          }
+        ]
+      },
+      {
+        "id": 38,
+        "title": "Implement Custom Default Currency for parseMoney()",
+        "description": "Add a custom default currency option to the numis SDK's parseMoney() function, allowing users to specify a fallback currency when none is detected in the input text.",
+        "details": "1.  **Create ParseOptions Interface:** Define a `ParseOptions` interface with an optional `defaultCurrency` field (string, ISO-4217 code). The default value should be 'USD' for backwards compatibility.\n2.  **Update parseMoney() Signature:** Modify the `parseMoney()` function signature to accept an optional `options` parameter of type `ParseOptions`.\n3.  **Modify RegexPipeline:** Update the RegexPipeline to propagate the `defaultCurrency` option. If no currency is detected by the regex, apply the `defaultCurrency` from the options.\n4.  **Currency Code Validation:** Validate the `defaultCurrency` code against the `currency-codes` package to ensure it's a valid ISO-4217 currency code. Throw a `MoneyParseError` if the code is invalid.\n5.  **Update README Documentation:** Add examples to the README demonstrating how to use the `defaultCurrency` option.\n6.  **Demo Website Integration:** Add a currency dropdown selector to the demo website (`demo/src/App.jsx`) allowing users to select a default currency and see its effect on parsing. The dropdown should be populated with common currencies (USD, EUR, GBP, etc.).\n\nExample Code:\n\n```typescript\ninterface ParseOptions {\n  defaultCurrency?: string;\n}\n\nfunction parseMoney(text: string, options?: ParseOptions): Money | undefined {\n  const defaultCurrency = options?.defaultCurrency ?? 'USD';\n  // ... rest of the parsing logic\n}\n```",
+        "testStrategy": "1.  **Unit Tests:**\n    *   Write unit tests for `parseMoney()` with different `defaultCurrency` options (e.g., 'EUR', 'GBP', 'JPY').\n    *   Verify that the correct currency is returned when no currency is detected in the input text and a `defaultCurrency` is provided.\n    *   Verify that the default currency is 'USD' when no options are provided.\n    *   Write a unit test to ensure that an invalid currency code passed as `defaultCurrency` throws a `MoneyParseError`.\n2.  **Demo Website Testing:**\n    *   Verify that the currency dropdown selector is displayed correctly on the demo website.\n    *   Verify that selecting a currency from the dropdown updates the `defaultCurrency` used by `parseMoney()`.\n    *   Verify that the parsing results on the demo website reflect the selected `defaultCurrency` when no currency is detected in the input text.\n    *   Test with various input strings and different default currencies to ensure the functionality works as expected.\n3.  **End-to-End Tests:**\n    *   Create end-to-end tests that simulate user interactions on the demo website, including selecting a default currency and entering monetary expressions. Verify that the parsing results are correct.",
+        "status": "done",
+        "dependencies": [
+          5,
+          6,
+          20,
+          32,
+          37
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create ParseOptions Interface",
+            "description": "Define the `ParseOptions` interface with an optional `defaultCurrency` field (string, ISO-4217 code).",
+            "dependencies": [],
+            "details": "Create a new file `src/types/ParseOptions.ts` (or add to an existing types file) and define the `ParseOptions` interface. The `defaultCurrency` field should be optional and of type string. Set the default value to 'USD' in the `parseMoney` function if the option is not provided.",
+            "status": "done",
+            "testStrategy": "N/A - Type definition only."
+          },
+          {
+            "id": 2,
+            "title": "Update parseMoney() Function Signature",
+            "description": "Modify the `parseMoney()` function signature to accept an optional `options` parameter of type `ParseOptions`.",
+            "dependencies": [],
+            "details": "Update the `parseMoney()` function signature in `src/parseMoney.ts` to accept an optional `options` parameter of type `ParseOptions`. Ensure backwards compatibility by providing a default value for the options parameter if it's not provided.",
+            "status": "done",
+            "testStrategy": "Create a unit test to ensure that `parseMoney` still works correctly when no options are passed."
+          },
+          {
+            "id": 3,
+            "title": "Update RegexPipeline to Propagate defaultCurrency",
+            "description": "Update the RegexPipeline to accept and propagate the `defaultCurrency` option through the PipelineContext.",
+            "dependencies": [],
+            "details": "Modify the `RegexPipeline.run()` method to accept the `defaultCurrency` from the `ParseOptions` and pass it down to the `PipelineContext`. This will make the `defaultCurrency` available to the currency detection step.",
+            "status": "done",
+            "testStrategy": "Add a unit test to verify that the `defaultCurrency` is correctly passed to the `PipelineContext`."
+          },
+          {
+            "id": 4,
+            "title": "Modify Currency Detection to Apply Default Currency",
+            "description": "Modify the currency detection step in the RegexPipeline to apply the `defaultCurrency` as a fallback when no currency is detected in the input text.",
+            "dependencies": [],
+            "details": "Within the currency detection logic in the RegexPipeline, check if a currency has been detected. If not, use the `defaultCurrency` from the `PipelineContext` to create a `Currency` object. Ensure that the original detected value is null if the default currency is applied.",
+            "status": "done",
+            "testStrategy": "Create unit tests to verify that the `defaultCurrency` is correctly applied when no currency is detected in the input text. Also, test cases where a currency is detected, ensuring the detected currency takes precedence."
+          },
+          {
+            "id": 5,
+            "title": "Add Validation for defaultCurrency",
+            "description": "Validate the `defaultCurrency` code against the `currency-codes` package to ensure it's a valid ISO-4217 currency code. Throw a `MoneyParseError` if the code is invalid.",
+            "dependencies": [],
+            "details": "Use the `currency-codes` package to validate the `defaultCurrency` code within the `parseMoney()` function. If the code is invalid, throw a `MoneyParseError` with a descriptive message. Ensure the validation happens before the RegexPipeline is executed.",
+            "status": "done",
+            "testStrategy": "Create unit tests to verify that a `MoneyParseError` is thrown when an invalid currency code is provided as the `defaultCurrency`. Also, test with valid currency codes to ensure no error is thrown."
+          },
+          {
+            "id": 6,
+            "title": "Update README Documentation",
+            "description": "Add examples to the README demonstrating how to use the `defaultCurrency` option.",
+            "dependencies": [],
+            "details": "Update the `README.md` file with clear examples of how to use the `defaultCurrency` option in the `parseMoney()` function. Include examples with valid and invalid currency codes. Also, add JSDoc comments to new interfaces and updated functions.",
+            "status": "done",
+            "testStrategy": "Manually review the README to ensure the examples are clear and accurate."
+          },
+          {
+            "id": 7,
+            "title": "Add Currency Dropdown to Demo Website",
+            "description": "Add a currency dropdown selector to the demo website (`demo/src/App.jsx`) allowing users to select a default currency.",
+            "dependencies": [],
+            "details": "Modify the `demo/src/App.jsx` file to include a currency dropdown selector. Populate the dropdown with common currencies (USD, EUR, GBP, JPY, etc.). Store the selected currency in the component's state.",
+            "status": "done",
+            "testStrategy": "Manually test the demo website to ensure the dropdown is displayed correctly and populated with the correct currencies."
+          },
+          {
+            "id": 8,
+            "title": "Wire Up Dropdown to Pass defaultCurrency to parseMoney and Show Visual Indication",
+            "description": "Wire up the currency dropdown to pass the selected `defaultCurrency` option to the `parseMoney()` function and show a visual indication when the default currency is being applied vs detected currency.",
+            "dependencies": [],
+            "details": "Update the `demo/src/App.jsx` file to pass the selected currency from the dropdown to the `parseMoney()` function as the `defaultCurrency` option. Add logic to display a visual indication (e.g., a message or different styling) when the `defaultCurrency` is being applied instead of a detected currency. The visual indication should clearly communicate whether the parsed currency was detected or defaulted.",
+            "status": "done",
+            "testStrategy": "Manually test the demo website to ensure the selected currency is correctly passed to `parseMoney()` and that the visual indication is displayed correctly when the `defaultCurrency` is being applied."
+          }
+        ]
+      },
+      {
+        "id": 39,
+        "title": "Fix Decimal Numbers Before Magnitude Words",
+        "description": "Fix the issue where decimal numbers followed by magnitude words (e.g., '2.25 thousand') are not correctly parsed, resulting in incorrect numeric values. This task involves modifying the `parseAmountTokens` function in `contextualPhrases.ts` to properly handle this scenario.",
+        "details": "Modify the regex check within the `parseAmountTokens` function in `contextualPhrases.ts` to correctly identify and process decimal numbers followed by magnitude words. The current regex prematurely matches the full string, causing an early return with an incorrect value. The updated regex should specifically target the numeric part and the magnitude word, allowing for accurate calculation. Ensure that the fix handles various magnitude words (thousand, million, billion, etc.) and different decimal formats. Consider adding a new unit test file to isolate these tests from the other unit tests.",
+        "testStrategy": "Create new unit tests specifically for decimal numbers followed by magnitude words. These tests should cover a range of values and magnitude words, including '2.25 thousand', '1.5 million', '0.75 billion', etc. Verify that the parsed values are accurate (e.g., '2.25 thousand' should return 2250). Also, test edge cases such as very small decimal numbers (e.g., '0.001 million') and very large numbers (e.g., '999.999 million'). Ensure that the existing unit tests are not negatively impacted by this change. Run all unit tests to confirm the fix does not introduce regressions.",
+        "status": "done",
+        "dependencies": [
+          7,
+          9,
+          10,
+          16
+        ],
+        "priority": "high",
+        "subtasks": []
+      },
+      {
+        "id": 40,
+        "title": "Integrate Regional Format Parser into Main Pipeline",
+        "description": "Integrate the existing regional format parser into the main regex pipeline to correctly handle European decimal separators and other regional number formats. This includes adding the parser to the pipeline, handling ambiguity, and adding comprehensive tests.",
+        "details": "1.  **Add regionalFormatDetectionStep to pipeline:** Modify the `regexPipeline` to include the `regionalFormatDetectionStep` before the `plainNumericDetection` step. This ensures that regional formats are parsed before attempting to parse numbers with US-style formatting.\n2.  **Handle ambiguity detection for \"1.000\":** Implement logic to differentiate between European \"1.000\" (one thousand) and US \"1.0\" (one point zero). This may involve checking for surrounding currency symbols or other contextual clues. Consider adding a configuration option to specify the default locale if ambiguity cannot be resolved.\n3.  **Update regexPipeline:** Ensure the regional format parser is correctly instantiated and configured within the `regexPipeline`.\n4.  **Error Handling:** Implement robust error handling to gracefully manage cases where regional format parsing fails or produces unexpected results. Log errors appropriately for debugging purposes.\n5.  **Performance Considerations:** Evaluate the performance impact of adding the regional format parser to the pipeline. Optimize the parser's implementation to minimize any performance overhead.",
+        "testStrategy": "1.  **Comprehensive tests for European format:** Create a suite of unit tests specifically designed to test the regional format parser with European number formats. These tests should include:\n    *   Numbers with period as thousands separator: \"1.000.000\", \"10.000\"\n    *   Numbers with comma as decimal separator: \"1,234\", \"123,45\"\n    *   Numbers with currency symbols: \"1.234,56 EUR\", \"1.000.000,00 $\"\n    *   Numbers with mixed formats (if applicable).\n2.  **Ambiguity tests:** Create tests to specifically address the ambiguity of numbers like \"1.000\". These tests should include cases where the context suggests a European format and cases where it suggests a US format.\n3.  **Regression tests:** Run existing tests to ensure that the integration of the regional format parser does not negatively impact the parsing of other number formats.\n4.  **Edge case tests:** Include tests for edge cases such as invalid or malformed input strings.\n5.  **Performance tests:** Measure the execution time of the pipeline with and without the regional format parser to identify any performance regressions.",
+        "status": "done",
+        "dependencies": [
+          19,
+          10,
+          11
+        ],
+        "priority": "high",
+        "subtasks": []
+      },
+      {
+        "id": 41,
+        "title": "Implement Negative Number Support",
+        "description": "Add functionality to correctly identify and handle negative numbers in currency strings, including negative prefixes, parentheses notation, and updating the pipeline context.",
+        "details": "1. **Create negative detection utilities:** Implement functions to detect negative prefixes such as \"-\", \"minus\", and \"negative\" before the currency amount. Also, implement logic to detect parentheses notation, where (100) implies -100.\n2. **Add negativeDetectionStep to pipeline:** Integrate a new step early in the parsing pipeline to utilize the negative detection utilities. This step should identify and flag negative amounts before other parsers are applied.\n3. **Store negative flag in PipelineContext:** Modify the PipelineContext to include an `isNegative` boolean flag. The `negativeDetectionStep` should set this flag accordingly.\n4. **Apply negative flag to final amount:** At the end of the pipeline, apply the `isNegative` flag to the final extracted amount. If the flag is true, multiply the amount by -1.\n5. **Handle parentheses notation:** Implement logic to detect and handle parentheses notation, where (100) implies -100. This should be integrated into the negative detection utilities.\n6. **Update type definitions:** Update relevant type definitions (e.g., interfaces for PipelineContext, parser outputs) to include the `isNegative` flag.\n7. **Consider interactions with existing parsers:** Ensure the negative number handling logic interacts correctly with all existing parsers (e.g., Symbols, Abbreviations, Regional Formats). Pay special attention to the order of operations to avoid conflicts.\n8. **Group Assignment:** This task belongs to Group C.",
+        "testStrategy": "1. **Unit tests for negative detection utilities:** Create unit tests to verify the correct detection of negative prefixes (\"-\", \"minus\", \"negative\") and parentheses notation.\n2. **Integration tests for the pipeline:** Write integration tests to verify the entire pipeline correctly handles negative numbers in various formats, including:\n    *   Negative prefixes: \"-100 EUR\", \"minus 50 USD\", \"negative 25 GBP\"\n    *   Parentheses notation: \"(100) USD\", \"(50.50) EUR\"\n    *   Combinations with existing patterns: \"-$100\", \"(EUR 50)\", \"-1,234.56 USD\"\n3. **Comprehensive testing with all existing patterns:** Combine negative number patterns with all existing patterns (Symbols, Abbreviations, Regional Formats, Worded Numbers, etc.) to ensure no regressions are introduced. This includes positive and negative cases.\n4. **Edge cases:** Test edge cases such as multiple negative prefixes (e.g., \"--100 EUR\") and invalid parentheses (e.g., \"(100 EUR\").\n5. **Test the isNegative flag:** Verify that the `isNegative` flag in the PipelineContext is correctly set and applied to the final amount.",
+        "status": "done",
+        "dependencies": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          19,
+          20
+        ],
+        "priority": "high",
+        "subtasks": []
+      },
+      {
+        "id": 42,
+        "title": "Extend Fractional Parser to Support Magnitude Words",
+        "description": "Extend the fractional parser to correctly handle magnitude words (e.g., 'million', 'billion') following fractions, addressing the issue where 'a quarter million' currently returns 0.25 instead of 250000. This task involves modifying the parser and adding comprehensive tests.",
+        "details": "1) Extend `parseFractionalWordedNumber` to handle optional magnitude words after fractions. This will likely involve adding a new regular expression or conditional logic to detect and parse magnitude words.\n2) Implement parsing logic for the pattern: fraction + magnitude (e.g., 'quarter million', 'half billion'). Ensure correct multiplication of the fractional value with the magnitude value.\n3) Implement parsing logic for the pattern: fraction + 'of a' + magnitude (e.g., 'quarter of a million'). Handle the 'of a' phrase correctly to extract the magnitude.\n4) Integrate the updated parser into `contextualPhrases` to support this pattern in contextual parsing scenarios. This may require modifications to the contextual parsing logic to recognize and utilize the new fractional magnitude pattern.\n5) Update documentation to reflect the changes made to the fractional parser and the new supported patterns.",
+        "testStrategy": "1) Create unit tests for all fractional magnitude combinations, including 'quarter million', 'half billion', 'third trillion', etc. Verify that the parser returns the correct numeric value for each combination.\n2) Create unit tests for the 'fraction + of a + magnitude' pattern, such as 'quarter of a million', 'half of a billion', etc. Verify correct parsing and numeric conversion.\n3) Add tests to `contextualPhrases` to ensure the new pattern is correctly parsed in contextual scenarios. Test with various surrounding words and phrases to ensure accurate results.\n4) Test with different fractional values (e.g., 'one fifth', 'three quarters') combined with different magnitudes (e.g., 'thousand', 'million', 'billion').\n5) Include edge cases and boundary conditions in the tests, such as very large magnitudes or unusual fractional values.",
+        "status": "done",
+        "dependencies": [
+          7,
+          9,
+          15,
+          16
+        ],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": 43,
+        "title": "Enhance Minor Unit Handling in Contextual Phrases",
+        "description": "Update the contextualPhrases regex to optionally include 'and' between major and minor currency units, and add validation to ensure correct minor unit parsing.",
+        "details": "1. Modify the contextualPhrases regular expression to make the 'and' connector optional between major and minor currency units (e.g., allow both '5 pounds and 20 pence' and '5 pounds 20 pence').\n2. Implement validation to confirm that the trailing number after the major unit is a valid minor unit (e.g., less than 100 for cents, pence, etc.).\n3. Ensure compatibility with colloquial patterns like 'a dollar fifty' and extend support to patterns like '5 pounds 20'.\n4. Add comprehensive unit tests covering all major+minor currency combinations, both with and without the 'and' connector (e.g., '5 pounds 20 pence', '2 euros 50', 'ten dollars 25', '5 pounds and 20 pence').\n5. Implement validation to ensure the minor amount is valid (e.g., less than 100 for cents/pence).\n6. Update relevant documentation to reflect the support for both formats (with and without 'and').",
+        "testStrategy": "1. Create unit tests for various currency combinations with and without the 'and' connector (e.g., '5 pounds 20 pence', '2 euros 50', 'ten dollars 25', '5 pounds and 20 pence', '10 dollars and 99 cents').\n2. Verify that the parser correctly extracts the major and minor units in all test cases.\n3. Implement negative test cases with invalid minor unit amounts (e.g., '5 pounds 150 pence') and ensure they are correctly rejected.\n4. Test with different currencies to ensure the validation logic is currency-specific (e.g., validate against 100 for cents/pence, but adjust for other currencies with different minor unit ranges if applicable).\n5. Verify that the updated documentation accurately reflects the supported formats.",
+        "status": "done",
+        "dependencies": [
+          12,
+          13,
+          19,
+          20
+        ],
+        "priority": "medium",
+        "subtasks": []
       }
     ],
     "metadata": {
       "created": "2025-06-22T05:27:52.739Z",
-      "updated": "2026-01-02T20:59:47.177Z",
+      "updated": "2026-01-10T13:11:10.035Z",
       "description": "Tasks for master context"
     }
   }

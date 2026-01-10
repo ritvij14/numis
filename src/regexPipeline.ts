@@ -39,6 +39,9 @@ export interface PipelineContext {
   currency?: string; // Detected currency symbol or ISO code
   amount?: number; // Numeric amount detected in the string
   matches?: Record<string, unknown>; // Placeholder for additional pattern matches
+  defaultCurrency?: string; // Default currency to use when none detected
+  currencyWasDefault?: boolean; // True if currency was set from default, not detected
+  isNegative?: boolean; // True if the amount should be negative
 }
 
 /**
@@ -52,6 +55,14 @@ export type PipelineStep = (
 /** Utility to clone a simple object (shallow). */
 const clone = <T extends object>(obj: T): T => ({ ...obj });
 
+export interface RunOptions {
+  /**
+   * Default currency to use when no currency is detected in the input text.
+   * Must be a valid ISO-4217 currency code (e.g., "USD", "EUR", "GBP").
+   */
+  defaultCurrency?: string;
+}
+
 export class RegexPipeline {
   private steps: PipelineStep[];
 
@@ -61,12 +72,42 @@ export class RegexPipeline {
 
   /**
    * Run the input through each configured step in sequence.
+   * @param input The text to parse
+   * @param options Optional configuration including defaultCurrency
    */
-  run(input: string): PipelineContext {
-    let ctx: PipelineContext = { original: input };
-    for (const step of this.steps) {
-      ctx = step(input, ctx);
+  run(input: string, options?: RunOptions): PipelineContext {
+    let ctx: PipelineContext = {
+      original: input,
+      defaultCurrency: options?.defaultCurrency,
+    };
+
+    // Detect negative indicators first and get cleaned input for parsing
+    const negativeDetection = detectNegative(input);
+    const workingInput = negativeDetection.cleanedInput ?? input;
+
+    if (negativeDetection.isNegative) {
+      ctx.isNegative = true;
     }
+
+    for (const step of this.steps) {
+      // Skip the negative detection step since we already handled it
+      if (step === negativeDetectionStep) {
+        continue;
+      }
+      ctx = step(workingInput, ctx);
+    }
+
+    // Apply default currency if no currency was detected and a default is specified
+    if (!ctx.currency && ctx.defaultCurrency) {
+      ctx.currency = ctx.defaultCurrency;
+      ctx.currencyWasDefault = true;
+    }
+
+    // Apply negative flag to final amount if set
+    if (ctx.isNegative && ctx.amount !== undefined) {
+      ctx.amount = -Math.abs(ctx.amount);
+    }
+
     return ctx;
   }
 
@@ -83,6 +124,7 @@ export class RegexPipeline {
    */
   static default(): RegexPipeline {
     return new RegexPipeline([
+      negativeDetectionStep,
       currencyDetectionStep,
       numericDetectionStep,
       patternSpecificStep,
@@ -100,6 +142,8 @@ import { matchContextualPhrase } from "./patterns/contextualPhrases";
 import { matchNumericWordCombo } from "./patterns/numericWordCombos";
 import { matchSlangTerm } from "./patterns/slangTerms";
 import { matchFractionalWordedNumber } from "./patterns/wordedNumbers";
+import { matchRegionalFormat } from "./patterns/regionalFormats";
+import { detectNegative } from "./patterns/negativeNumbers";
 
 // ---------------------------------------------------------------------------
 // Currency helpers
@@ -208,6 +252,18 @@ const wordsToNumber = (words: string): number | null => {
   return result;
 };
 
+/** 0) Negative number detection step - must run first */
+const negativeDetectionStep: PipelineStep = (input, ctx) => {
+  const out = clone(ctx);
+  const detection = detectNegative(input);
+
+  if (detection.isNegative) {
+    out.isNegative = true;
+  }
+
+  return out;
+};
+
 /** 1) Currency detection step */
 const currencyDetectionStep: PipelineStep = (input, ctx) => {
   const out = clone(ctx);
@@ -254,11 +310,13 @@ const currencyDetectionStep: PipelineStep = (input, ctx) => {
 const numericDetectionStep: PipelineStep = (input, ctx) => {
   const out = clone(ctx);
 
-  // Normalize input: remove common thousand separators (",") to simplify parsing.
-  const cleaned = input.replace(/,/g, "");
+  // Normalize input: remove common thousand separators (",", "'") to simplify parsing.
+  // Note: Regional formats with currency symbols are checked separately on the original input.
+  const cleaned = input.replace(/[,']/g, "");
 
   // ---------------------------------------------------------------------
   // 1) Numeric-word combos (10k, 5m, 2b, 2bn)
+  //    Check this FIRST before regional formats to avoid matching "$10" in "$10k"
   // ---------------------------------------------------------------------
   const comboMatch = matchNumericWordCombo(cleaned);
   if (comboMatch) {
@@ -267,7 +325,7 @@ const numericDetectionStep: PipelineStep = (input, ctx) => {
   }
 
   // ---------------------------------------------------------------------
-  // 2) Slang terms ("buck", "quid", "fiver", "tenner")
+  // 3) Slang terms ("buck", "quid", "fiver", "tenner")
   // ---------------------------------------------------------------------
   const slangMatch = matchSlangTerm(cleaned);
   if (slangMatch) {
@@ -277,7 +335,16 @@ const numericDetectionStep: PipelineStep = (input, ctx) => {
   }
 
   // ---------------------------------------------------------------------
-  // 3) Contextual phrases (articles + currency names/codes, optional minor units)
+  // 4) Fractional worded numbers ("half", "three quarters", "two thirds")
+  // ---------------------------------------------------------------------
+  const fractionalMatch = matchFractionalWordedNumber(cleaned);
+  if (fractionalMatch) {
+    out.amount = fractionalMatch.value;
+    return out;
+  }
+
+  // ---------------------------------------------------------------------
+  // 5) Contextual phrases (articles + currency names/codes, optional minor units)
   // ---------------------------------------------------------------------
   const contextualMatch = matchContextualPhrase(cleaned);
   if (contextualMatch) {
@@ -287,7 +354,22 @@ const numericDetectionStep: PipelineStep = (input, ctx) => {
   }
 
   // ---------------------------------------------------------------------
-  // 4) Plain numeric (digits and decimals)
+  // 6) Regional formats (check on ORIGINAL input, not cleaned)
+  //    Handles: "1.234,56 €", "$1,234.56", "1'234.56 CHF", etc.
+  //    Must check before plain numeric to correctly parse European formats
+  //    Regional format detection takes precedence over earlier currency detection
+  //    because it has more context (symbol + number format together)
+  // ---------------------------------------------------------------------
+  const regionalMatch = matchRegionalFormat(input, ctx.defaultCurrency);
+  if (regionalMatch) {
+    out.amount = regionalMatch.amount;
+    // Regional parser has more specific info (e.g., "R$" -> BRL), so override
+    out.currency = regionalMatch.currencyCode;
+    return out;
+  }
+
+  // ---------------------------------------------------------------------
+  // 7) Plain numeric (digits and decimals)
   // ---------------------------------------------------------------------
   const numMatch = /(?:\b|^)(\d+(?:\.\d+)?)(?:\b|$)/.exec(cleaned);
   if (numMatch) {
@@ -302,16 +384,7 @@ const numericDetectionStep: PipelineStep = (input, ctx) => {
   }
 
   // ---------------------------------------------------------------------
-  // 5) Fractional worded numbers ("half", "three quarters", "two thirds")
-  // ---------------------------------------------------------------------
-  const fractionalMatch = matchFractionalWordedNumber(cleaned);
-  if (fractionalMatch) {
-    out.amount = fractionalMatch.value;
-    return out;
-  }
-
-  // ---------------------------------------------------------------------
-  // 6) Worded numbers ("one hundred twenty", "two thousand")
+  // 8) Worded numbers ("one hundred twenty", "two thousand")
   // ---------------------------------------------------------------------
   const wordNumberRegex =
     /\b((?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion)(?:[\s-](?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion))*)\b/i;
