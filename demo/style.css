@@ -160,9 +160,26 @@ select:focus {
 
 .app-header {
   margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 .app-header h1 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
+}
+.npm-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border: 1px solid #2563eb;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+.npm-link:hover {
+  background: #2563eb;
+  color: #fff;
 }
 
 

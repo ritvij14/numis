@@ -55,6 +55,14 @@ export default function App() {
     <div id="app">
       <div className="app-header">
         <h1>numis Demo</h1>
+        <a
+          href="https://www.npmjs.com/package/numis"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="npm-link"
+        >
+          View on npm →
+        </a>
       </div>
 
       <div className="try-it-section">

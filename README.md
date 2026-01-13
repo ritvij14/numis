@@ -1,5 +1,7 @@
 # numis
 
+[![npm version](https://img.shields.io/npm/v/numis.svg)](https://www.npmjs.com/package/numis)
+
 Natural-language parser for monetary and numeric values. Parse money from text like a human would read it.
 
 ```ts
