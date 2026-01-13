@@ -38,10 +38,12 @@ describe('Regional Formats Pattern Parser', () => {
         expect(result.formatType).toBe('eu');
       });
 
-      test('should parse European format without decimal "1.234 €"', () => {
-        const result = parseRegionalFormat('1.234 €');
-        expect(result.amount).toBe(1234);
+      test('should parse European format with multiple thousands separators "1.234.567 €"', () => {
+        // Single period is ambiguous, use multiple periods for unambiguous EU format
+        const result = parseRegionalFormat('1.234.567 €');
+        expect(result.amount).toBe(1234567);
         expect(result.currencyCode).toBe('EUR');
+        expect(result.formatType).toBe('eu');
       });
 
       test('should parse small European decimal "0,99 €"', () => {

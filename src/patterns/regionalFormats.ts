@@ -65,7 +65,19 @@ function buildRegionalSymbolRegex(): RegExp {
     s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   );
 
-  const symbolPattern = escapedSymbols.join('|');
+  // Add word boundaries for single-LETTER symbols to prevent false matches
+  // (e.g., prevent matching 'r' in "dollar 100" as ZAR currency symbol)
+  // Only apply to alphanumeric single characters, not special symbols like $, €, etc.
+  const symbolPattern = escapedSymbols.map((escaped, index) => {
+    const original = sortedSymbols[index];
+    // Check if original is single alphanumeric character (a-z, A-Z)
+    if (original.length === 1 && /[a-zA-Z]/.test(original)) {
+      // Prevent matching when part of a larger word (surrounded by letters)
+      // Allow digits before/after (e.g., "100R" or "R100" should work)
+      return `(?<![a-zA-Z])${escaped}(?![a-zA-Z])`;
+    }
+    return escaped;
+  }).join('|');
 
   // Number pattern that supports various regional formats:
   // - Digits with optional separators (comma, period, space, apostrophe)
@@ -170,26 +182,26 @@ export function detectRegionalFormat(numberStr: string): FormatConfig {
 
   // Only period present
   if (hasPeriod && !hasComma) {
-    // Check if it looks like a decimal
+    const periodCount = (numberStr.match(/\./g) || []).length;
+
+    // Multiple periods = European thousands separator (e.g., 1.234.567)
+    if (periodCount > 1) {
+      return { thousandsSeparator: '.', decimalSeparator: ',', type: 'eu' };
+    }
+
+    // Single period - check if it looks like a decimal
     const match = numberStr.match(/\.(\d+)$/);
     if (match) {
       const digitsAfterPeriod = match[1].length;
-      // If 1-2 digits after period at end, likely US decimal
+      // If 1-2 digits after period, definitely US decimal
       if (digitsAfterPeriod <= 2) {
         return { thousandsSeparator: ',', decimalSeparator: '.', type: 'us' };
       }
-      // If exactly 3 digits, it's ambiguous
-      if (digitsAfterPeriod === 3) {
-        const periodCount = (numberStr.match(/\./g) || []).length;
-        if (periodCount > 1) {
-          // Multiple periods = European thousands separator
-          return { thousandsSeparator: '.', decimalSeparator: ',', type: 'eu' };
-        }
-        // Single period with exactly 3 digits after it (e.g., "1.234")
-        // This is ambiguous but in the context of regional formats,
-        // treat as European thousands separator (1.234 = 1234, not 1.234)
-        return { thousandsSeparator: '.', decimalSeparator: ',', type: 'eu' };
-      }
+      // If 3 or more digits after single period, it's ambiguous
+      // but we default to US decimal for single period cases
+      // European thousands typically requires multiple periods (1.234.567)
+      // or a Euro symbol context (handled at higher level)
+      return { thousandsSeparator: ',', decimalSeparator: '.', type: 'us' };
     }
     // Default: period as decimal (US format)
     return { thousandsSeparator: ',', decimalSeparator: '.', type: 'us' };

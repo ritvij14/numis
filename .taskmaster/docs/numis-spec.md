@@ -28,7 +28,6 @@ The **Natural-language Monetary Parser** (`numis`) is an open-source, lightweigh
   ```ts
   interface ParseOptions {
     defaultCurrency?: string; // ISO code fallback
-    strict?: boolean; // require explicit currency?
   }
 
   interface ParseResult {
@@ -39,7 +38,6 @@ The **Natural-language Monetary Parser** (`numis`) is an open-source, lightweigh
   }
 
   function parseMoney(input: string, opts?: ParseOptions): ParseResult | null;
-  function parseAll(input: string, opts?: ParseOptions): ParseResult[];
   ```
 
 - **Regex pipeline**: currency detection → numeric/word detection → pattern-specific parsing.
@@ -58,6 +56,7 @@ The **Natural-language Monetary Parser** (`numis`) is an open-source, lightweigh
    - Jest test suite & CI.
    - Demo website.
 2. **Future Enhancements**
+   - **Multi-value extraction**: Extend `parseMoney` to return match position (`start`, `end`) so callers can iteratively extract multiple monetary expressions from a single text block by continuing parsing from where the previous match ended.
    - Range parsing.
    - Additional locales & separators.
    - Public plugin registration.
@@ -97,7 +96,6 @@ The **Natural-language Monetary Parser** (`numis`) is an open-source, lightweigh
   ```ts
   interface ParseOptions {
     defaultCurrency?: string; // ISO code fallback
-    strict?: boolean; // require explicit currency?
   }
 
   interface ParseResult {
@@ -108,7 +106,6 @@ The **Natural-language Monetary Parser** (`numis`) is an open-source, lightweigh
   }
 
   function parseMoney(input: string, opts?: ParseOptions): ParseResult | null;
-  function parseAll(input: string, opts?: ParseOptions): ParseResult[];
   ```
 
 - **Regex pipeline**: currency detection → numeric/word detection → pattern-specific parsing.

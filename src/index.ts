@@ -6,7 +6,6 @@ export {
 } from "./currencyData";
 export { getNameToCodeMap } from "./currencyMapBuilder";
 export { MoneyParseError, ValueOverflowError } from "./errors";
-export { parseAll, ParseAllResult } from "./parseAll";
 export { parseMoney } from "./parseMoney";
 export { ParseOptions } from "./types";
 export {
@@ -39,6 +38,11 @@ export {
   normalizeRegionalNumber,
   parseRegionalFormat,
 } from "./patterns/regionalFormats";
+export {
+  MinorUnitParseResult,
+  matchMinorUnitOnly,
+  parseMinorUnitOnly,
+} from "./patterns/minorUnitsOnly";
 export {
   PipelineContext,
   PipelineStep,

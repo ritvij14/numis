@@ -398,4 +398,28 @@ describe('Abbreviations Pattern Parser', () => {
       expect(result?.currencyCode).toBe('GBP');
     });
   });
+
+  describe('Word boundary handling for ISO codes', () => {
+    test('should parse "ALL 100" as Albanian Lek', () => {
+      const result = parseAbbreviation('ALL 100');
+      expect(result.amount).toBe(100);
+      expect(result.currencyCode).toBe('ALL');
+    });
+
+    test('should parse "TRY 50" as Turkish Lira', () => {
+      const result = parseAbbreviation('TRY 50');
+      expect(result.amount).toBe(50);
+      expect(result.currencyCode).toBe('TRY');
+    });
+
+    test('should NOT match "all" in "all 100 items"', () => {
+      // Context: "all" as English word, not currency
+      expect(matchAbbreviation('all 100 items')).toBeNull();
+    });
+
+    test('should NOT match "try" in "try 50 times"', () => {
+      // Context: "try" as English word, not currency
+      expect(matchAbbreviation('try 50 times')).toBeNull();
+    });
+  });
 });

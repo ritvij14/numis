@@ -326,4 +326,246 @@ describe("parseMoney", () => {
       expect(res.currency).toBe("USD");
     });
   });
+
+  describe("single-letter symbol boundary fix", () => {
+    test("should not match R at end of 'dollar'", () => {
+      const result = parseMoney("australian dollar 100");
+      expect(result.currency).toBe("AUD");
+      expect(result.amount).toBe(100);
+    });
+
+    test("should match dollar without false R match", () => {
+      const result = parseMoney("dollar 100");
+      expect(result.currency).toBe("USD");
+      expect(result.amount).toBe(100);
+    });
+
+    test("should still match legitimate standalone R symbol", () => {
+      const result = parseMoney("R 100");
+      expect(result.currency).toBe("ZAR");
+      expect(result.amount).toBe(100);
+    });
+
+    test("should match R without space", () => {
+      const result = parseMoney("100R");
+      expect(result.currency).toBe("ZAR");
+      expect(result.amount).toBe(100);
+    });
+  });
+
+  describe("multi-word currency phrase matching", () => {
+    test("should match 'new zealand dollar' as NZD", () => {
+      const result = parseMoney("new zealand dollar 50");
+      expect(result.currency).toBe("NZD");
+      expect(result.amount).toBe(50);
+    });
+
+    test("should match 'australian dollar' as AUD", () => {
+      const result = parseMoney("australian dollar 100");
+      expect(result.currency).toBe("AUD");
+      expect(result.amount).toBe(100);
+    });
+
+    test("should match 'new taiwan dollar' as TWD", () => {
+      const result = parseMoney("new taiwan dollar 200");
+      expect(result.currency).toBe("TWD");
+      expect(result.amount).toBe(200);
+    });
+
+    test("should match 'hong kong dollar' as HKD", () => {
+      const result = parseMoney("hong kong dollar 75");
+      expect(result.currency).toBe("HKD");
+      expect(result.amount).toBe(75);
+    });
+
+    test("should match 'uae dirham' as AED", () => {
+      const result = parseMoney("uae dirham 100");
+      expect(result.currency).toBe("AED");
+      expect(result.amount).toBe(100);
+    });
+
+    test("should match 'moroccan dirham' as MAD", () => {
+      const result = parseMoney("moroccan dirham 50");
+      expect(result.currency).toBe("MAD");
+      expect(result.amount).toBe(50);
+    });
+
+    test("should default 'dirham' alone to AED", () => {
+      const result = parseMoney("dirham 100");
+      expect(result.currency).toBe("AED");
+      expect(result.amount).toBe(100);
+    });
+
+    test("should still match single-word currencies", () => {
+      const result = parseMoney("euro 50");
+      expect(result.currency).toBe("EUR");
+      expect(result.amount).toBe(50);
+    });
+  });
+
+  describe('Approximation markers', () => {
+    test('should parse "~$50" ignoring tilde', () => {
+      const res = parseMoney('~$50');
+      expect(res.amount).toBe(50);
+      expect(res.currency).toBe('USD');
+    });
+
+    test('should parse "about 100 USD"', () => {
+      const res = parseMoney('about 100 USD');
+      expect(res.amount).toBe(100);
+      expect(res.currency).toBe('USD');
+    });
+
+    test('should parse "approx. 500 euros"', () => {
+      const res = parseMoney('approx. 500 euros');
+      expect(res.amount).toBe(500);
+      expect(res.currency).toBe('EUR');
+    });
+
+    test('should parse "roughly 1k USD"', () => {
+      const res = parseMoney('roughly 1k USD');
+      expect(res.amount).toBe(1000);
+      expect(res.currency).toBe('USD');
+    });
+
+    test('should parse "around £200"', () => {
+      const res = parseMoney('around £200');
+      expect(res.amount).toBe(200);
+      expect(res.currency).toBe('GBP');
+    });
+
+    test('should parse "est. $5000"', () => {
+      const res = parseMoney('est. $5000');
+      expect(res.amount).toBe(5000);
+      expect(res.currency).toBe('USD');
+    });
+
+    test('should parse "approximately 250 EUR"', () => {
+      const res = parseMoney('approximately 250 EUR');
+      expect(res.amount).toBe(250);
+      expect(res.currency).toBe('EUR');
+    });
+  });
+
+  describe('Whitespace handling', () => {
+    test('should handle multiple spaces between symbol and amount', () => {
+      const res = parseMoney('$   100');
+      expect(res.amount).toBe(100);
+      expect(res.currency).toBe('USD');
+    });
+
+    test('should handle tab between symbol and amount', () => {
+      const res = parseMoney('$\t100');
+      expect(res.amount).toBe(100);
+      expect(res.currency).toBe('USD');
+    });
+
+    test('should handle multiple spaces between amount and code', () => {
+      const res = parseMoney('100   USD');
+      expect(res.amount).toBe(100);
+      expect(res.currency).toBe('USD');
+    });
+
+    test('should handle trailing newline', () => {
+      const res = parseMoney('$100\n');
+      expect(res.amount).toBe(100);
+      expect(res.currency).toBe('USD');
+    });
+
+    test('should handle non-breaking space', () => {
+      const res = parseMoney('$\u00A0100');
+      expect(res.amount).toBe(100);
+      expect(res.currency).toBe('USD');
+    });
+
+    test('should handle mixed whitespace', () => {
+      const res = parseMoney('  $  100  USD  ');
+      expect(res.amount).toBe(100);
+      expect(res.currency).toBe('USD');
+    });
+  });
+
+  describe('Trailing garbage handling', () => {
+    test('should parse "$100*" ignoring footnote marker', () => {
+      const res = parseMoney('$100*');
+      expect(res.amount).toBe(100);
+      expect(res.currency).toBe('USD');
+    });
+
+    test('should parse "$100 (approx)" extracting amount', () => {
+      const res = parseMoney('$100 (approx)');
+      expect(res.amount).toBe(100);
+      expect(res.currency).toBe('USD');
+    });
+
+    test('should parse "$100.00 USD" with redundant currency', () => {
+      const res = parseMoney('$100.00 USD');
+      expect(res.amount).toBe(100);
+      expect(res.currency).toBe('USD');
+    });
+
+    test('should parse "EUR 500 euros" with redundant name', () => {
+      const res = parseMoney('EUR 500 euros');
+      expect(res.amount).toBe(500);
+      expect(res.currency).toBe('EUR');
+    });
+
+    test('should handle errant trailing period "$100."', () => {
+      const res = parseMoney('$100.');
+      expect(res.amount).toBe(100);
+      expect(res.currency).toBe('USD');
+    });
+  });
+
+  describe('Non-monetary number rejection', () => {
+    test('should not extract amount from "Page 100"', () => {
+      const res = parseMoney('Page 100');
+      expect(res.currency).toBeUndefined();
+      // amount might be 100, but no currency = not monetary
+    });
+
+    test('should not match phone number pattern "555-1234"', () => {
+      const res = parseMoney('555-1234');
+      // No currency indicator = not monetary, amount may still be extracted
+      expect(res.currency).toBeUndefined();
+    });
+
+    test('should not match IP address "192.168.1.1"', () => {
+      const res = parseMoney('192.168.1.1');
+      // Should not parse as monetary
+      expect(res.currency).toBeUndefined();
+    });
+
+    test('should not match version number "v1.2.3"', () => {
+      const res = parseMoney('v1.2.3');
+      expect(res.currency).toBeUndefined();
+    });
+
+    test('should not match year "2024"', () => {
+      const res = parseMoney('2024');
+      expect(res.currency).toBeUndefined();
+    });
+  });
+
+  describe('Decimal precision', () => {
+    test('should preserve 3 decimal places "$100.999"', () => {
+      const res = parseMoney('$100.999');
+      expect(res.amount).toBeCloseTo(100.999, 3);
+    });
+
+    test('should preserve small decimals "$100.001"', () => {
+      const res = parseMoney('$100.001');
+      expect(res.amount).toBeCloseTo(100.001, 3);
+    });
+
+    test('should handle standard 2 decimal places "$100.12"', () => {
+      const res = parseMoney('$100.12');
+      expect(res.amount).toBeCloseTo(100.12, 2);
+    });
+
+    test('should handle leading zero decimal "$0.99"', () => {
+      const res = parseMoney('$0.99');
+      expect(res.amount).toBeCloseTo(0.99, 2);
+    });
+  });
 });

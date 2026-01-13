@@ -917,4 +917,30 @@ describe("Worded Numbers Pattern Parser", () => {
       });
     });
   });
+
+  describe("Typo handling (explicit rejection)", () => {
+    test('should return null for "fourty" (typo of forty)', () => {
+      expect(matchWordedNumber("fourty")).toBeNull();
+    });
+
+    test('should return null for "ninty" (typo of ninety)', () => {
+      expect(matchWordedNumber("ninty")).toBeNull();
+    });
+
+    test('should return null for "hundered" (typo of hundred)', () => {
+      expect(matchWordedNumber("hundered")).toBeNull();
+    });
+
+    test('should return null for "thouasnd" (typo of thousand)', () => {
+      expect(matchWordedNumber("thouasnd")).toBeNull();
+    });
+
+    test('should return null for "fiveteen" (typo of fifteen)', () => {
+      expect(matchWordedNumber("fiveteen")).toBeNull();
+    });
+
+    test('should return null for "eigthy" (typo of eighty)', () => {
+      expect(matchWordedNumber("eigthy")).toBeNull();
+    });
+  });
 });

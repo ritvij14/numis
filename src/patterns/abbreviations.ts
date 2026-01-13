@@ -51,6 +51,17 @@ function buildAbbreviationRegex(): RegExp {
 // Pre-compile the regex for performance
 const ABBREVIATION_PATTERN_REGEX = buildAbbreviationRegex();
 
+// Common English words that are also ISO currency codes
+// When these appear with trailing context words, they're likely English usage
+const AMBIGUOUS_CODE_WORDS = new Set(['ALL', 'TRY', 'TOP', 'CUP', 'GEL', 'PEN', 'RON', 'MOP', 'LAK']);
+
+// Common trailing words that indicate non-monetary context
+const NON_MONETARY_CONTEXT_WORDS = new Set([
+  'items', 'things', 'times', 'ways', 'people', 'days', 'years', 'months',
+  'hours', 'minutes', 'seconds', 'pages', 'steps', 'options', 'attempts',
+  'tries', 'more', 'less', 'of', 'the', 'to', 'for', 'at', 'on', 'in'
+]);
+
 /**
  * Parses a string with a currency abbreviation and returns the amount and currency code.
  * 
@@ -116,13 +127,34 @@ export function parseAbbreviation(input: string): AbbreviationParseResult {
 /**
  * Attempts to match and parse a currency abbreviation pattern from a string.
  * Returns null if no valid pattern is found.
- * 
+ *
  * @param input - The string to search for a currency abbreviation pattern
  * @returns Parse result or null if not found
  */
 export function matchAbbreviation(input: string): AbbreviationParseResult | null {
   try {
-    return parseAbbreviation(input);
+    const result = parseAbbreviation(input);
+
+    // Check for ambiguous codes that might be English words
+    if (AMBIGUOUS_CODE_WORDS.has(result.currencyCode)) {
+      const trimmed = input.trim().toLowerCase();
+      const rawLower = result.raw.toLowerCase();
+
+      // Find what comes after the match
+      const matchEnd = trimmed.indexOf(rawLower) + rawLower.length;
+      const afterMatch = trimmed.slice(matchEnd).trim();
+
+      // Get the next word after the match
+      const nextWordMatch = afterMatch.match(/^(\w+)/);
+      if (nextWordMatch) {
+        const nextWord = nextWordMatch[1].toLowerCase();
+        if (NON_MONETARY_CONTEXT_WORDS.has(nextWord)) {
+          return null; // Likely English usage, not currency
+        }
+      }
+    }
+
+    return result;
   } catch {
     return null;
   }

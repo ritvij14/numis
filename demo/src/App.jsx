@@ -2,6 +2,7 @@ import { parseMoney } from "numis";
 import { useEffect, useState } from "react";
 import "../style.css";
 import ExamplePrompts from "./ExamplePrompts";
+import { Documentation } from "./Documentation";
 
 // Common currencies for the dropdown
 const COMMON_CURRENCIES = [
@@ -52,45 +53,53 @@ export default function App() {
 
   return (
     <div id="app">
-      <ExamplePrompts onSelect={setText} />
-
-      <div className="options-row">
-        <div className="option-group">
-          <label htmlFor="default-currency">Default Currency</label>
-          <select
-            id="default-currency"
-            value={defaultCurrency}
-            onChange={(e) => setDefaultCurrency(e.target.value)}
-          >
-            {COMMON_CURRENCIES.map((c) => (
-              <option key={c.code} value={c.code}>
-                {c.label}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div className="app-header">
+        <h1>numis Demo</h1>
       </div>
 
-      <label htmlFor="input">Input text</label>
-      <textarea
-        id="input"
-        placeholder="e.g. The total cost is $123.45 or about €110"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
+      <div className="try-it-section">
+        <ExamplePrompts onSelect={setText} />
 
-      <h2>Result</h2>
-      {wasDefaulted && (
-        <div className="currency-indicator defaulted">
-          Currency "{resultObj.currency}" was applied from default (not detected in text)
+        <div className="options-row">
+          <div className="option-group">
+            <label htmlFor="default-currency">Default Currency</label>
+            <select
+              id="default-currency"
+              value={defaultCurrency}
+              onChange={(e) => setDefaultCurrency(e.target.value)}
+            >
+              {COMMON_CURRENCIES.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-      )}
-      {resultObj?.currency && !wasDefaulted && (
-        <div className="currency-indicator detected">
-          Currency "{resultObj.currency}" was detected in the text
-        </div>
-      )}
-      <pre id="output">{result}</pre>
+
+        <label htmlFor="input">Input text</label>
+        <textarea
+          id="input"
+          placeholder="e.g. The total cost is $123.45 or about €110"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+
+        <h2>Result</h2>
+        {wasDefaulted && (
+          <div className="currency-indicator defaulted">
+            Currency "{resultObj.currency}" was applied from default (not detected in text)
+          </div>
+        )}
+        {resultObj?.currency && !wasDefaulted && (
+          <div className="currency-indicator detected">
+            Currency "{resultObj.currency}" was detected in the text
+          </div>
+        )}
+        <pre id="output">{result}</pre>
+      </div>
+
+      <Documentation />
     </div>
   );
 }

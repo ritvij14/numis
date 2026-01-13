@@ -6,7 +6,7 @@
  */
 
 import { ValueOverflowError } from "../errors";
-import { parseWordedNumber } from "./wordedNumbers";
+import { parseWordedNumber, parseFractionalWordedNumber } from "./wordedNumbers";
 
 interface SlangUnit {
   currency: string;
@@ -22,6 +22,21 @@ const SLANG_MAP: Record<string, SlangUnit> = {
   fivers: { currency: "GBP", unit: 5 },
   tenner: { currency: "GBP", unit: 10 },
   tenners: { currency: "GBP", unit: 10 },
+  grand: { currency: "USD", unit: 1000 },
+  grands: { currency: "USD", unit: 1000 },
+};
+
+// Cents word map for "buck fifty" style expressions
+const CENTS_WORD_MAP: Record<string, number> = {
+  ten: 0.10,
+  twenty: 0.20,
+  thirty: 0.30,
+  forty: 0.40,
+  fifty: 0.50,
+  sixty: 0.60,
+  seventy: 0.70,
+  eighty: 0.80,
+  ninety: 0.90,
 };
 
 export interface SlangParseResult {
@@ -44,16 +59,25 @@ function parseQuantity(tokens: string[]): number | null {
     return 1;
   }
 
+  // "half" or "half a" implies 0.5
+  if (candidate === "half" || candidate === "half a") {
+    return 0.5;
+  }
+
   // Numeric quantity
   if (/^\d+(?:\.\d+)?$/.test(candidate)) {
     return parseFloat(candidate);
   }
 
-  // Worded number quantity
+  // Worded number quantity (try fractional first, then regular)
   try {
-    return parseWordedNumber(candidate);
+    return parseFractionalWordedNumber(candidate);
   } catch {
-    return null;
+    try {
+      return parseWordedNumber(candidate);
+    } catch {
+      return null;
+    }
   }
 }
 
@@ -65,6 +89,8 @@ function parseQuantity(tokens: string[]): number | null {
  * - "5 quid" -> 5 GBP
  * - "fiver" -> 5 GBP
  * - "three fivers" -> 15 GBP
+ * - "a grand" -> 1000 USD
+ * - "a buck fifty" -> 1.50 USD
  */
 export function parseSlangTerm(input: string): SlangParseResult {
   if (!input || typeof input !== "string") {
@@ -82,15 +108,25 @@ export function parseSlangTerm(input: string): SlangParseResult {
   const slangToken = tokens[slangIndex];
   const { currency, unit } = SLANG_MAP[slangToken];
 
-  // Consider up to 3 tokens immediately before slang token as quantity
-  const quantityTokens = tokens.slice(Math.max(0, slangIndex - 3), slangIndex);
+  // Consider up to 6 tokens immediately before slang token as quantity
+  // (e.g., "two thirds of a million bucks" = 5 tokens before "bucks")
+  const quantityTokens = tokens.slice(Math.max(0, slangIndex - 6), slangIndex);
   const quantity = parseQuantity(quantityTokens);
 
   if (quantity === null || Number.isNaN(quantity)) {
     throw new Error(`Invalid quantity for slang term: "${input}"`);
   }
 
-  const value = quantity * unit;
+  let value = quantity * unit;
+
+  // Check for cents suffix (e.g., "buck fifty" -> 1.50)
+  // Only applies to buck/bucks with unit=1
+  if ((slangToken === "buck" || slangToken === "bucks") && unit === 1) {
+    const centsToken = tokens[slangIndex + 1];
+    if (centsToken && centsToken in CENTS_WORD_MAP) {
+      value += CENTS_WORD_MAP[centsToken];
+    }
+  }
 
   if (value > Number.MAX_SAFE_INTEGER) {
     throw new ValueOverflowError(
@@ -98,21 +134,36 @@ export function parseSlangTerm(input: string): SlangParseResult {
     );
   }
 
+  // Include cents token in raw if present
+  const endIndex =
+    (slangToken === "buck" || slangToken === "bucks") &&
+    tokens[slangIndex + 1] &&
+    tokens[slangIndex + 1] in CENTS_WORD_MAP
+      ? slangIndex + 2
+      : slangIndex + 1;
+
   return {
     value,
     currency,
-    raw: tokens.slice(Math.max(0, slangIndex - 3), slangIndex + 1).join(" "),
+    raw: tokens.slice(Math.max(0, slangIndex - 6), endIndex).join(" "),
   };
 }
 
 function buildSlangRegex(): RegExp {
   const slangTokens = Object.keys(SLANG_MAP).join("|");
+  const centsTokens = Object.keys(CENTS_WORD_MAP).join("|");
 
   // Quantity tokens: numeric or limited worded numbers / articles
   const quantityTokens = [
     "\\d+(?:\\.\\d+)?",
     "a",
     "an",
+    "half",
+    "halves",
+    "quarter",
+    "quarters",
+    "third",
+    "thirds",
     "one",
     "two",
     "three",
@@ -142,10 +193,15 @@ function buildSlangRegex(): RegExp {
     "ninety",
     "hundred",
     "thousand",
+    "million",
+    "billion",
+    "trillion",
+    "of",
   ].join("|");
 
-  // Up to 3 quantity tokens immediately before the slang term
-  const pattern = `(?:(?:${quantityTokens})\\s+){0,3}(?:${slangTokens})`;
+  // Up to 6 quantity tokens immediately before the slang term, optionally followed by cents word
+  // (e.g., "two thirds of a million bucks" = 5 tokens before "bucks")
+  const pattern = `(?:(?:${quantityTokens})\\s+){0,6}(?:${slangTokens})(?:\\s+(?:${centsTokens}))?`;
   return new RegExp(`\\b(${pattern})\\b`, "gi");
 }
 

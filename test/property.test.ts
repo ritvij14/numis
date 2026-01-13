@@ -1,7 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 import * as fc from "fast-check";
 import { parseMoney } from "../src/parseMoney";
-import { parseAll, ParseAllResult } from "../src/parseAll";
 import { ValueOverflowError } from "../src/errors";
 
 /**
@@ -316,98 +315,6 @@ describe("parseMoney - Property-Based Tests", () => {
 });
 
 // ============================================================================
-// Property Tests for parseAll
-// ============================================================================
-
-describe("parseAll - Property-Based Tests", () => {
-  describe("Invariant: Returns an array", () => {
-    test("always returns an array for any string input", () => {
-      fc.assert(
-        fc.property(fc.string(), (input) => {
-          const result = parseAll(input);
-          expect(Array.isArray(result)).toBe(true);
-        }),
-        { numRuns: 300 }
-      );
-    });
-  });
-
-  describe("Invariant: Each result has required properties", () => {
-    test("each result has start, end, match, original, currency, and amount", () => {
-      fc.assert(
-        fc.property(validMonetaryExpressionArb, (input) => {
-          const results = parseAll(input);
-          for (const result of results) {
-            expect(result).toHaveProperty("start");
-            expect(result).toHaveProperty("end");
-            expect(result).toHaveProperty("match");
-            expect(result).toHaveProperty("original");
-            expect(typeof result.start).toBe("number");
-            expect(typeof result.end).toBe("number");
-            expect(result.start).toBeGreaterThanOrEqual(0);
-            expect(result.end).toBeGreaterThan(result.start);
-          }
-        }),
-        { numRuns: 200 }
-      );
-    });
-  });
-
-  describe("Invariant: Results are non-overlapping and sorted", () => {
-    test("results are sorted by start position and do not overlap", () => {
-      fc.assert(
-        fc.property(
-          fc.array(validMonetaryExpressionArb, { minLength: 1, maxLength: 5 }),
-          (expressions) => {
-            const input = expressions.join(" and ");
-            const results = parseAll(input);
-
-            // Check sorted order
-            for (let i = 1; i < results.length; i++) {
-              expect(results[i].start).toBeGreaterThanOrEqual(
-                results[i - 1].end
-              );
-            }
-          }
-        ),
-        { numRuns: 100 }
-      );
-    });
-  });
-
-  describe("Invariant: Match positions are valid", () => {
-    test("start and end positions are within input bounds", () => {
-      fc.assert(
-        fc.property(fc.string({ minLength: 1, maxLength: 500 }), (input) => {
-          const results = parseAll(input);
-          for (const result of results) {
-            expect(result.start).toBeGreaterThanOrEqual(0);
-            expect(result.end).toBeLessThanOrEqual(input.length);
-            expect(result.start).toBeLessThan(result.end);
-          }
-        }),
-        { numRuns: 200 }
-      );
-    });
-  });
-
-  describe("Invariant: Found monetary expressions have currency and amount", () => {
-    test("each result has both currency and amount defined", () => {
-      fc.assert(
-        fc.property(validMonetaryExpressionArb, (input) => {
-          const results = parseAll(input);
-          for (const result of results) {
-            expect(result.currency).toBeDefined();
-            expect(result.amount).toBeDefined();
-          }
-        }),
-        { numRuns: 200 }
-      );
-    });
-  });
-});
-
-// ============================================================================
 // Edge Case Tests
 // ============================================================================
 
@@ -471,29 +378,6 @@ describe("Edge Cases - Property-Based Tests", () => {
           }
         ),
         { numRuns: 100 }
-      );
-    });
-  });
-
-  describe("Multiple currencies in one string", () => {
-    test("parseAll finds multiple different currencies", () => {
-      fc.assert(
-        fc.property(
-          fc.tuple(
-            fc.integer({ min: 1, max: 999 }),
-            fc.integer({ min: 1, max: 999 })
-          ),
-          ([amount1, amount2]) => {
-            const input = `I have $${amount1} and €${amount2}`;
-            const results = parseAll(input);
-            expect(results.length).toBeGreaterThanOrEqual(2);
-
-            const currencies = results.map((r) => r.currency);
-            expect(currencies).toContain("USD");
-            expect(currencies).toContain("EUR");
-          }
-        ),
-        { numRuns: 50 }
       );
     });
   });

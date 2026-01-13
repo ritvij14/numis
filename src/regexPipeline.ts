@@ -144,6 +144,7 @@ import { matchSlangTerm } from "./patterns/slangTerms";
 import { matchFractionalWordedNumber } from "./patterns/wordedNumbers";
 import { matchRegionalFormat } from "./patterns/regionalFormats";
 import { detectNegative } from "./patterns/negativeNumbers";
+import { matchMinorUnitOnly } from "./patterns/minorUnitsOnly";
 
 // ---------------------------------------------------------------------------
 // Currency helpers
@@ -294,6 +295,23 @@ const currencyDetectionStep: PipelineStep = (input, ctx) => {
   // 3) Full currency names or significant words (length ≥3) within them (e.g., "Euro", "Peso", "Yen", "dollars").
   const nameCandidates = input.match(/\b[A-Za-z]{3,}\b/g) ?? [];
   const nameToCode = getNameToCodeMap();
+
+  // Try multi-word phrases first (up to 4 words) before falling back to single words
+  // This ensures "new zealand dollar" matches before "new" alone, avoiding false matches
+  const maxPhraseLength = Math.min(nameCandidates.length, 4);
+
+  for (let phraseLen = maxPhraseLength; phraseLen >= 2; phraseLen--) {
+    for (let i = 0; i <= nameCandidates.length - phraseLen; i++) {
+      const phrase = nameCandidates.slice(i, i + phraseLen).join(' ').toLowerCase();
+      const code = nameToCode[phrase];
+      if (code) {
+        out.currency = code;
+        return out;  // Found a multi-word phrase match!
+      }
+    }
+  }
+
+  // Fallback to single-word matching
   for (const token of nameCandidates) {
     const lookupToken = token.toLowerCase();
     const code = nameToCode[lookupToken];
@@ -354,7 +372,19 @@ const numericDetectionStep: PipelineStep = (input, ctx) => {
   }
 
   // ---------------------------------------------------------------------
-  // 6) Regional formats (check on ORIGINAL input, not cleaned)
+  // 6) Minor units only ("75 cents", "50 pence")
+  //    Must come AFTER contextual (which handles "a dollar and 75 cents")
+  //    and BEFORE plain numeric (which would greedily match "75")
+  // ---------------------------------------------------------------------
+  const minorMatch = matchMinorUnitOnly(cleaned, ctx.defaultCurrency);
+  if (minorMatch) {
+    out.amount = minorMatch.value;
+    out.currency = out.currency ?? minorMatch.currency;
+    return out;
+  }
+
+  // ---------------------------------------------------------------------
+  // 7) Regional formats (check on ORIGINAL input, not cleaned)
   //    Handles: "1.234,56 €", "$1,234.56", "1'234.56 CHF", etc.
   //    Must check before plain numeric to correctly parse European formats
   //    Regional format detection takes precedence over earlier currency detection
@@ -369,7 +399,7 @@ const numericDetectionStep: PipelineStep = (input, ctx) => {
   }
 
   // ---------------------------------------------------------------------
-  // 7) Plain numeric (digits and decimals)
+  // 8) Plain numeric (digits and decimals)
   // ---------------------------------------------------------------------
   const numMatch = /(?:\b|^)(\d+(?:\.\d+)?)(?:\b|$)/.exec(cleaned);
   if (numMatch) {
@@ -384,7 +414,7 @@ const numericDetectionStep: PipelineStep = (input, ctx) => {
   }
 
   // ---------------------------------------------------------------------
-  // 8) Worded numbers ("one hundred twenty", "two thousand")
+  // 9) Worded numbers ("one hundred twenty", "two thousand")
   // ---------------------------------------------------------------------
   const wordNumberRegex =
     /\b((?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion)(?:[\s-](?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion))*)\b/i;

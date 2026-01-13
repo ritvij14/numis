@@ -55,6 +55,8 @@ export function getNameToCodeMap(): Record<string, string> {
     peso: "MXN",
     pesos: "MXN",
     won: "KRW",
+    dirham: "AED",  // Prefer UAE Dirham over Moroccan Dirham
+    dirhams: "AED",
   };
   Object.assign(map, overrides);
 

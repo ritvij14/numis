@@ -158,4 +158,60 @@ describe("Slang Terms Pattern Parser", () => {
       expect(res?.currency).toBe("GBP");
     });
   });
+
+  describe("Extended slang terms", () => {
+    test('should parse "a grand" as 1000 USD', () => {
+      const res = parseSlangTerm("a grand");
+      expect(res.value).toBe(1000);
+      expect(res.currency).toBe("USD");
+    });
+
+    test('should parse "5 grand" as 5000 USD', () => {
+      const res = parseSlangTerm("5 grand");
+      expect(res.value).toBe(5000);
+      expect(res.currency).toBe("USD");
+    });
+
+    test('should parse "half a grand" as 500 USD', () => {
+      const res = parseSlangTerm("half a grand");
+      expect(res.value).toBe(500);
+      expect(res.currency).toBe("USD");
+    });
+
+    test('should parse "a buck fifty" as 1.50 USD', () => {
+      const res = parseSlangTerm("a buck fifty");
+      expect(res.value).toBe(1.50);
+      expect(res.currency).toBe("USD");
+    });
+
+    test('should parse "two bucks fifty" as 2.50 USD', () => {
+      const res = parseSlangTerm("two bucks fifty");
+      expect(res.value).toBe(2.50);
+      expect(res.currency).toBe("USD");
+    });
+
+    test('should parse "half a million bucks" as 500000 USD', () => {
+      const res = parseSlangTerm("half a million bucks");
+      expect(res.value).toBe(500000);
+      expect(res.currency).toBe("USD");
+    });
+
+    test('should parse "quarter million bucks" as 250000 USD', () => {
+      const res = parseSlangTerm("quarter million bucks");
+      expect(res.value).toBe(250000);
+      expect(res.currency).toBe("USD");
+    });
+
+    test('should parse "two thirds of a million bucks" as approximately 666666.67 USD', () => {
+      const res = parseSlangTerm("two thirds of a million bucks");
+      expect(res.value).toBeCloseTo(666666.67, 2);
+      expect(res.currency).toBe("USD");
+    });
+
+    test('should parse "three thousand bucks" as 3000 USD', () => {
+      const res = parseSlangTerm("three thousand bucks");
+      expect(res.value).toBe(3000);
+      expect(res.currency).toBe("USD");
+    });
+  });
 });
