@@ -65,6 +65,14 @@ export default function App() {
             View on npm →
           </a>
           <a
+            href="https://github.com/ritvij14/numis"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 no-underline text-sm font-medium border border-blue-600 rounded-md transition-all duration-150 inline-flex items-center justify-center h-[54px] px-6 shrink-0 whitespace-nowrap hover:bg-blue-600 hover:text-white"
+          >
+            View on GitHub →
+          </a>
+          <a
             href="https://www.producthunt.com/products/numis?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-numis"
             target="_blank"
             rel="noopener noreferrer"
