@@ -151,6 +151,18 @@ export const examplePrompts = [
   "ten pounds",
   "five yen",
   "hundred rupees",
+
+  // Range expressions
+  "$500 to $1000",
+  "200k - 1M USD",
+  "between 50 and 100 euros",
+  "five to ten bucks",
+  "10k - 20k",
+  "$100–$200",
+  "50 to 75 dollars",
+  "1M-2M GBP",
+  "between 1000 and 2000 USD",
+  "twenty to thirty bucks",
 ];
 
 // Get n random unique examples from the list

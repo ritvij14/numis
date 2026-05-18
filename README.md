@@ -2,14 +2,11 @@
 
 [![npm version](https://img.shields.io/npm/v/numis.svg)](https://www.npmjs.com/package/numis)
 
-Natural-language parser for monetary and numeric values. Parse money from text like a human would read it.
+Natural-language parser for monetary values. Extract money from text like a human would read it.
 
-```ts
-// "I paid $20 for lunch" → { amount: 20, currency: "USD" }
-// "Cost was fifty quid" → { amount: 50, currency: "GBP" }
-```
+---
 
-## Getting Started
+## Quick Start
 
 ```bash
 npm install numis
@@ -19,94 +16,218 @@ npm install numis
 import { parseMoney } from "numis";
 
 parseMoney("$12.50");
-// => { original: "$12.50", currency: "USD", amount: 12.5 }
+// => { original: "$12.50", amount: 12.5, currency: "USD" }
 ```
 
-## Options
+**Works in:**
+- Node.js >= 18
+- Modern browsers (ESM and CJS)
 
-### Default Currency
+---
 
-When parsing text that contains a numeric amount but no currency indicator, you can specify a default currency to use:
+## Features
+
+### Single Values
+
+Extract one monetary value from text:
 
 ```ts
-import { parseMoney } from "numis";
-
-// Without default currency - no currency in result
-parseMoney("I have 100");
-// => { original: "I have 100", amount: 100, currency: undefined }
-
-// With default currency
-parseMoney("I have 100", { defaultCurrency: "EUR" });
-// => { original: "I have 100", amount: 100, currency: "EUR", currencyWasDefault: true }
-
-// Detected currency always takes precedence over default
-parseMoney("$50", { defaultCurrency: "EUR" });
-// => { original: "$50", amount: 50, currency: "USD" }
+parseMoney("The total is $49.99");
+// => { original: "The total is $49.99", amount: 49.99, currency: "USD" }
 ```
 
-The `defaultCurrency` option accepts any valid [ISO-4217](https://en.wikipedia.org/wiki/ISO_4217) currency code (e.g., `"USD"`, `"EUR"`, `"GBP"`, `"JPY"`). An invalid code will throw a `MoneyParseError`.
+### Multiple Values
 
-The result includes a `currencyWasDefault` flag (set to `true`) when the default currency was applied, helping you distinguish between detected and defaulted currencies.
+Extract **all** monetary values from text:
 
-## Supported Patterns (high level)
+```ts
+import { parseAll } from "numis";
 
-- **Plain numbers and separators**: `$100`, `1,234.56` — Basic numeric formats with or without thousand separators
-- **ISO codes**: `USD 100`, `50 EUR` — Standard 3-letter currency codes before or after amounts
-- **Worded numbers**: `one hundred dollars` — Write out numbers in words instead of digits
-- **Fractional magnitudes**: `quarter million dollars`, `half of a billion euros` — Fractions like "quarter" or "two thirds" with magnitude words
-- **Numeric-word combos**: `10k`, `$5m`, `2.5 billion` — Numbers with k/m/b suffixes for thousands, millions, billions
-- **Slang terms**: `buck`, `quid`, `fiver`, `tenner` — Informal currency terms (bucks for dollars, quid for pounds)
-- **Contextual phrases**: Compound amounts and article-based phrases:
-  - `a hundred dollars` — Articles like "a" or "the" with amounts
-  - `the fifty euros` —
-  - `a quarter million dollars` → $250,000
-  - `half a billion euros` → €500,000,000
-  - `two thirds of a million pounds` → £666,666.67
-  - `a dollar and 23 cents` — Major and minor unit combinations
-  - `five euros and fifty cents` —
-  - `10 pounds and 5 pence` —
+parseAll("Price is $100-$200 or $500");
+// => [
+//     { type: 'range', min: 100, max: 200, currency: 'USD', isRange: true },
+//     { type: 'single', amount: 500, currency: 'USD', isRange: false }
+//   ]
+```
+
+---
+
+## Supported Formats
+
+### Symbols
+`$100`, `€50`, `£20.50`, `¥1000`, `₹500`
+
+### ISO Codes
+`USD 100`, `50 EUR`, `GBP 20.50`
+
+### Magnitude Suffixes
+`10k`, `$5m`, `2.5 billion`, `500k EUR`
+
+### Worded Numbers
+`one hundred dollars`, `fifty euros`, `half a million`
+
+### Fractional Magnitudes
+`quarter million dollars`, `half a billion euros`, `two thirds of a million`
+
+### Slang Terms
+`buck`, `quid`, `fiver` (5), `tenner` (10), `grand` (1000)
+
+### Minor Units Only
+`75 cents`, `50 pence`, `a quarter`
+
+### Compound Expressions
+`a dollar and 23 cents`, `five euros and fifty cents`
+
+### Regional Formats
+`€1.234,56` (European), `1'234.56 CHF` (Swiss), `R$150` (Brazilian)
+
+### Negative Values
+`-$100`, `($50)`, `-€25.99`
+
+### Ranges
+`$500 - $1000`, `€50 to €100`, `between $100 and $200`, `10k to 20k`
+
+### Comparison Bounds
+`< 30k` (max: 30000), `> 2 Million USD` (min: 2000000)
+
+---
 
 ## API Reference
 
-### `parseMoney(text, options?)`
+### parseMoney(text, options?)
 
-Extracts a monetary value from your text.
+Extracts **one** monetary value from text.
 
 **Parameters:**
-- `text` (string): The text to parse
-- `options.defaultCurrency` (string, optional): ISO-4217 currency code to use when no currency is detected (e.g., `"USD"`, `"EUR"`)
+| Param | Type | Description |
+|-------|------|-------------|
+| `text` | string | The text to parse |
+| `options.defaultCurrency` | string | ISO-4217 code when none detected (e.g., `"USD"`) |
 
 **Returns:**
 ```ts
 {
-  original: string;      // The original input text
-  currency?: string;     // ISO-4217 currency code (e.g., "USD", "EUR")
-  amount?: number;       // The numeric value
-  currencyWasDefault?: boolean;  // true if defaultCurrency was used
+  original: string;           // Original input text
+  amount?: number;            // Parsed amount
+  currency?: string;          // ISO-4217 code (e.g., "USD", "EUR")
+  currencyWasDefault?: boolean; // true if currency came from defaultCurrency option
+  isRange?: boolean;          // true if value is a range
+  min?: number;               // Minimum (for ranges)
+  max?: number;               // Maximum (for ranges)
+  isNegative?: boolean;        // true if amount is negative
 }
 ```
 
 **Examples:**
-
 ```ts
-// Basic parsing
-parseMoney("The total is $49.99");
-// => { original: "The total is $49.99", currency: "USD", amount: 49.99 }
+// Basic
+parseMoney("$50");
+// => { original: "$50", amount: 50, currency: "USD" }
 
-// With default currency
+// Range
+parseMoney("$500 - $1000");
+// => { original: "$500 - $1000", isRange: true, min: 500, max: 1000, currency: "USD" }
+
+// Default currency
 parseMoney("I have 100", { defaultCurrency: "EUR" });
 // => { original: "I have 100", amount: 100, currency: "EUR", currencyWasDefault: true }
 
-// Detected currency takes precedence over default
-parseMoney("£50", { defaultCurrency: "EUR" });
-// => { original: "£50", amount: 50, currency: "GBP" }
+// Negative
+parseMoney("-$50");
+// => { original: "-$50", amount: -50, currency: "USD", isNegative: true }
 ```
 
-## Common Gotchas
+---
 
-### Numbers That Are Too Large
+### parseAll(text)
 
-JavaScript can't safely handle integers larger than `Number.MAX_SAFE_INTEGER` (about 9 quadrillion). If you try to parse a number that's too big, numis will throw a `ValueOverflowError` instead of giving you incorrect data.
+Extracts **all** monetary values from text.
+
+**Parameters:**
+| Param | Type | Description |
+|-------|------|-------------|
+| `text` | string | The text to search |
+
+**Returns:** `MonetaryExpression[]`
+
+```ts
+interface MonetaryExpression {
+  type: "single" | "range";
+  raw: string;                // Matched text
+  startIndex: number;       // Position in input
+  endIndex: number;
+  amount?: number;           // For single values
+  min?: number;              // For ranges
+  max?: number;              // For ranges
+  currency?: string;         // ISO-4217 code
+  isRange?: boolean;
+}
+```
+
+**Examples:**
+```ts
+// Multiple values
+parseAll("Base: $100, shipping: $10-$20, tax: $8");
+// => [
+//     { type: 'single', raw: '$100', amount: 100, currency: 'USD' },
+//     { type: 'range', raw: '$10-$20', min: 10, max: 20, currency: 'USD' },
+//     { type: 'single', raw: '$8', amount: 8, currency: 'USD' }
+//   ]
+
+// Mixed currencies
+parseAll("$100 USD or €50 EUR");
+// => [
+//     { type: 'single', amount: 100, currency: 'USD' },
+//     { type: 'single', amount: 50, currency: 'EUR' }
+//   ]
+```
+
+---
+
+## Options
+
+### defaultCurrency
+
+Use when your text has amounts but no currency indicator:
+
+```ts
+// No currency detected
+parseMoney("I have 100");
+// => { original: "I have 100", amount: 100, currency: undefined }
+
+// With default
+parseMoney("I have 100", { defaultCurrency: "USD" });
+// => { original: "I have 100", amount: 100, currency: "USD", currencyWasDefault: true }
+
+// Detected currency beats default
+parseMoney("$50", { defaultCurrency: "EUR" });
+// => { original: "$50", amount: 50, currency: "USD" }
+```
+
+---
+
+## Errors
+
+### MoneyParseError
+
+Thrown when you pass an invalid `defaultCurrency`:
+
+```ts
+import { MoneyParseError } from "numis";
+
+try {
+  parseMoney("test", { defaultCurrency: "INVALID" });
+} catch (err) {
+  if (err instanceof MoneyParseError) {
+    console.log(err.message);
+    // => "Invalid defaultCurrency: "INVALID" is not a valid ISO-4217 currency code"
+  }
+}
+```
+
+### ValueOverflowError
+
+Thrown when a number exceeds JavaScript's safe integer limit (~9 quadrillion):
 
 ```ts
 import { ValueOverflowError } from "numis";
@@ -115,61 +236,45 @@ try {
   parseMoney("$999999999999999999");
 } catch (err) {
   if (err instanceof ValueOverflowError) {
-    console.log("That number is too large!");
+    console.log("Number too large!");
   }
 }
 ```
 
-### Text Without Currency Indicators
+---
 
-If your text only has plain numbers without any currency symbols, codes, or words, the parser won't know what currency to use.
+## Common Gotchas
+
+### No Currency in Text
+
+Plain numbers without currency symbols/codes/names return `currency: undefined`:
 
 ```ts
-// No currency detected
 parseMoney("I have 100");
 // => { original: "I have 100", amount: 100, currency: undefined }
-
-// Use defaultCurrency option to handle this
-parseMoney("I have 100", { defaultCurrency: "USD" });
-// => { original: "I have 100", amount: 100, currency: "USD", currencyWasDefault: true }
 ```
 
-### Ambiguous Number Formats
+Use `defaultCurrency` option to handle this.
 
-Some number formats can be ambiguous. For example, `"1.500"` could mean:
-- 1.5 (one and a half) in US/UK format
-- 1,500 (one thousand five hundred) in European format
+### Ambiguous Formats
 
-When numis encounters ambiguous formats, it uses currency context to make an educated guess:
+`"1.500"` could be 1.5 (US) or 1,500 (European):
 
 ```ts
-parseMoney("€1.500");  // European currency → interprets as 1,500 euros
-parseMoney("$1.500");  // US currency → could be ambiguous, interprets as 1.5 dollars
-
-// Less ambiguous formats work as expected:
-parseMoney("€1.500,00");  // Clearly European format → 1,500.00 euros
-parseMoney("$1,500.00");  // Clearly US format → 1,500.00 dollars
+parseMoney("€1.500");  // European symbol → 1,500
+parseMoney("$1.500");  // US symbol → 1.5
 ```
 
-When in doubt, use unambiguous formats with both thousand separators and decimal points.
+Use clear formats: `$1,500.00` or `€1.500,00`.
 
-## Upcoming Features
+---
 
-### Monetary Range Parsing
+## Demo
 
-Support for parsing monetary ranges is coming soon. This will enable the parser to extract min/max values from expressions like:
+Try it live: [https://numis.ritvij.dev](https://numis.ritvij.dev)
 
-- `$500 - $1000`
-- `200k - 1M USD`
-- `between €50 and €100`
-- `five to ten dollars`
+---
 
-The output will include `isRange`, `min`, and `max` fields to represent the range boundaries.
+## License
 
-### GitHub Pages Demo
-
-The demo site is automatically deployed to GitHub Pages on every push to `main`:
-
-- **Live URL:** https://numis.ritvij.dev
-- **Automatic:** Triggered on `main` branch pushes
-- **Manual trigger:** Use GitHub Actions "Deploy Demo to GitHub Pages" workflow for on-demand deployments
+MIT

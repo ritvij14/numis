@@ -1,315 +1,391 @@
-import { parseMoney } from "numis";
+import { parseAll, parseMoney } from "numis";
 import { useState } from "react";
+import SyntaxHighlighter from "./SyntaxHighlighter";
 
-/**
- * Documentation - ELI5 guide for using parseMoney()
- */
 export default function Documentation() {
-  const [example1, setExample1] = useState("The price is $49.99");
-  const [example2, setExample2] = useState("I have 100");
-  const [defaultCurrency, setDefaultCurrency] = useState("USD");
+  return (
+    <div id="documentation" className="bg-white">
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+        <h2 className="font-display text-2xl font-bold text-slate-900 sm:text-3xl mb-4">
+          How to use numis
+        </h2>
+        <p className="max-w-2xl text-slate-500 mb-12">
+          A quick guide from installation to advanced features. Everything you
+          need to start parsing money from text.
+        </p>
 
-  const result1 = parseMoney(example1);
-  const result2WithDefault = parseMoney(example2, { defaultCurrency });
-  const result2WithoutDefault = parseMoney(example2);
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[280px_1fr]">
+          {/* Sticky sidebar */}
+          <aside className="hidden lg:block">
+            <nav className="sticky top-20 space-y-1">
+              {SIDEBAR_LINKS.map((s) => (
+                <a
+                  key={s.id}
+                  href={`#${s.id}`}
+                  className="block rounded-md px-3 py-1.5 text-sm font-medium text-slate-500 no-underline transition-colors hover:bg-slate-50 hover:text-slate-900"
+                >
+                  {s.label}
+                </a>
+              ))}
+            </nav>
+          </aside>
+
+          {/* Content */}
+          <div className="space-y-16">
+            <InstallSection />
+            <BasicUsageSection />
+            <OutputSection />
+            <DefaultCurrencySection />
+            <RangeSection />
+            <ParseAllSection />
+            <FormatsSection />
+            <MistakesSection />
+            <QuickRefSection />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InstallSection() {
+  return (
+    <section id="install">
+      <h3 className="font-display text-xl font-semibold text-slate-900 mb-3">
+        Install the package
+      </h3>
+      <p className="text-slate-500 mb-4 leading-relaxed">
+        Add numis to your project with your preferred package manager:
+      </p>
+      <pre className="rounded-lg bg-slate-900 p-4 text-sm text-slate-100 font-mono leading-6 overflow-x-auto">
+        npm install numis
+      </pre>
+    </section>
+  );
+}
+
+function BasicUsageSection() {
+  const [input, setInput] = useState("The price is $49.99");
+  const result = parseMoney(input);
 
   return (
-    <div className="max-w-[800px] mx-auto py-4">
-      <hr className="my-12 border-0 border-t-2 border-gray-200" />
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">
-        How to Use numis
-      </h2>
-      <p className="text-lg text-gray-500 mb-8 leading-relaxed">
-        numis helps you extract money amounts from text. It's like teaching your
-        code to read prices the way humans do.
+    <section id="basic-usage" className="border-t border-slate-100 pt-12">
+      <h3 className="font-display text-xl font-semibold text-slate-900 mb-3">
+        Parse your first amount
+      </h3>
+      <p className="text-slate-500 mb-4 leading-relaxed">
+        Import <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs font-mono text-slate-700">parseMoney</code> and pass it any text containing money:
       </p>
-
-      {/* Step 1: Installation */}
-      <section className="mb-12 pb-8 border-b border-gray-200">
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
-          Step 1: Install the Package
-        </h3>
-        <p className="text-gray-600 leading-relaxed mb-4">
-          First, add numis to your project:
-        </p>
-        <pre className="bg-gray-800 text-gray-100 p-4 rounded-md overflow-x-auto font-mono text-sm leading-6 my-4">{`npm install numis`}</pre>
-      </section>
-
-      {/* Step 2: Basic Usage */}
-      <section className="mb-12 pb-8 border-b border-gray-200">
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
-          Step 2: Parse Your First Money Amount
-        </h3>
-        <p className="text-gray-600 leading-relaxed mb-4">
-          Import{" "}
-          <code className="bg-gray-100 px-2 py-0.5 rounded text-gray-800 font-mono text-sm">
-            parseMoney
-          </code>{" "}
-          and pass it any text containing money:
-        </p>
-
-        <div>
-          <pre className="bg-gray-800 text-gray-100 p-4 max-md:max-w-[90vw] rounded-md overflow-x-auto font-mono text-sm leading-6 my-4">{`import { parseMoney } from "numis";
+      <pre className="rounded-lg bg-slate-900 p-4 text-sm text-slate-100 font-mono leading-6 overflow-x-auto mb-6">
+{`import { parseMoney } from "numis";
 
 const result = parseMoney("The price is $49.99");
-console.log(result);
-// Output: { original: "The price is $49.99", currency: "USD", amount: 49.99 }`}</pre>
+// { original: "The price is $49.99", currency: "USD", amount: 49.99 }`}
+      </pre>
+
+      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:p-6">
+        <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">
+          Try it
+        </label>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          className="mb-4 w-full rounded-md border border-slate-200 bg-white p-3 text-sm font-mono text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-200"
+        />
+        <div className="rounded-md border border-slate-200 bg-white p-3">
+          <SyntaxHighlighter data={result} variant="light" />
         </div>
+      </div>
+    </section>
+  );
+}
 
-        <div className="bg-gray-50 p-6 rounded-lg mt-4">
-          <input
-            type="text"
-            value={example1}
-            onChange={(e) => setExample1(e.target.value)}
-            placeholder="Enter text with money..."
-            className="w-full p-3 text-base border border-gray-300 rounded-md mb-4 font-mono"
-          />
-          <div className="bg-white p-4 rounded-md border border-gray-200">
-            <strong className="block mb-2 text-gray-700">Result:</strong>
-            <pre className="m-0 bg-gray-800 text-gray-100 p-3 rounded text-sm overflow-x-auto">
-              {JSON.stringify(result1, null, 2)}
-            </pre>
-          </div>
-        </div>
-      </section>
+function OutputSection() {
+  return (
+    <section id="output" className="border-t border-slate-100 pt-12">
+      <h3 className="font-display text-xl font-semibold text-slate-900 mb-3">
+        Understanding the output
+      </h3>
+      <p className="text-slate-500 mb-4 leading-relaxed">
+        <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs font-mono text-slate-700">parseMoney()</code> returns an object with these fields:
+      </p>
 
-      {/* Step 3: Understanding the Output */}
-      <section className="mb-12 pb-8 border-b border-gray-200">
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
-          Step 3: Understanding What You Get Back
-        </h3>
-        <p className="text-gray-600 leading-relaxed mb-4">
-          The{" "}
-          <code className="bg-gray-100 px-2 py-0.5 rounded text-gray-800 font-mono text-sm">
-            parseMoney()
-          </code>{" "}
-          function returns an object with three main properties:
-        </p>
+      <div className="overflow-hidden rounded-xl border border-slate-200">
+        <table className="w-full text-sm">
+          <thead className="bg-slate-50">
+            <tr>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Property
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Type
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Description
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            <tr>
+              <td className="px-4 py-3 font-mono text-xs text-slate-700">original</td>
+              <td className="px-4 py-3 text-xs text-slate-500">string</td>
+              <td className="px-4 py-3 text-slate-600">The input text you passed</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-mono text-xs text-slate-700">amount</td>
+              <td className="px-4 py-3 text-xs text-slate-500">number | undefined</td>
+              <td className="px-4 py-3 text-slate-600">The numeric value (undefined for ranges)</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-mono text-xs text-slate-700">currency</td>
+              <td className="px-4 py-3 text-xs text-slate-500">string | undefined</td>
+              <td className="px-4 py-3 text-slate-600">ISO-4217 code (e.g. "USD", "EUR")</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-mono text-xs text-slate-700">currencyWasDefault</td>
+              <td className="px-4 py-3 text-xs text-slate-500">boolean</td>
+              <td className="px-4 py-3 text-slate-600">True if currency came from defaultCurrency option</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-mono text-xs text-slate-700">isNegative</td>
+              <td className="px-4 py-3 text-xs text-slate-500">boolean</td>
+              <td className="px-4 py-3 text-slate-600">True if a negative indicator was detected</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-mono text-xs text-slate-700">isRange</td>
+              <td className="px-4 py-3 text-xs text-slate-500">boolean</td>
+              <td className="px-4 py-3 text-slate-600">True if the result is a range expression</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-mono text-xs text-slate-700">min</td>
+              <td className="px-4 py-3 text-xs text-slate-500">number | undefined</td>
+              <td className="px-4 py-3 text-slate-600">Range minimum (only when isRange is true)</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-mono text-xs text-slate-700">max</td>
+              <td className="px-4 py-3 text-xs text-slate-500">number | undefined</td>
+              <td className="px-4 py-3 text-slate-600">Range maximum (only when isRange is true)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
 
-        <div className="bg-gray-50 p-6 rounded-lg mt-4">
-          <div className="grid grid-cols-[auto_auto_1fr] gap-3 items-center py-3 border-b border-gray-200">
-            <code className="bg-blue-600 text-white px-2 py-1 rounded font-semibold text-sm">
-              original
-            </code>
-            <span className="text-gray-400 text-xl">→</span>
-            <span className="text-gray-600 text-sm">
-              The exact text you passed in
-            </span>
-          </div>
-          <div className="grid grid-cols-[auto_auto_1fr] gap-3 items-center py-3 border-b border-gray-200">
-            <code className="bg-blue-600 text-white px-2 py-1 rounded font-semibold text-sm">
-              currency
-            </code>
-            <span className="text-gray-400 text-xl">→</span>
-            <span className="text-gray-600 text-sm">
-              The currency code (like "USD", "EUR", "GBP")
-            </span>
-          </div>
-          <div className="grid grid-cols-[auto_auto_1fr] gap-3 items-center py-3">
-            <code className="bg-blue-600 text-white px-2 py-1 rounded font-semibold text-sm">
-              amount
-            </code>
-            <span className="text-gray-400 text-xl">→</span>
-            <span className="text-gray-600 text-sm">
-              The number value (like 49.99)
-            </span>
-          </div>
-        </div>
-      </section>
+function DefaultCurrencySection() {
+  const [input, setInput] = useState("I have 100");
+  const [dc, setDc] = useState("USD");
+  const withDefault = parseMoney(input, { defaultCurrency: dc });
+  const withoutDefault = parseMoney(input);
 
-      {/* Step 4: Default Currency */}
-      <section className="mb-12 pb-8 border-b border-gray-200">
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
-          Step 4: Handling Text Without Currency Symbols
-        </h3>
-        <p className="text-gray-600 leading-relaxed mb-4">
-          Sometimes your text has a number but no $ or € symbol. You can provide
-          a fallback currency:
-        </p>
-
-        <pre className="bg-gray-800 text-gray-100 p-4 rounded-md max-md:max-w-[90vw] overflow-x-auto font-mono text-sm leading-6 my-4">{`// Without a default - currency will be undefined
+  return (
+    <section id="default-currency" className="border-t border-slate-100 pt-12">
+      <h3 className="font-display text-xl font-semibold text-slate-900 mb-3">
+        Default currency fallback
+      </h3>
+      <p className="text-slate-500 mb-4 leading-relaxed">
+        When text has no currency symbol, provide a fallback:
+      </p>
+      <pre className="rounded-lg bg-slate-900 p-4 text-sm text-slate-100 font-mono leading-6 overflow-x-auto mb-6">
+{`// Without default — currency is undefined
 parseMoney("I have 100");
 // => { original: "I have 100", amount: 100, currency: undefined }
 
-// With a default - uses your fallback currency
+// With default — uses your fallback
 parseMoney("I have 100", { defaultCurrency: "USD" });
-// => { original: "I have 100", amount: 100, currency: "USD", currencyWasDefault: true }`}</pre>
+// => { original: "I have 100", amount: 100, currency: "USD", currencyWasDefault: true }`}
+      </pre>
 
-        <div className="bg-gray-50 p-6 rounded-lg mt-4">
-          <h4 className="text-gray-700 my-6 text-base">Try it yourself:</h4>
-          <div className="flex flex-col gap-4 mb-4">
-            <input
-              type="text"
-              value={example2}
-              onChange={(e) => setExample2(e.target.value)}
-              placeholder="Enter text with just a number..."
-              className="w-full p-3 text-base border border-gray-300 rounded-md font-mono"
-            />
-            <div className="flex items-center gap-2">
-              <label className="text-sm text-gray-700 font-medium">
-                Default Currency:
-              </label>
-              <select
-                value={defaultCurrency}
-                onChange={(e) => setDefaultCurrency(e.target.value)}
-                className="py-2 px-2 border border-gray-300 rounded text-sm"
-              >
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-                <option value="JPY">JPY</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-            <div className="bg-white p-4 rounded-md border border-gray-200">
-              <strong className="block mb-2 text-gray-700">
-                Without default:
-              </strong>
-              <pre className="m-0 bg-gray-800 text-gray-100 p-3 rounded text-sm overflow-x-auto">
-                {JSON.stringify(result2WithoutDefault, null, 2)}
-              </pre>
-            </div>
-            <div className="bg-white p-4 rounded-md border border-gray-200">
-              <strong className="block mb-2 text-gray-700">
-                With default ({defaultCurrency}):
-              </strong>
-              <pre className="m-0 bg-gray-800 text-gray-100 p-3 rounded text-sm overflow-x-auto">
-                {JSON.stringify(result2WithDefault, null, 2)}
-              </pre>
-            </div>
+      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:p-6">
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="flex-1 rounded-md border border-slate-200 bg-white p-3 text-sm font-mono text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-200"
+          />
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-slate-600">Default:</label>
+            <select
+              value={dc}
+              onChange={(e) => setDc(e.target.value)}
+              className="rounded-md border border-slate-200 bg-white py-2 pl-2 pr-6 text-sm text-slate-700 focus:outline-none"
+            >
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+              <option value="JPY">JPY</option>
+            </select>
           </div>
         </div>
-
-        <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded mt-4 text-blue-900 text-sm">
-          <strong className="block mb-1">💡 Note:</strong> When{" "}
-          <code className="bg-blue-100 px-2 py-0.5 rounded text-blue-900 font-mono text-xs">
-            currencyWasDefault
-          </code>{" "}
-          is{" "}
-          <code className="bg-blue-100 px-2 py-0.5 rounded text-blue-900 font-mono text-xs">
-            true
-          </code>
-          , it means the parser used your fallback currency instead of finding
-          one in the text.
-        </div>
-      </section>
-
-      {/* Step 5: What It Can Parse */}
-      <section className="mb-12 pb-8 border-b border-gray-200">
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
-          Step 5: All the Ways to Write Money
-        </h3>
-        <p className="text-gray-600 leading-relaxed mb-4">
-          numis understands money written in many different formats:
-        </p>
-
-        <div className="grid md:grid-cols-2 grid-cols-1 gap-4 mt-4">
-          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-            <h5 className="text-blue-600 text-sm font-semibold uppercase tracking-wide mb-2">
-              Currency Symbols
-            </h5>
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              $100
-            </code>
-            ,{" "}
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              €50
-            </code>
-            ,{" "}
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              £25.99
-            </code>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="rounded-md border border-slate-200 bg-white p-3">
+            <span className="mb-2 block text-xs font-medium text-slate-500">Without default</span>
+            <SyntaxHighlighter data={withoutDefault} variant="light" />
           </div>
-          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-            <h5 className="text-blue-600 text-sm font-semibold uppercase tracking-wide mb-2">
-              Currency Codes
-            </h5>
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              USD 100
-            </code>
-            ,{" "}
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              50 EUR
-            </code>
-            ,{" "}
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              100 GBP
-            </code>
-          </div>
-          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-            <h5 className="text-blue-600 text-sm font-semibold uppercase tracking-wide mb-2">
-              Words
-            </h5>
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              one hundred dollars
-            </code>
-            ,{" "}
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              fifty euros
-            </code>
-          </div>
-          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-            <h5 className="text-blue-600 text-sm font-semibold uppercase tracking-wide mb-2">
-              Abbreviations
-            </h5>
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              $10k
-            </code>
-            ,{" "}
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              €2.5m
-            </code>
-            ,{" "}
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              1 billion USD
-            </code>
-          </div>
-          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-            <h5 className="text-blue-600 text-sm font-semibold uppercase tracking-wide mb-2">
-              Slang
-            </h5>
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              20 bucks
-            </code>
-            ,{" "}
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              fifty quid
-            </code>
-            ,{" "}
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              a fiver
-            </code>
-          </div>
-          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-            <h5 className="text-blue-600 text-sm font-semibold uppercase tracking-wide mb-2">
-              Compound Amounts
-            </h5>
-            <code className="inline-block my-1 mr-1 bg-gray-200 px-2 py-1 rounded text-sm">
-              5 dollars and 50 cents
-            </code>
+          <div className="rounded-md border border-slate-200 bg-white p-3">
+            <span className="mb-2 block text-xs font-medium text-slate-500">With default ({dc})</span>
+            <SyntaxHighlighter data={withDefault} variant="light" />
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* Step 6: Common Mistakes */}
-      <section className="mb-12 pb-8 border-b border-gray-200">
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
-          Step 6: Things to Watch Out For
-        </h3>
+function RangeSection() {
+  const [input, setInput] = useState("$500 to $1000");
+  const result = parseMoney(input);
 
-        <div className="flex flex-col gap-6 mt-4">
-          <div className="bg-amber-50 border-2 border-amber-400 p-6 rounded-lg">
-            <div className="text-lg font-semibold text-amber-900 mb-3">
-              ⚠️ Really Big Numbers
+  return (
+    <section id="ranges" className="border-t border-slate-100 pt-12">
+      <h3 className="font-display text-xl font-semibold text-slate-900 mb-3">
+        Range parsing
+      </h3>
+      <p className="text-slate-500 mb-4 leading-relaxed">
+        numis detects monetary ranges with multiple separator styles. When a
+        range is found, <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs font-mono text-slate-700">isRange</code> is true and <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs font-mono text-slate-700">amount</code> is undefined.
+      </p>
+      <pre className="rounded-lg bg-slate-900 p-4 text-sm text-slate-100 font-mono leading-6 overflow-x-auto mb-6">
+{`parseMoney("$500 to $1000");
+// => { isRange: true, min: 500, max: 1000, currency: "USD" }
+
+parseMoney("between 50 and 100 euros");
+// => { isRange: true, min: 50, max: 100, currency: "EUR" }
+
+parseMoney("< 30k");
+// => { isRange: true, min: null, max: 30000, currency: undefined }`}
+      </pre>
+
+      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:p-6">
+        <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">
+          Try a range
+        </label>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          className="mb-4 w-full rounded-md border border-slate-200 bg-white p-3 text-sm font-mono text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-200"
+        />
+        <div className="rounded-md border border-slate-200 bg-white p-3">
+          <SyntaxHighlighter data={result} variant="light" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ParseAllSection() {
+  const [input, setInput] = useState(
+    "Price is $50 - $100 or $500 and under 1k"
+  );
+  const result = parseAll(input);
+
+  return (
+    <section id="parse-all" className="border-t border-slate-100 pt-12">
+      <h3 className="font-display text-xl font-semibold text-slate-900 mb-3">
+        Find all expressions in text
+      </h3>
+      <p className="text-slate-500 mb-4 leading-relaxed">
+        Use <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs font-mono text-slate-700">parseAll()</code> to extract every monetary expression from a string,
+        including ranges. Each result includes its position in the original text.
+      </p>
+      <pre className="rounded-lg bg-slate-900 p-4 text-sm text-slate-100 font-mono leading-6 overflow-x-auto mb-6">
+{`import { parseAll } from "numis";
+
+const results = parseAll("Price is $50 - $100 or $500");
+// [
+//   { type: "range", raw: "$50 - $100", min: 50, max: 100, currency: "USD", startIndex: 9, endIndex: 19 },
+//   { type: "single", raw: "$500", amount: 500, currency: "USD", startIndex: 23, endIndex: 27 }
+// ]`}
+      </pre>
+
+      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:p-6">
+        <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">
+          Try it
+        </label>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          className="mb-4 w-full rounded-md border border-slate-200 bg-white p-3 text-sm font-mono text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-200"
+        />
+        <div className="rounded-md border border-slate-200 bg-white p-3">
+          <SyntaxHighlighter data={result} variant="light" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FormatsSection() {
+  const formats = [
+    { title: "Symbols", examples: ["$100", "€50", "£25.99", "¥1000", "₹500"] },
+    { title: "ISO Codes", examples: ["USD 100", "50 EUR", "GBP 20.50"] },
+    { title: "Words", examples: ["one hundred dollars", "fifty euros", "half a million"] },
+    { title: "Abbreviations", examples: ["$10k", "€2.5m", "1 billion USD"] },
+    { title: "Slang", examples: ["20 bucks", "fifty quid", "a fiver", "ten grand"] },
+    { title: "Compounds", examples: ["5 dollars and 50 cents", "two pounds and 30 pence"] },
+    { title: "Negative", examples: ["-$100", "($50)", "-€25.99"] },
+    { title: "Ranges", examples: ["$10 - $20", "5k to 10k", "between 50 and 100 EUR"] },
+  ];
+
+  return (
+    <section id="formats" className="border-t border-slate-100 pt-12">
+      <h3 className="font-display text-xl font-semibold text-slate-900 mb-3">
+        Supported formats
+      </h3>
+      <p className="text-slate-500 mb-6 leading-relaxed">
+        numis understands money written in many different ways:
+      </p>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {formats.map((f) => (
+          <div
+            key={f.title}
+            className="rounded-xl border border-slate-200 bg-white p-4"
+          >
+            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+              {f.title}
+            </h4>
+            <div className="flex flex-wrap gap-1">
+              {f.examples.map((ex) => (
+                <code
+                  key={ex}
+                  className="rounded bg-slate-100 px-2 py-1 text-xs font-mono text-slate-700"
+                >
+                  {ex}
+                </code>
+              ))}
             </div>
-            <p className="text-amber-900 mb-3">
-              JavaScript can't handle numbers over 9 quadrillion safely. If your
-              number is too big, numis will throw an error instead of giving you
-              wrong data.
-            </p>
-            <pre className="bg-gray-800 text-gray-100 p-3 rounded text-sm leading-6 overflow-x-auto font-mono">{`import { ValueOverflowError } from "numis";
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function MistakesSection() {
+  return (
+    <section id="errors" className="border-t border-slate-100 pt-12">
+      <h3 className="font-display text-xl font-semibold text-slate-900 mb-3">
+        Error handling
+      </h3>
+      <p className="text-slate-500 mb-4 leading-relaxed">
+        numis throws typed errors for invalid inputs. Always wrap calls in
+        try/catch for user-provided strings.
+      </p>
+      <div className="space-y-4">
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
+          <h4 className="mb-2 text-sm font-semibold text-amber-900">
+            ValueOverflowError
+          </h4>
+          <p className="mb-3 text-sm text-amber-800">
+            Thrown when a number exceeds JavaScript’s safe integer limit.
+          </p>
+          <pre className="rounded bg-amber-100/60 p-3 text-xs font-mono text-amber-900 leading-5 overflow-x-auto">
+{`import { ValueOverflowError } from "numis";
 
 try {
   parseMoney("$999999999999999999");
@@ -317,73 +393,70 @@ try {
   if (err instanceof ValueOverflowError) {
     console.log("Number too large!");
   }
-}`}</pre>
-          </div>
+}`}
+          </pre>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* Step 7: Real Examples */}
-      <section className="mb-12 max-md:max-w-[90vw] pb-8 border-b border-gray-200">
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
-          Step 7: Real-World Use Cases
-        </h3>
-
-        <div className="flex flex-col gap-6 mt-4">
-          <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-            <h5 className="text-blue-600 mb-3 text-base">
-              📝 Processing User Input
-            </h5>
-            <pre className="bg-gray-800 max-md:max-w-[90vw] text-gray-100 p-3 rounded text-sm leading-6 overflow-x-auto font-mono">{`// In a form where users enter prices
-const userInput = getUserInput();
-const parsed = parseMoney(userInput, { defaultCurrency: "USD" });
-
-if (parsed.amount) {
-  saveToDatabase(parsed.amount, parsed.currency);
-}`}</pre>
-          </div>
-
-          <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-            <h5 className="text-blue-600 mb-3 text-base">
-              💬 Extracting Prices from Messages
-            </h5>
-            <pre className="bg-gray-800 max-md:max-w-[90vw] text-gray-100 p-3 rounded text-sm leading-6 overflow-x-auto font-mono">{`// Parse messages from customers
-const message = "I want to pay $50 for this item";
-const { amount, currency } = parseMoney(message);
-// amount: 50, currency: "USD"`}</pre>
-          </div>
-
-          <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-            <h5 className="text-blue-600 mb-3 text-base">
-              🌍 International Prices
-            </h5>
-            <pre className="bg-gray-800 max-md:max-w-[90vw] text-gray-100 p-3 rounded text-sm leading-6 overflow-x-auto font-mono">{`// Handle different currencies automatically
-parseMoney("€100").currency;  // "EUR"
-parseMoney("£100").currency;  // "GBP"
-parseMoney("¥100").currency;  // "JPY"`}</pre>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Reference */}
-      <section className="mb-12 pb-8 border-b-0 max-md:max-w-[90vw]">
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
-          Quick Reference
-        </h3>
-        <div className="bg-gray-50 p-6 rounded-lg mt-4">
-          <h4 className="text-gray-700 text-base my-6 first:mt-0">
-            Function Signature
+function QuickRefSection() {
+  return (
+    <section id="quick-ref" className="border-t border-slate-100 pt-12">
+      <h3 className="font-display text-xl font-semibold text-slate-900 mb-3">
+        Quick reference
+      </h3>
+      <div className="space-y-4">
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            parseMoney signature
           </h4>
-          <pre className="bg-gray-800 max-md:max-w-[90vw] text-gray-100 p-3 rounded text-sm leading-6 overflow-x-auto font-mono">{`parseMoney(text: string, options?: { defaultCurrency?: string })`}</pre>
-
-          <h4 className="text-gray-700 text-base my-6">Returns</h4>
-          <pre className="bg-gray-800 text-gray-100 p-3 rounded text-sm leading-6 overflow-x-auto font-mono">{`{
+          <pre className="rounded bg-white border border-slate-200 p-3 text-sm font-mono text-slate-700 leading-6 overflow-x-auto">
+{`parseMoney(
+  text: string,
+  options?: { defaultCurrency?: string }
+)`}
+          </pre>
+        </div>
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            parseAll signature
+          </h4>
+          <pre className="rounded bg-white border border-slate-200 p-3 text-sm font-mono text-slate-700 leading-6 overflow-x-auto">
+{`parseAll(text: string): MonetaryExpression[]`}
+          </pre>
+        </div>
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Return type
+          </h4>
+          <pre className="rounded bg-white border border-slate-200 p-3 text-sm font-mono text-slate-700 leading-6 overflow-x-auto">
+{`{
   original: string;
   currency?: string;
   amount?: number;
   currencyWasDefault?: boolean;
-}`}</pre>
+  isNegative?: boolean;
+  isRange?: boolean;
+  min?: number;
+  max?: number;
+}`}
+          </pre>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }
+
+const SIDEBAR_LINKS = [
+  { id: "install", label: "Install" },
+  { id: "basic-usage", label: "Basic usage" },
+  { id: "output", label: "Output format" },
+  { id: "default-currency", label: "Default currency" },
+  { id: "ranges", label: "Range parsing" },
+  { id: "parse-all", label: "parseAll" },
+  { id: "formats", label: "Supported formats" },
+  { id: "errors", label: "Error handling" },
+  { id: "quick-ref", label: "Quick reference" },
+];

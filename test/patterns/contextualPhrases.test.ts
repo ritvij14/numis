@@ -240,6 +240,12 @@ describe("Contextual Phrases Parser", () => {
   });
 
   describe("matchContextualPhrase", () => {
+    test("matches '3 million dirhams' with currency after magnitude", () => {
+      const res = matchContextualPhrase("3 million dirhams");
+      expect(res?.value).toBe(3000000);
+      expect(res?.currency).toBe("AED");
+    });
+
     test("matches and parses contextual phrase within text", () => {
       const res = matchContextualPhrase("I paid a dollar and 23 cents today");
       expect(res?.value).toBeCloseTo(1.23);

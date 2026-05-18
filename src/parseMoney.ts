@@ -1,6 +1,6 @@
 import { getCurrencyByCode } from "./currencyData";
 import { MoneyParseError } from "./errors";
-import { RegexPipeline } from "./regexPipeline";
+import { PipelineContext, RegexPipeline } from "./regexPipeline";
 import { ParseOptions } from "./types";
 
 const defaultPipeline = RegexPipeline.default();
@@ -29,7 +29,7 @@ const defaultPipeline = RegexPipeline.default();
  * parseMoney("$50", { defaultCurrency: "EUR" });
  * // => { original: "$50", currency: "USD", amount: 50 }
  */
-export function parseMoney(text: string, options?: ParseOptions) {
+export function parseMoney(text: string, options?: ParseOptions): PipelineContext {
   // Validate defaultCurrency if provided
   if (options?.defaultCurrency !== undefined) {
     const currencyInfo = getCurrencyByCode(options.defaultCurrency);

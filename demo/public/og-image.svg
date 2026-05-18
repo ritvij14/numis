@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Light background -->
+  <rect width="1200" height="630" fill="#ffffff" />
+
+  <!-- Decorative rings -->
+  <circle cx="1080" cy="150" r="50" fill="none" stroke="#e2e8f0" stroke-width="1.5" opacity="0.6" />
+  <circle cx="1045" cy="595" r="175" fill="none" stroke="#e2e8f0" stroke-width="2" opacity="0.5" />
+
+  <!-- Logo icon: exact same SVG as nav bar, scaled to 64x64 and placed at (120, 180) -->
+  <svg x="120" y="180" width="64" height="64" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+    <rect width="28" height="28" rx="6" fill="#0f172a" />
+    <circle cx="14" cy="14" r="8" fill="none" stroke="white" stroke-width="1.5" stroke-opacity="0.15" />
+    <path d="M10.5 19V13.2C10.5 11.1565 12.1565 9.5 14.2 9.5C16.2435 9.5 17.9 11.1565 17.9 13.2V19"
+          fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+
+  <!-- Title: numis -->
+  <text x="120" y="390" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-weight="700" font-size="96" fill="#0f172a">
+    numis
+  </text>
+
+  <!-- Tagline -->
+  <text x="120" y="455" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-weight="400" font-size="36" fill="#64748b">
+    Parse money from natural language
+  </text>
+
+  <!-- Features line -->
+  <text x="120" y="508" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-weight="400" font-size="20" fill="#94a3b8">
+    Symbols  ·  ISO Codes  ·  Ranges  ·  Slang  ·  170+ Currencies
+  </text>
+</svg>

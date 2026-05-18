@@ -273,8 +273,11 @@ export function matchContextualPhrase(
   // 5. Optional (when preceded by article): "a dollar" means 1 dollar
   const amountPattern = `(?:${digitMagnitudePattern}|${fractionalMagnitudePattern}|${wordedNumberPattern}|\\d+(?:\\.\\d+)?)?`;
 
+  // Pattern for matching digit+magnitude WITHOUT currency (e.g., "10 million", "5 thousand")
+  const digitMagnitudeNoCurrency = `\\d+(?:\\.\\d+)?\\s+(?:hundred|thousand|million|billion|trillion)`;
+
   const pattern = new RegExp(
-    `\\b(((?:a|an|the)\\s+${amountPattern}\\s*${currencyPattern}|(?:${digitMagnitudePattern}|${fractionalMagnitudePattern}|${wordedNumberPattern}|\\d+(?:\\.\\d+)?)\\s+${currencyPattern})(?:\\s+(?:and\\s+)?(?:${wordedNumberPattern}|\\d+(?:\\.\\d+)?)\\s+${minorPattern}|\\s+(?:${numberWords})(?:[\\s-](?:${numberWords}))*)?)\\b`,
+    `\\b(((?:a|an|the)\\s+${amountPattern}\\s*${currencyPattern}|(?:${digitMagnitudePattern}|${fractionalMagnitudePattern}|${wordedNumberPattern}|\\d+(?:\\.\\d+)?)\\s+${currencyPattern}|${digitMagnitudeNoCurrency})(?:\\s+(?:and\\s+)?(?:${wordedNumberPattern}|\\d+(?:\\.\\d+)?)\\s+${minorPattern}|\\s+(?:${numberWords})(?:[\\s-](?:${numberWords}))*)?)\\b`,
     "gi"
   );
 
@@ -283,8 +286,35 @@ export function matchContextualPhrase(
   for (const match of matches) {
     try {
       return parseContextualPhrase(match[1]);
-    } catch {
-      // Continue to next match
+    } catch (e) {
+      // Check if this is the case of digit + magnitude without currency
+      // e.g., "10 million" - parseContextualPhrase throws because no currency found
+      // Also handles "3 million dirhams" where currency comes AFTER magnitude
+      if (e instanceof Error && e.message.includes("Unrecognized currency")) {
+        // Try to parse just the magnitude value without currency
+        // The (?:\s+\w+)* allows for optional currency word(s) after magnitude (e.g., "3 million dirhams")
+        const digitMagMatch = /^(\d+(?:\.\d+)?)\s+(hundred|thousand|million|billion|trillion)(?:\s+\w+)*/i.exec(
+          match[1]
+        );
+        if (digitMagMatch) {
+          const numericPart = parseFloat(digitMagMatch[1]);
+          const magnitudeWord = digitMagMatch[2].toLowerCase();
+          const magnitudeValues: Record<string, number> = {
+            hundred: 100,
+            thousand: 1000,
+            million: 1000000,
+            billion: 1000000000,
+            trillion: 1000000000000,
+          };
+          const value = numericPart * magnitudeValues[magnitudeWord];
+          return {
+            value,
+            currency: "", // No currency found
+            raw: match[1],
+          };
+        }
+      }
+      // Continue to next match for other errors
       continue;
     }
   }

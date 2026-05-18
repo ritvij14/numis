@@ -20,7 +20,7 @@
         "testStrategy": "Compile a simple test file to verify ESM and CJS output directories and file types are generated correctly.",
         "priority": "high",
         "dependencies": [
-          1
+          "1"
         ],
         "status": "done",
         "subtasks": []
@@ -33,7 +33,7 @@
         "testStrategy": "Run the lint script on the codebase (once files exist) to ensure it passes without errors based on the configuration.",
         "priority": "high",
         "dependencies": [
-          1
+          "1"
         ],
         "status": "done",
         "subtasks": []
@@ -46,7 +46,7 @@
         "testStrategy": "Write and run a simple test file (`.test.ts`) to confirm Jest and ts-jest execute correctly.",
         "priority": "high",
         "dependencies": [
-          1
+          "1"
         ],
         "status": "done",
         "subtasks": []
@@ -59,7 +59,7 @@
         "testStrategy": "Write simple unit tests to instantiate the error classes and verify their properties and inheritance.",
         "priority": "medium",
         "dependencies": [
-          2
+          "2"
         ],
         "status": "done",
         "subtasks": []
@@ -72,7 +72,7 @@
         "testStrategy": "Write unit tests to verify currency data can be loaded and specific currency codes/symbols can be looked up correctly using the implemented logic.",
         "priority": "high",
         "dependencies": [
-          2
+          "2"
         ],
         "status": "done",
         "subtasks": []
@@ -85,7 +85,7 @@
         "testStrategy": "Create a mock pipeline with simple regex steps and verify that an input string is processed through the defined sequence.",
         "priority": "high",
         "dependencies": [
-          2
+          "2"
         ],
         "status": "done",
         "subtasks": []
@@ -98,8 +98,8 @@
         "testStrategy": "Write unit tests with various inputs containing currency symbols or codes (e.g., '$', 'USD', '€', 'GBP') to verify the currency detection regex correctly identifies potential currency indicators.",
         "priority": "high",
         "dependencies": [
-          7,
-          6
+          "7",
+          "6"
         ],
         "status": "done",
         "subtasks": []
@@ -112,7 +112,7 @@
         "testStrategy": "Write unit tests with inputs containing numbers (plain, with separators), worded numbers ('one hundred'), and numeric-word combos ('10k') to verify the numeric/word detection regex correctly identifies these parts.",
         "priority": "high",
         "dependencies": [
-          7
+          "7"
         ],
         "status": "done",
         "subtasks": []
@@ -125,8 +125,8 @@
         "testStrategy": "Write unit tests with various plain number strings ('1', '123', '999999') to verify the parser correctly extracts and converts the numeric value.",
         "priority": "medium",
         "dependencies": [
-          7,
-          9
+          "7",
+          "9"
         ],
         "status": "done",
         "subtasks": []
@@ -139,8 +139,8 @@
         "testStrategy": "Write unit tests with strings like '1,000', '1.23', '1,234,567.89' to verify the parser correctly handles separators and converts to the correct numeric value.",
         "priority": "medium",
         "dependencies": [
-          7,
-          9
+          "7",
+          "9"
         ],
         "status": "done",
         "subtasks": [
@@ -151,7 +151,8 @@
             "details": "Pattern should handle: 1,000 | 1,234.56 | 1,234,567.89 | Handle edge cases like leading zeros, multiple decimals",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 11
+            "parentTaskId": 11,
+            "parentId": "undefined"
           },
           {
             "id": 2,
@@ -160,7 +161,8 @@
             "details": "Strip commas, validate format, convert to number, handle invalid inputs",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 11
+            "parentTaskId": 11,
+            "parentId": "undefined"
           },
           {
             "id": 3,
@@ -169,7 +171,8 @@
             "details": "Test cases: '1,000', '1.23', '1,234,567.89', edge cases, invalid formats",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 11
+            "parentTaskId": 11,
+            "parentId": "undefined"
           },
           {
             "id": 4,
@@ -178,7 +181,8 @@
             "details": "Export pattern, add to pipeline, ensure proper ordering",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 11
+            "parentTaskId": 11,
+            "parentId": "undefined"
           },
           {
             "id": 5,
@@ -187,7 +191,8 @@
             "details": "Run jest tests, fix any failures, ensure no regressions",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 11
+            "parentTaskId": 11,
+            "parentId": "undefined"
           }
         ]
       },
@@ -199,8 +204,8 @@
         "testStrategy": "Write unit tests with strings like '$100', '€50', '£20.50' to verify the parser correctly identifies the symbol, extracts the number, and maps the symbol to the correct ISO currency code.",
         "priority": "medium",
         "dependencies": [
-          7,
-          8
+          "7",
+          "8"
         ],
         "status": "done",
         "subtasks": []
@@ -213,8 +218,8 @@
         "testStrategy": "Write unit tests with strings like 'USD 100', 'EUR 50', 'GBP 20.50', '100 CAD' to verify the parser correctly identifies the abbreviation, extracts the number, and maps the abbreviation to the correct ISO currency code.",
         "priority": "medium",
         "dependencies": [
-          7,
-          8
+          "7",
+          "8"
         ],
         "status": "done",
         "subtasks": []
@@ -227,8 +232,8 @@
         "testStrategy": "Write unit tests with strings like 'one', 'twenty', 'one hundred', 'two thousand', 'one million' to verify the parser correctly converts the worded number to a numeric value.",
         "priority": "medium",
         "dependencies": [
-          7,
-          9
+          "7",
+          "9"
         ],
         "status": "done",
         "subtasks": []
@@ -241,8 +246,8 @@
         "testStrategy": "Write unit tests with strings like 'half a dollar', 'quarter pound' (if applicable, focus on monetary context) to verify correct numeric conversion.",
         "priority": "medium",
         "dependencies": [
-          7,
-          9
+          "7",
+          "9"
         ],
         "status": "done",
         "subtasks": [
@@ -253,7 +258,8 @@
             "details": "",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 15
+            "parentTaskId": 15,
+            "parentId": "undefined"
           },
           {
             "id": 2,
@@ -262,7 +268,8 @@
             "details": "",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 15
+            "parentTaskId": 15,
+            "parentId": "undefined"
           },
           {
             "id": 3,
@@ -271,7 +278,8 @@
             "details": "",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 15
+            "parentTaskId": 15,
+            "parentId": "undefined"
           },
           {
             "id": 4,
@@ -280,7 +288,8 @@
             "details": "",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 15
+            "parentTaskId": 15,
+            "parentId": "undefined"
           }
         ]
       },
@@ -292,8 +301,8 @@
         "testStrategy": "Write unit tests with strings like '10k', '5m', '2bn' to verify the parser correctly calculates the numeric value (10,000, 5,000,000, 2,000,000,000).",
         "priority": "medium",
         "dependencies": [
-          7,
-          9
+          "7",
+          "9"
         ],
         "status": "done",
         "subtasks": []
@@ -306,8 +315,8 @@
         "testStrategy": "Write unit tests with strings like 'buck', 'quid', 'fiver', 'tenner' to verify the parser correctly identifies the slang term and associated value/currency (assuming US/UK context based on examples).",
         "priority": "medium",
         "dependencies": [
-          7,
-          9
+          "7",
+          "9"
         ],
         "status": "done",
         "subtasks": []
@@ -318,8 +327,8 @@
         "description": "Implement the pattern parser for Contextual Phrases (e.g., 'a hundred dollars') including compound major+minor currency expressions.",
         "status": "done",
         "dependencies": [
-          7,
-          9
+          "7",
+          "9"
         ],
         "priority": "medium",
         "details": "Create a parser that handles numbers and currencies embedded within simple phrases, potentially including articles ('a', 'the'), and now also handles compound major+minor currency expressions (e.g., 'a dollar and 23 cents', 'five euros and fifty cents').",
@@ -332,7 +341,8 @@
             "status": "done",
             "dependencies": [],
             "details": "List target patterns (e.g., 'a hundred dollars', 'the fifty euros', 'one thousand yen'); clarify assumptions on article handling and ordering; update task notes if scope adjustments needed.",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 2,
@@ -341,7 +351,8 @@
             "status": "done",
             "dependencies": [],
             "details": "Handle patterns like '<article?> <number/worded number> <currency name/code>'; normalize case/whitespace; return amount+currency; reuse existing number and currency helpers where possible.",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 3,
@@ -350,7 +361,8 @@
             "status": "done",
             "dependencies": [],
             "details": "Add matching function and hook into regexPipeline step order; ensure no regressions with other patterns.",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 4,
@@ -359,7 +371,8 @@
             "status": "done",
             "dependencies": [],
             "details": "Cover articles, numeric/worded amounts, case/whitespace handling, invalid inputs, and pipeline integration where applicable.",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 5,
@@ -368,7 +381,8 @@
             "status": "done",
             "dependencies": [],
             "details": "Update README or pattern docs with examples; note assumptions (articles optional, simple ordering, no complex grammar).",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 6,
@@ -379,7 +393,8 @@
               2
             ],
             "details": "Implement parsing logic for '<major currency> and <minor currency>' patterns. Ensure correct handling of different currencies and their minor units. Consider edge cases like missing major or minor units.",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 7,
@@ -391,7 +406,8 @@
               6
             ],
             "details": "Include tests for various scenarios, such as 'a dollar and 23 cents', 'five euros and fifty cents', '10 pounds and 5 pence', and edge cases with missing major or minor units.",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 8,
@@ -403,7 +419,8 @@
               6
             ],
             "details": "Add examples to the README or pattern docs demonstrating the supported formats and limitations for major+minor currency parsing.",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           }
         ]
       },
@@ -415,9 +432,9 @@
         "testStrategy": "Write unit tests with strings like '1.234,56 €', '€ 1.234,56', '5,678.90 $' to verify the parser correctly handles regional formatting and currency association.",
         "priority": "medium",
         "dependencies": [
-          7,
-          8,
-          9
+          "7",
+          "8",
+          "9"
         ],
         "status": "done",
         "subtasks": [
@@ -428,7 +445,8 @@
             "dependencies": [],
             "details": "Create a comprehensive list of regional format examples and their corresponding parsing rules. Consider edge cases and ambiguous formats.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 2,
@@ -439,7 +457,8 @@
             ],
             "details": "Implement algorithms to identify the separators based on frequency and position within the input string. Handle cases where separators are missing or ambiguous.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 3,
@@ -450,7 +469,8 @@
             ],
             "details": "Implement pattern matching or regular expressions to identify and extract the currency symbol or code. Handle cases where the currency symbol/code is missing.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 4,
@@ -462,7 +482,8 @@
             ],
             "details": "Convert the input string into a numerical value, correctly interpreting the separators and currency information. Handle potential parsing errors and invalid formats.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 5,
@@ -473,7 +494,8 @@
             ],
             "details": "Add checks for invalid characters, incorrect separator placement, and other format inconsistencies. Provide informative error messages for invalid inputs.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           }
         ]
       },
@@ -485,7 +507,7 @@
         "testStrategy": "Write unit tests with various inputs ('$', 'USD', 'Euro', 'GBP') to verify they are correctly normalized to their ISO 4217 codes ('USD', 'EUR', 'GBP'). Test cases for unknown currencies should result in an error or null/undefined output depending on implementation.",
         "priority": "high",
         "dependencies": [
-          6
+          "6"
         ],
         "status": "done",
         "subtasks": []
@@ -498,21 +520,21 @@
         "testStrategy": "Write integration tests covering various input strings and options (`defaultCurrency`, `strict`) to verify correct parsing, currency normalization, and the structure of the returned `ParseResult` object or `null`.",
         "priority": "high",
         "dependencies": [
-          5,
-          7,
-          8,
-          9,
-          20,
-          10,
-          11,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          18,
-          19
+          "5",
+          "7",
+          "8",
+          "9",
+          "20",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19"
         ],
         "status": "done",
         "subtasks": []
@@ -525,7 +547,7 @@
         "testStrategy": "Write integration tests with strings containing multiple monetary expressions (e.g., 'I have $100 and he has €50') to verify all instances are found and parsed correctly into an array of `ParseResult` objects.",
         "priority": "medium",
         "dependencies": [
-          21
+          "21"
         ],
         "status": "done",
         "subtasks": []
@@ -538,8 +560,8 @@
         "testStrategy": "Write unit or integration tests with inputs representing numbers larger than `Number.MAX_SAFE_INTEGER` (e.g., '9007199254740992', '10 quadrillion') to verify that a `ValueOverflowError` is correctly thrown.",
         "priority": "high",
         "dependencies": [
-          5,
-          21
+          "5",
+          "21"
         ],
         "status": "done",
         "subtasks": []
@@ -552,17 +574,17 @@
         "testStrategy": "Run Jest tests for all pattern parsers. Ensure tests cover a wide range of fixtures and achieve high code coverage for the parser logic.",
         "priority": "high",
         "dependencies": [
-          4,
-          10,
-          11,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          18,
-          19
+          "4",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19"
         ],
         "status": "done",
         "subtasks": [
@@ -573,7 +595,8 @@
             "dependencies": [],
             "details": "Install pytest, create a pytest.ini file, and set up any required test directories.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 2,
@@ -584,7 +607,8 @@
             ],
             "details": "Create a 'fixtures' directory within the test directory structure.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 3,
@@ -595,7 +619,8 @@
             ],
             "details": "Generate JSON or YAML files containing test cases for Parser 1.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 4,
@@ -606,7 +631,8 @@
             ],
             "details": "Write test functions that load fixture data and assert expected outputs from Parser 1.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 5,
@@ -617,7 +643,8 @@
             ],
             "details": "Generate JSON or YAML files containing test cases for Parser 2.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 6,
@@ -628,7 +655,8 @@
             ],
             "details": "Write test functions that load fixture data and assert expected outputs from Parser 2.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 7,
@@ -639,7 +667,8 @@
             ],
             "details": "Generate JSON or YAML files containing test cases for Parsers 3 through 10.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 8,
@@ -650,7 +679,8 @@
             ],
             "details": "Write test functions that load fixture data and assert expected outputs from Parsers 3 through 10.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 9,
@@ -663,7 +693,8 @@
             ],
             "details": "Use pytest to run all tests in the test suite.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 10,
@@ -674,7 +705,8 @@
             ],
             "details": "Address any failing tests by debugging the pattern parsers or adjusting the test fixtures.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           }
         ]
       },
@@ -686,10 +718,10 @@
         "testStrategy": "Run Jest tests for the API functions. Ensure tests cover successful parsing, null results, and all specified error conditions.",
         "priority": "high",
         "dependencies": [
-          4,
-          21,
-          22,
-          23
+          "4",
+          "21",
+          "22",
+          "23"
         ],
         "status": "done",
         "subtasks": [
@@ -700,7 +732,8 @@
             "dependencies": [],
             "details": "Focus on creating a diverse set of test cases that represent common and uncommon money representations.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 2,
@@ -709,7 +742,8 @@
             "dependencies": [],
             "details": "Ensure that parseMoney handles these edge cases gracefully and returns the expected results or errors.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 3,
@@ -718,7 +752,8 @@
             "dependencies": [],
             "details": "Create test cases that intentionally cause a value overflow and verify that the correct error is thrown.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 4,
@@ -727,7 +762,8 @@
             "dependencies": [],
             "details": "Check that the returned object has the correct fields (e.g., amount, currency) and that their types are as expected.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 5,
@@ -736,7 +772,8 @@
             "dependencies": [],
             "details": "Create test cases with large numbers embedded in text and verify that the correct error is thrown when parsing.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 6,
@@ -745,7 +782,8 @@
             "dependencies": [],
             "details": "Focus on scenarios where the input might be malformed or incomplete, ensuring the function behaves predictably.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           }
         ]
       },
@@ -757,9 +795,9 @@
         "testStrategy": "Run the property-based tests with a sufficient number of iterations. Analyze any failing cases to identify bugs or missing pattern handling.",
         "priority": "medium",
         "dependencies": [
-          4,
-          21,
-          22
+          "4",
+          "21",
+          "22"
         ],
         "status": "done",
         "subtasks": [
@@ -770,7 +808,8 @@
             "dependencies": [],
             "details": "Use `npm install --save-dev fast-check` or `yarn add --dev fast-check`.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 2,
@@ -781,7 +820,8 @@
             ],
             "details": "Create a new test file and import `fc` from 'fast-check' and the `parseMoney` and `parseAll` functions from your codebase.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 3,
@@ -792,7 +832,8 @@
             ],
             "details": "Use `fc.string()` to generate random string inputs and assert that `parseMoney` either throws an error or returns a valid result based on the input string's format.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 4,
@@ -803,7 +844,8 @@
             ],
             "details": "Create custom arbitraries using `fc.record` to generate structured monetary inputs. Assert that `parseAll` correctly parses these inputs and maintains expected invariants.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           },
           {
             "id": 5,
@@ -815,7 +857,8 @@
             ],
             "details": "Use `fc.oneof` or `fc.frequency` to combine standard generators with generators for edge cases. Add assertions to verify that invariants related to the parsed values hold true.",
             "status": "done",
-            "testStrategy": ""
+            "testStrategy": "",
+            "parentId": "undefined"
           }
         ]
       },
@@ -827,7 +870,7 @@
         "testStrategy": "Verify the output directory contains both ESM and CJS versions of the library files. Test importing the library in a simple Node.js script using both `require()` (CJS) and `import()` (ESM).",
         "priority": "high",
         "dependencies": [
-          2
+          "2"
         ],
         "status": "done",
         "subtasks": []
@@ -840,7 +883,7 @@
         "testStrategy": "Verify a single minified UMD file is generated. Create a simple HTML file with a `<script>` tag pointing to the UMD file and verify the library's public API is available on the global scope (e.g., `window.monetJs.parseMoney`).",
         "priority": "medium",
         "dependencies": [
-          27
+          "27"
         ],
         "status": "done",
         "subtasks": []
@@ -853,9 +896,9 @@
         "testStrategy": "Push code to a GitHub repository to trigger the CI workflow. Verify that all steps (lint, test, build) pass successfully in the CI environment.",
         "priority": "high",
         "dependencies": [
-          3,
-          4,
-          27
+          "3",
+          "4",
+          "27"
         ],
         "status": "done",
         "subtasks": []
@@ -868,7 +911,7 @@
         "testStrategy": "Run the CI workflow. Verify the size-limit check is executed and passes, ensuring the bundle size remains below the specified threshold.",
         "priority": "high",
         "dependencies": [
-          29
+          "29"
         ],
         "status": "done",
         "subtasks": []
@@ -881,7 +924,7 @@
         "testStrategy": "Follow the Changesets workflow to create a changeset, run `changeset version`, and verify that version bumps and changelog entries are generated correctly.",
         "priority": "medium",
         "dependencies": [
-          1
+          "1"
         ],
         "status": "done",
         "subtasks": []
@@ -894,7 +937,7 @@
         "testStrategy": "Run the Vite development server for the demo site. Open the site in a browser and verify that the `numis` library is loaded and the real-time parsing feature works as expected.",
         "priority": "medium",
         "dependencies": [
-          28
+          "28"
         ],
         "status": "done",
         "subtasks": [
@@ -905,7 +948,8 @@
             "details": "1. Run `npm create vite@latest demo -- --template vanilla` in project root.\n2. Adjust Vite config/output paths if needed so assets build into demo/dist.\n3. Add script entries `dev:demo` and `build:demo` to package.json.\n4. Verify `npm run dev:demo` serves the demo site on localhost.",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 32
+            "parentTaskId": 32,
+            "parentId": "undefined"
           },
           {
             "id": 2,
@@ -914,7 +958,8 @@
             "details": "1. Ensure the build step for numis UMD (Task 28) outputs `dist/umd/numis.min.js`.\n2. Copy or link the UMD file into demo/public (or use Vite static asset import).\n3. Include `<script src=\"/numis.min.js\"></script>` in `index.html` and verify `window.monetJs` exists.",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 32
+            "parentTaskId": 32,
+            "parentId": "undefined"
           },
           {
             "id": 3,
@@ -923,7 +968,8 @@
             "details": "1. In `index.html`, create a `<textarea id=\"input\">` and a `<pre id=\"output\"></pre>`.\n2. Add a \"Parse\" button or use `input` event listener for real-time parsing.\n3. Basic styling: responsive layout, monospaced output block.",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 32
+            "parentTaskId": 32,
+            "parentId": "undefined"
           },
           {
             "id": 4,
@@ -932,7 +978,8 @@
             "details": "1. In `main.js`, add event listener on textarea or button.\n2. Call `window.monetJs.parseMoney(text)`.\n3. Format returned object as JSON using `JSON.stringify(result,null,2)` and inject into `output` pre.\n4. Handle errors gracefully.",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 32
+            "parentTaskId": 32,
+            "parentId": "undefined"
           },
           {
             "id": 5,
@@ -941,7 +988,8 @@
             "details": "1. Add basic CSS for layout, fonts, colors.\n2. Highlight parsed output (e.g., syntax highlighting via Prism.js optional).\n3. Ensure mobile responsiveness.\n4. Add footer with project link and version.",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 32
+            "parentTaskId": 32,
+            "parentId": "undefined"
           },
           {
             "id": 6,
@@ -950,7 +998,8 @@
             "details": "1. Add section in root README or demo/README with commands `npm run build:demo` and `npm run dev:demo`.\n2. Provide instructions for GitHub Pages deployment via `vite build --base /monet/`.\n3. Include screenshot/gif of testing area in action.",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 32
+            "parentTaskId": 32,
+            "parentId": "undefined"
           },
           {
             "id": 7,
@@ -959,7 +1008,8 @@
             "details": "1. Move inline CSS into dedicated `style.css`, link it via <link>.\n2. Improve layout with flexbox, responsive design, and better typography/colors.\n3. Update `main.js` to parse on textarea input (debounced) and show results in real time; add error handling.\n4. Separate logic from markup for cleaner structure.\n5. Ensure zero external dependencies beyond Vite.",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 32
+            "parentTaskId": 32,
+            "parentId": "undefined"
           },
           {
             "id": 8,
@@ -968,7 +1018,8 @@
             "details": "1. Add React, ReactDOM, and @vitejs/plugin-react as dependencies in demo/package.json.\n2. Update vite.config.js to use react plugin.\n3. Move UI into React components (App.jsx) with textarea, result panel.\n4. Render via main.jsx.\n5. Keep numis UMD bundle in public and access via window.monetJs.\n6. Style using existing CSS.\n7. Update README instructions.\n<info added on 2025-07-01T12:38:16.956Z>\n8. Import RegexPipeline from numis and use `new RegexPipeline().run()` instead of `parseMoney` (as `parseMoney` is not yet exported).\n</info added on 2025-07-01T12:38:16.956Z>",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 32
+            "parentTaskId": 32,
+            "parentId": "undefined"
           }
         ]
       },
@@ -980,8 +1031,8 @@
         "testStrategy": "Push changes to trigger the deployment workflow. Verify that the demo site is successfully deployed and accessible via the GitHub Pages URL.",
         "priority": "medium",
         "dependencies": [
-          29,
-          32
+          "29",
+          "32"
         ],
         "status": "done",
         "subtasks": []
@@ -994,9 +1045,9 @@
         "testStrategy": "Trigger the CI workflow by pushing a change or opening a pull request. Verify that the 'Build Library' step is executed in the workflow run and completes successfully without errors. Check the workflow logs to confirm the 'npm run build' command was run and produced the expected output artifacts.",
         "status": "done",
         "dependencies": [
-          29,
-          27,
-          28
+          "29",
+          "27",
+          "28"
         ],
         "priority": "medium",
         "subtasks": []
@@ -1009,7 +1060,7 @@
         "testStrategy": "Verify that the demo runs correctly with the published npm package. Ensure all features work as expected and that there are no dependency resolution issues.",
         "status": "done",
         "dependencies": [
-          32
+          "32"
         ],
         "priority": "low",
         "subtasks": []
@@ -1022,16 +1073,16 @@
         "testStrategy": "1.  **Bundle Size Verification:** Measure the bundle size before and after optimization to ensure that the changes have resulted in a significant reduction in size.  Use tools like webpack-bundle-analyzer to compare the bundle contents.\n2.  **Performance Testing:** Conduct performance testing to ensure that the optimizations have not negatively impacted the parsing speed or overall performance of the library.  Focus on testing the one-call parsing functionality with a variety of inputs.\n3.  **Functional Testing:** Run existing unit tests to ensure that all existing functionality continues to work as expected after the optimizations.\n4.  **Demo Testing:** Thoroughly test the updated demo to ensure that it is easy to use, provides clear examples, and accurately showcases the optimized library.\n5.  **Tree-Shaking Verification:** Verify that tree-shaking is working correctly by inspecting the generated bundle and ensuring that unused code has been removed.",
         "status": "done",
         "dependencies": [
-          10,
-          11,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          19,
-          20
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "19",
+          "20"
         ],
         "priority": "medium",
         "subtasks": [
@@ -1042,7 +1093,8 @@
             "details": "Maintain default all-pattern coverage; keep RegexPipeline export for advanced use.",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 36
+            "parentTaskId": 36,
+            "parentId": "undefined"
           },
           {
             "id": 2,
@@ -1051,7 +1103,8 @@
             "details": "Ensure contextual phrases and regex pipeline build maps on demand; keep behavior identical.",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 36
+            "parentTaskId": 36,
+            "parentId": "undefined"
           },
           {
             "id": 3,
@@ -1060,7 +1113,8 @@
             "details": "Ensure both regex pipeline and contextual phrases reuse the same lazy map builder to minimize bundle size.",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 36
+            "parentTaskId": 36,
+            "parentId": "undefined"
           },
           {
             "id": 4,
@@ -1069,7 +1123,8 @@
             "details": "Keep all patterns active by default; ensure demo import path uses published package entry and benefits from tree-shaking.",
             "status": "done",
             "dependencies": [],
-            "parentTaskId": 36
+            "parentTaskId": 36,
+            "parentId": "undefined"
           }
         ]
       },
@@ -1081,16 +1136,16 @@
         "testStrategy": "1.  Verify that the Example Prompts component is displayed correctly on the demo website.\n2.  Confirm that 3 random examples are displayed each time the component is loaded or refreshed (if a refresh button is implemented).\n3.  Click each example prompt and verify that the corresponding text is correctly populated into the main input field of the demo website.\n4.  Test with different screen sizes to ensure the component is responsive and the examples are displayed correctly.\n5.  Check that the example prompts cover a variety of currency formats and amounts.\n6.  Manually test a large number of example selections to ensure randomness and that no errors occur.",
         "status": "done",
         "dependencies": [
-          10,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          19,
-          20,
-          32
+          "10",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "19",
+          "20",
+          "32"
         ],
         "priority": "medium",
         "subtasks": [
@@ -1101,7 +1156,8 @@
             "dependencies": [],
             "details": "Create a `const` array named `examplePrompts` in a new file (e.g., `src/components/examplePromptsData.js`). This array should contain strings representing monetary amounts in various formats. Include examples like: ['$100', 'EUR 50', 'GBP 20.50', '100 CAD', 'one hundred dollars', 'half a dollar', '10k', '1.234,56 €', 'buck', '1,000,000', 'USD 12.50', '£1000', '5m', 'quarter pound', '20 quid']. Export the array.",
             "status": "done",
-            "testStrategy": "Manually inspect the `examplePromptsData.js` file to ensure the array contains a diverse set of monetary expressions."
+            "testStrategy": "Manually inspect the `examplePromptsData.js` file to ensure the array contains a diverse set of monetary expressions.",
+            "parentId": "undefined"
           },
           {
             "id": 2,
@@ -1110,7 +1166,8 @@
             "dependencies": [],
             "details": "Create a new Vue component file (e.g., `src/components/ExamplePrompts.vue`). Import the `examplePrompts` array from `src/components/examplePromptsData.js`. In the component's `data` or `reactive` section, create a variable to hold the randomly selected prompts. Implement a method to randomly select 3 examples from the `examplePrompts` array when the component is mounted or when a 'Refresh Examples' button is clicked. Display the selected examples as clickable elements (e.g., buttons or styled divs).",
             "status": "done",
-            "testStrategy": "Verify that the component renders without errors and displays 3 example prompts from the array. Check that the prompts are different each time the component is mounted or refreshed."
+            "testStrategy": "Verify that the component renders without errors and displays 3 example prompts from the array. Check that the prompts are different each time the component is mounted or refreshed.",
+            "parentId": "undefined"
           },
           {
             "id": 3,
@@ -1119,7 +1176,8 @@
             "dependencies": [],
             "details": "In the `ExamplePrompts.vue` component, add a click event listener to each clickable example element. The click handler should retrieve the text content of the clicked element and use it to update the value of the main input field in the parent component. Use Vue's event emission (`$emit`) to communicate the selected example to the parent component. The parent component should then update the input field.",
             "status": "done",
-            "testStrategy": "Click each example prompt and verify that the main input field is populated with the corresponding text. Ensure that the input field is updated correctly for all example prompts."
+            "testStrategy": "Click each example prompt and verify that the main input field is populated with the corresponding text. Ensure that the input field is updated correctly for all example prompts.",
+            "parentId": "undefined"
           },
           {
             "id": 4,
@@ -1128,7 +1186,8 @@
             "dependencies": [],
             "details": "Apply CSS styles to the `ExamplePrompts.vue` component to match the overall design of the demo website. Use CSS classes or inline styles to format the example prompts, the 'Refresh Examples' button (if implemented), and the container element. Ensure the component is responsive by using media queries or a responsive CSS framework (e.g., Bootstrap, Tailwind CSS).",
             "status": "done",
-            "testStrategy": "Inspect the component in different browsers and screen sizes to ensure it is visually appealing and responsive. Verify that the styles are consistent with the rest of the demo website."
+            "testStrategy": "Inspect the component in different browsers and screen sizes to ensure it is visually appealing and responsive. Verify that the styles are consistent with the rest of the demo website.",
+            "parentId": "undefined"
           },
           {
             "id": 5,
@@ -1137,7 +1196,8 @@
             "dependencies": [],
             "details": "Import the `ExamplePrompts.vue` component into the main demo website component. Place the component in a suitable location on the page. Implement the logic in the parent component to receive the selected example from the `ExamplePrompts` component and update the input field accordingly. Test the entire feature by clicking on the example prompts and verifying that the input field is updated correctly. Test the 'Refresh Examples' button (if implemented) to ensure it generates new random examples.",
             "status": "done",
-            "testStrategy": "Perform end-to-end testing of the feature by interacting with the Example Prompts component and verifying that the input field is updated correctly. Test the feature on different browsers and screen sizes. Verify that the 'Refresh Examples' button (if implemented) works as expected."
+            "testStrategy": "Perform end-to-end testing of the feature by interacting with the Example Prompts component and verifying that the input field is updated correctly. Test the feature on different browsers and screen sizes. Verify that the 'Refresh Examples' button (if implemented) works as expected.",
+            "parentId": "undefined"
           }
         ]
       },
@@ -1149,11 +1209,11 @@
         "testStrategy": "1.  **Unit Tests:**\n    *   Write unit tests for `parseMoney()` with different `defaultCurrency` options (e.g., 'EUR', 'GBP', 'JPY').\n    *   Verify that the correct currency is returned when no currency is detected in the input text and a `defaultCurrency` is provided.\n    *   Verify that the default currency is 'USD' when no options are provided.\n    *   Write a unit test to ensure that an invalid currency code passed as `defaultCurrency` throws a `MoneyParseError`.\n2.  **Demo Website Testing:**\n    *   Verify that the currency dropdown selector is displayed correctly on the demo website.\n    *   Verify that selecting a currency from the dropdown updates the `defaultCurrency` used by `parseMoney()`.\n    *   Verify that the parsing results on the demo website reflect the selected `defaultCurrency` when no currency is detected in the input text.\n    *   Test with various input strings and different default currencies to ensure the functionality works as expected.\n3.  **End-to-End Tests:**\n    *   Create end-to-end tests that simulate user interactions on the demo website, including selecting a default currency and entering monetary expressions. Verify that the parsing results are correct.",
         "status": "done",
         "dependencies": [
-          5,
-          6,
-          20,
-          32,
-          37
+          "5",
+          "6",
+          "20",
+          "32",
+          "37"
         ],
         "priority": "medium",
         "subtasks": [
@@ -1164,7 +1224,8 @@
             "dependencies": [],
             "details": "Create a new file `src/types/ParseOptions.ts` (or add to an existing types file) and define the `ParseOptions` interface. The `defaultCurrency` field should be optional and of type string. Set the default value to 'USD' in the `parseMoney` function if the option is not provided.",
             "status": "done",
-            "testStrategy": "N/A - Type definition only."
+            "testStrategy": "N/A - Type definition only.",
+            "parentId": "undefined"
           },
           {
             "id": 2,
@@ -1173,7 +1234,8 @@
             "dependencies": [],
             "details": "Update the `parseMoney()` function signature in `src/parseMoney.ts` to accept an optional `options` parameter of type `ParseOptions`. Ensure backwards compatibility by providing a default value for the options parameter if it's not provided.",
             "status": "done",
-            "testStrategy": "Create a unit test to ensure that `parseMoney` still works correctly when no options are passed."
+            "testStrategy": "Create a unit test to ensure that `parseMoney` still works correctly when no options are passed.",
+            "parentId": "undefined"
           },
           {
             "id": 3,
@@ -1182,7 +1244,8 @@
             "dependencies": [],
             "details": "Modify the `RegexPipeline.run()` method to accept the `defaultCurrency` from the `ParseOptions` and pass it down to the `PipelineContext`. This will make the `defaultCurrency` available to the currency detection step.",
             "status": "done",
-            "testStrategy": "Add a unit test to verify that the `defaultCurrency` is correctly passed to the `PipelineContext`."
+            "testStrategy": "Add a unit test to verify that the `defaultCurrency` is correctly passed to the `PipelineContext`.",
+            "parentId": "undefined"
           },
           {
             "id": 4,
@@ -1191,7 +1254,8 @@
             "dependencies": [],
             "details": "Within the currency detection logic in the RegexPipeline, check if a currency has been detected. If not, use the `defaultCurrency` from the `PipelineContext` to create a `Currency` object. Ensure that the original detected value is null if the default currency is applied.",
             "status": "done",
-            "testStrategy": "Create unit tests to verify that the `defaultCurrency` is correctly applied when no currency is detected in the input text. Also, test cases where a currency is detected, ensuring the detected currency takes precedence."
+            "testStrategy": "Create unit tests to verify that the `defaultCurrency` is correctly applied when no currency is detected in the input text. Also, test cases where a currency is detected, ensuring the detected currency takes precedence.",
+            "parentId": "undefined"
           },
           {
             "id": 5,
@@ -1200,7 +1264,8 @@
             "dependencies": [],
             "details": "Use the `currency-codes` package to validate the `defaultCurrency` code within the `parseMoney()` function. If the code is invalid, throw a `MoneyParseError` with a descriptive message. Ensure the validation happens before the RegexPipeline is executed.",
             "status": "done",
-            "testStrategy": "Create unit tests to verify that a `MoneyParseError` is thrown when an invalid currency code is provided as the `defaultCurrency`. Also, test with valid currency codes to ensure no error is thrown."
+            "testStrategy": "Create unit tests to verify that a `MoneyParseError` is thrown when an invalid currency code is provided as the `defaultCurrency`. Also, test with valid currency codes to ensure no error is thrown.",
+            "parentId": "undefined"
           },
           {
             "id": 6,
@@ -1209,7 +1274,8 @@
             "dependencies": [],
             "details": "Update the `README.md` file with clear examples of how to use the `defaultCurrency` option in the `parseMoney()` function. Include examples with valid and invalid currency codes. Also, add JSDoc comments to new interfaces and updated functions.",
             "status": "done",
-            "testStrategy": "Manually review the README to ensure the examples are clear and accurate."
+            "testStrategy": "Manually review the README to ensure the examples are clear and accurate.",
+            "parentId": "undefined"
           },
           {
             "id": 7,
@@ -1218,7 +1284,8 @@
             "dependencies": [],
             "details": "Modify the `demo/src/App.jsx` file to include a currency dropdown selector. Populate the dropdown with common currencies (USD, EUR, GBP, JPY, etc.). Store the selected currency in the component's state.",
             "status": "done",
-            "testStrategy": "Manually test the demo website to ensure the dropdown is displayed correctly and populated with the correct currencies."
+            "testStrategy": "Manually test the demo website to ensure the dropdown is displayed correctly and populated with the correct currencies.",
+            "parentId": "undefined"
           },
           {
             "id": 8,
@@ -1227,7 +1294,8 @@
             "dependencies": [],
             "details": "Update the `demo/src/App.jsx` file to pass the selected currency from the dropdown to the `parseMoney()` function as the `defaultCurrency` option. Add logic to display a visual indication (e.g., a message or different styling) when the `defaultCurrency` is being applied instead of a detected currency. The visual indication should clearly communicate whether the parsed currency was detected or defaulted.",
             "status": "done",
-            "testStrategy": "Manually test the demo website to ensure the selected currency is correctly passed to `parseMoney()` and that the visual indication is displayed correctly when the `defaultCurrency` is being applied."
+            "testStrategy": "Manually test the demo website to ensure the selected currency is correctly passed to `parseMoney()` and that the visual indication is displayed correctly when the `defaultCurrency` is being applied.",
+            "parentId": "undefined"
           }
         ]
       },
@@ -1239,10 +1307,10 @@
         "testStrategy": "Create new unit tests specifically for decimal numbers followed by magnitude words. These tests should cover a range of values and magnitude words, including '2.25 thousand', '1.5 million', '0.75 billion', etc. Verify that the parsed values are accurate (e.g., '2.25 thousand' should return 2250). Also, test edge cases such as very small decimal numbers (e.g., '0.001 million') and very large numbers (e.g., '999.999 million'). Ensure that the existing unit tests are not negatively impacted by this change. Run all unit tests to confirm the fix does not introduce regressions.",
         "status": "done",
         "dependencies": [
-          7,
-          9,
-          10,
-          16
+          "7",
+          "9",
+          "10",
+          "16"
         ],
         "priority": "high",
         "subtasks": []
@@ -1255,9 +1323,9 @@
         "testStrategy": "1.  **Comprehensive tests for European format:** Create a suite of unit tests specifically designed to test the regional format parser with European number formats. These tests should include:\n    *   Numbers with period as thousands separator: \"1.000.000\", \"10.000\"\n    *   Numbers with comma as decimal separator: \"1,234\", \"123,45\"\n    *   Numbers with currency symbols: \"1.234,56 EUR\", \"1.000.000,00 $\"\n    *   Numbers with mixed formats (if applicable).\n2.  **Ambiguity tests:** Create tests to specifically address the ambiguity of numbers like \"1.000\". These tests should include cases where the context suggests a European format and cases where it suggests a US format.\n3.  **Regression tests:** Run existing tests to ensure that the integration of the regional format parser does not negatively impact the parsing of other number formats.\n4.  **Edge case tests:** Include tests for edge cases such as invalid or malformed input strings.\n5.  **Performance tests:** Measure the execution time of the pipeline with and without the regional format parser to identify any performance regressions.",
         "status": "done",
         "dependencies": [
-          19,
-          10,
-          11
+          "19",
+          "10",
+          "11"
         ],
         "priority": "high",
         "subtasks": []
@@ -1270,19 +1338,19 @@
         "testStrategy": "1. **Unit tests for negative detection utilities:** Create unit tests to verify the correct detection of negative prefixes (\"-\", \"minus\", \"negative\") and parentheses notation.\n2. **Integration tests for the pipeline:** Write integration tests to verify the entire pipeline correctly handles negative numbers in various formats, including:\n    *   Negative prefixes: \"-100 EUR\", \"minus 50 USD\", \"negative 25 GBP\"\n    *   Parentheses notation: \"(100) USD\", \"(50.50) EUR\"\n    *   Combinations with existing patterns: \"-$100\", \"(EUR 50)\", \"-1,234.56 USD\"\n3. **Comprehensive testing with all existing patterns:** Combine negative number patterns with all existing patterns (Symbols, Abbreviations, Regional Formats, Worded Numbers, etc.) to ensure no regressions are introduced. This includes positive and negative cases.\n4. **Edge cases:** Test edge cases such as multiple negative prefixes (e.g., \"--100 EUR\") and invalid parentheses (e.g., \"(100 EUR\").\n5. **Test the isNegative flag:** Verify that the `isNegative` flag in the PipelineContext is correctly set and applied to the final amount.",
         "status": "done",
         "dependencies": [
-          7,
-          8,
-          9,
-          10,
-          11,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          19,
-          20
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "19",
+          "20"
         ],
         "priority": "high",
         "subtasks": []
@@ -1295,10 +1363,10 @@
         "testStrategy": "1) Create unit tests for all fractional magnitude combinations, including 'quarter million', 'half billion', 'third trillion', etc. Verify that the parser returns the correct numeric value for each combination.\n2) Create unit tests for the 'fraction + of a + magnitude' pattern, such as 'quarter of a million', 'half of a billion', etc. Verify correct parsing and numeric conversion.\n3) Add tests to `contextualPhrases` to ensure the new pattern is correctly parsed in contextual scenarios. Test with various surrounding words and phrases to ensure accurate results.\n4) Test with different fractional values (e.g., 'one fifth', 'three quarters') combined with different magnitudes (e.g., 'thousand', 'million', 'billion').\n5) Include edge cases and boundary conditions in the tests, such as very large magnitudes or unusual fractional values.",
         "status": "done",
         "dependencies": [
-          7,
-          9,
-          15,
-          16
+          "7",
+          "9",
+          "15",
+          "16"
         ],
         "priority": "medium",
         "subtasks": []
@@ -1311,10 +1379,10 @@
         "testStrategy": "1. Create unit tests for various currency combinations with and without the 'and' connector (e.g., '5 pounds 20 pence', '2 euros 50', 'ten dollars 25', '5 pounds and 20 pence', '10 dollars and 99 cents').\n2. Verify that the parser correctly extracts the major and minor units in all test cases.\n3. Implement negative test cases with invalid minor unit amounts (e.g., '5 pounds 150 pence') and ensure they are correctly rejected.\n4. Test with different currencies to ensure the validation logic is currency-specific (e.g., validate against 100 for cents/pence, but adjust for other currencies with different minor unit ranges if applicable).\n5. Verify that the updated documentation accurately reflects the supported formats.",
         "status": "done",
         "dependencies": [
-          12,
-          13,
-          19,
-          20
+          "12",
+          "13",
+          "19",
+          "20"
         ],
         "priority": "medium",
         "subtasks": []
@@ -1325,10 +1393,14 @@
         "description": "Define a new TypeScript interface, RangeParseResult, in types.ts to represent the structure of range parsing results, including min, max, currency, and raw input fields. This interface will be used to represent the output of monetary range parsing.",
         "details": "1.  Open the `types.ts` file.\n2.  Define the `RangeParseResult` interface with the following properties:\n    *   `min`: `number | null` - The minimum value of the range, or null if not applicable.\n    *   `max`: `number | null` - The maximum value of the range, or null if not applicable.\n    *   `currency`: `string | null` - The ISO currency code, or null if not detected.\n    *   `raw`: `string` - The original input string that was parsed.\n3.  Ensure the interface is properly exported for use in other modules.\n\nExample:\n\n```typescript\nexport interface RangeParseResult {\n  min: number | null;\n  max: number | null;\n  currency: string | null;\n  raw: string;\n}\n```",
         "testStrategy": "1.  Verify that the `RangeParseResult` interface is correctly defined in `types.ts` with the specified properties and types.\n2.  Create a separate test file (e.g., `range-parse-result.test.ts`) to import and use the `RangeParseResult` interface.\n3.  Instantiate a `RangeParseResult` object with sample data and assert that the properties are correctly assigned and accessible.\n4.  Check that the interface is properly exported and can be imported into other modules without errors.\n5.  Run the TypeScript compiler to ensure there are no type errors related to the new interface.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 1,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Define RangeParseResult interface with min, max, currency, and raw properties in types.ts",
+        "updatedAt": "2026-04-01T09:11:38.476Z"
       },
       {
         "id": 45,
@@ -1336,12 +1408,16 @@
         "description": "Create a new module for parsing monetary ranges, including helper functions and basic parsing logic.",
         "details": "1.  **Create `src/patterns/ranges.ts`:** Create a new file `src/patterns/ranges.ts`.\n2.  **Implement `normalizeInput` Helper:** Implement a `normalizeInput(input: string): string` function to normalize the input string by trimming whitespace and converting to lowercase.\n3.  **Define `rangeSeparatorRegex`:** Define a regular expression `rangeSeparatorRegex: RegExp` that matches common range separators (e.g., '-', '–', '—', 'to', 'through'). Ensure the regex is case-insensitive.\n4.  **Implement `parseRange` Function Stub:** Implement a `parseRange(input: string): RangeParseResult | null` function stub. This function should:\n    *   Use `normalizeInput` to preprocess the input.\n    *   Use `rangeSeparatorRegex` to split the input into two potential values.\n    *   Return a `RangeParseResult` object (defined in task 44) with `min` and `max` set to `null` initially. The `currency` should also be `null` and the `raw` field should contain the original input string.\n    *   Return `null` if the input is not a valid range.\n5.  **Implement `matchRange` Function Stub:** Implement a `matchRange(input: string): boolean` function stub. This function should:\n    *   Use `normalizeInput` to preprocess the input.\n    *   Use `rangeSeparatorRegex` to test if the input string contains a range separator.\n    *   Return `true` if a range separator is found, `false` otherwise.\n6.  **Export Functions and Regex:** Export `normalizeInput`, `rangeSeparatorRegex`, `parseRange`, and `matchRange` from the module.",
         "testStrategy": "1.  **Unit Tests for `normalizeInput`:**\n    *   Test with various input strings containing leading/trailing whitespace.\n    *   Test with mixed-case input strings.\n    *   Verify that the output is correctly trimmed and lowercased.\n2.  **Unit Tests for `rangeSeparatorRegex`:**\n    *   Test with different range separators ('-', '–', '—', 'to', 'through') in various positions within a string.\n    *   Verify that the regex correctly identifies the separators.\n    *   Verify that the regex is case-insensitive.\n3.  **Unit Tests for `matchRange`:**\n    *   Test with strings containing valid range separators.\n    *   Test with strings not containing range separators.\n    *   Test with empty strings.\n    *   Verify that the function returns the correct boolean value in each case.\n4.  **Unit Tests for `parseRange`:**\n    *   Test with strings containing valid range separators.\n    *   Test with strings not containing range separators.\n    *   Test with empty strings.\n    *   Verify that the function returns a `RangeParseResult` object with `null` values for `min` and `max` and the correct `raw` value when a valid range is detected.\n    *   Verify that the function returns `null` when an invalid range is detected.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          44
+          "44"
         ],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 3,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Create src/patterns/ranges.ts with normalizeInput, rangeSeparatorRegex, parseRange, and matchRange stub functions",
+        "updatedAt": "2026-04-03T08:01:05.175Z"
       },
       {
         "id": 46,
@@ -1349,21 +1425,25 @@
         "description": "Implement a helper function that can parse a single monetary value from any supported format, reusing existing pattern parsers internally. This function should return an object containing the parsed value and currency.",
         "details": "1.  **Create `parseSingleValue` Function:** Implement a function `parseSingleValue(input: string): { value: number; currency?: string } | null` in `src/patterns/ranges.ts`. This function will be the main entry point for parsing single monetary values.\n2.  **Normalize Input:** Use the `normalizeInput` helper function (Task 45) to normalize the input string.\n3.  **Iterate Through Parsers:** Iterate through the existing pattern parsers (Plain Numbers, Symbols, Abbreviations, Worded Numbers, Fractional Worded Numbers, Numeric-Word Combos, Slang Terms, Regional Formats).\n4.  **Apply Parsers:** Apply each parser to the normalized input string.\n5.  **Handle Parser Results:**\n    *   If a parser successfully parses the input, extract the numeric value and currency (if any).\n    *   If multiple parsers return a result, prioritize based on parser specificity (e.g., Regional Formats > Plain Numbers).\n6.  **Currency Normalization:** Use the currency normalization logic (Task 20) to normalize any detected currency to its ISO 4217 code.\n7.  **Return Result:** Return an object `{ value: number; currency?: string }` containing the parsed value and normalized currency (if detected). If no parser successfully parses the input, return `null`.",
         "testStrategy": "1.  **Unit Tests for `parseSingleValue`:**\n    *   Test with various input strings covering all supported formats (plain numbers, numbers with separators, magnitude suffixes, worded numbers, slang terms, regional formats).\n    *   Test with strings containing currency symbols, abbreviations, and names.\n    *   Test with strings that should not be parsed (e.g., invalid formats, non-monetary strings).\n    *   Verify that the function correctly extracts the numeric value and currency for each input string.\n    *   Verify that the function correctly normalizes the currency to its ISO 4217 code.\n    *   Verify that the function returns `null` for invalid input strings.\n2.  **Specific Test Cases:**\n    *   `'123'` -> `{ value: 123 }`\n    *   `'$100'` -> `{ value: 100, currency: 'USD' }`\n    *   `'USD 50'` -> `{ value: 50, currency: 'USD' }`\n    *   `'one hundred dollars'` -> `{ value: 100, currency: 'USD' }`\n    *   `'half a dollar'` -> `{ value: 0.5, currency: 'USD' }`\n    *   `'10k'` -> `{ value: 10000 }`\n    *   `'buck'` -> `{ value: 1, currency: 'USD' }`\n    *   `'1.234,56 €'` -> `{ value: 1234.56, currency: 'EUR' }`\n    *   `'invalid input'` -> `null`",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          10,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          19,
-          20,
-          45
+          "10",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "19",
+          "20",
+          "45"
         ],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 5,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Implement parseSingleValue that iterates through existing pattern parsers to parse single monetary values",
+        "updatedAt": "2026-04-03T19:19:08.021Z"
       },
       {
         "id": 47,
@@ -1371,107 +1451,126 @@
         "description": "Add support for parsing ranges with currency symbols like \"$500 - $1000\", \"$500-$1000\", \"$500 to $1000\", \"€50 - €100\", \"$500 - 1000\" (symbol on first value only) in ranges.ts. Reuse existing symbol parsing logic.",
         "details": "1.  **Locate `ranges.ts`:** Open the `src/patterns/ranges.ts` file.\n2.  **Implement Symbol-Based Range Parsing:** Modify the range parsing logic to handle currency symbols at the beginning of the range. This will likely involve:\n    *   Checking for a currency symbol at the start of each value in the range.\n    *   Using the `parseSingleValue` helper function (Task 46) to parse each value, extracting the currency and numeric amount.\n    *   Handling cases where the currency symbol is only present on the first value in the range (e.g., \"$500 - 1000\"). In such cases, apply the currency from the first value to the second value if no currency symbol is present on the second value.\n    *   Ensure that the parsing logic correctly handles different range separators (e.g., \"-\", \"to\", etc.) as defined in `rangeSeparatorRegex`.\n3.  **Reuse `parseSingleValue`:** Utilize the `parseSingleValue` helper function (Task 46) to parse the individual values within the range. This ensures consistency with existing parsing logic for single monetary values.\n4.  **Reuse Symbol Parsing:** Leverage the existing symbol parsing logic from `patterns/symbols.ts` (Task 12) to identify and extract currency symbols.\n5.  **Handle Edge Cases:** Consider edge cases such as:\n    *   Invalid currency symbols.\n    *   Missing values in the range.\n    *   Ranges with more than two values (should be treated as invalid).\n    *   Conflicting currency symbols (e.g., \"$500 - €1000\").\n6.  **Return `RangeParseResult`:** Ensure the parsing logic returns a `RangeParseResult` object (Task 44) with the correct `min`, `max`, and `currency` values.\n7.  **Error Handling:** Implement appropriate error handling to gracefully handle invalid input and prevent the parser from crashing.\n8.  **Code Comments:** Add clear and concise code comments to explain the parsing logic and the handling of different cases.",
         "testStrategy": "1.  **Unit Tests for Symbol-Based Ranges:**\n    *   Write unit tests to cover the following cases:\n        *   Ranges with currency symbols on both values (e.g., \"$500 - $1000\", \"€50 - €100\").\n        *   Ranges with a currency symbol only on the first value (e.g., \"$500 - 1000\").\n        *   Ranges with different range separators (e.g., \"$500 to $1000\", \"$500-$1000\").\n        *   Ranges with invalid currency symbols (should return null or an error).\n        *   Ranges with missing values (should return null or an error).\n        *   Ranges with conflicting currency symbols (e.g., \"$500 - €1000\") - define expected behavior (error or take first currency).\n        *   Ranges with whitespace variations (e.g., \" $500 - $1000 \").\n    *   Verify that the `min`, `max`, and `currency` values in the `RangeParseResult` object are correctly populated.\n    *   Verify that the tests cover different currency symbols ($, €, £, etc.).\n2.  **Integration Tests:**\n    *   Write integration tests to ensure that the symbol-based range parsing logic integrates correctly with the `parseMoney` and `parseAll` functions (Tasks 21 and 22).\n    *   Test with input strings containing multiple monetary expressions, including symbol-based ranges.\n3.  **Regression Tests:**\n    *   Run existing unit tests to ensure that the changes do not introduce any regressions in the existing parsing logic.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          12,
-          44,
-          45,
-          46
+          "12",
+          "44",
+          "45",
+          "46"
         ],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 4,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add symbol-based range parsing using parseSingleValue for each side of the range",
+        "updatedAt": "2026-04-03T19:24:59.431Z"
       },
       {
         "id": 48,
         "title": "Implement ISO code range parsing in ranges.ts",
+        "status": "done",
         "description": "Add support for parsing ranges with ISO currency codes like \"100 - 200 USD\", handling both prefix and suffix ISO code positions. This task extends the range parsing functionality to recognize currency codes within monetary ranges.",
-        "details": "1.  **Extend `parseSingleValue` Function:** Modify the `parseSingleValue` function in `src/patterns/ranges.ts` to detect and handle ISO currency codes within the input string.\n2.  **Currency Code Detection:** Implement logic to identify currency codes (e.g., \"USD\", \"EUR\") either before or after the numeric values in the range. Leverage existing currency normalization logic (Task 20) to ensure consistent handling of currency codes.\n3.  **Range Parsing Logic:** Update the range parsing logic to correctly extract the currency code and associate it with the parsed values. Ensure that the currency code is consistently applied to both the minimum and maximum values of the range.\n4.  **Handle Prefix and Suffix Positions:** Implement parsing logic that correctly identifies and extracts currency codes regardless of whether they appear before or after the numeric values (e.g., \"USD 100 - 200\" vs. \"100 - 200 USD\").\n5.  **Update `RangeParseResult`:** Ensure the `RangeParseResult` interface is correctly populated with the parsed currency code.\n6.  **Error Handling:** Implement error handling for cases where the currency code is invalid or cannot be normalized.",
-        "testStrategy": "1.  **Unit Tests for ISO Code Parsing:**\n    *   Test with various input strings containing ISO currency codes in both prefix and suffix positions (e.g., \"100 - 200 USD\", \"USD 100 - 200\", \"100-200 EUR\", \"EUR 100 to 200\").\n    *   Test with different range separators (e.g., \"-\", \"to\", \"through\").\n    *   Test with various currency codes (e.g., \"USD\", \"EUR\", \"GBP\", \"CAD\").\n    *   Test with invalid currency codes to ensure proper error handling.\n    *   Test with ranges where only one value has a currency code (should default to null or throw an error based on configuration).\n2.  **Integration Tests:**\n    *   Integrate the ISO code parsing logic into the existing range parsing tests to ensure compatibility and correct behavior.\n3.  **Verify `RangeParseResult`:**\n    *   Verify that the `RangeParseResult` object is correctly populated with the parsed currency code, minimum value, and maximum value.",
-        "status": "pending",
         "dependencies": [
-          10,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          19,
-          20,
-          45,
-          46
+          "10",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "19",
+          "20",
+          "45",
+          "46"
         ],
         "priority": "high",
-        "subtasks": []
+        "details": "1.  **Extend `parseSingleValue` Function:** Modify the `parseSingleValue` function in `src/patterns/ranges.ts` to detect and handle ISO currency codes within the input string.\n2.  **Currency Code Detection:** Implement logic to identify currency codes (e.g., \"USD\", \"EUR\") either before or after the numeric values in the range. Leverage existing currency normalization logic (Task 20) to ensure consistent handling of currency codes.\n3.  **Range Parsing Logic:** Update the range parsing logic to correctly extract the currency code and associate it with the parsed values. Ensure that the currency code is consistently applied to both the minimum and maximum values of the range.\n4.  **Handle Prefix and Suffix Positions:** Implement parsing logic that correctly identifies and extracts currency codes regardless of whether they appear before or after the numeric values (e.g., \"USD 100 - 200\" vs. \"100 - 200 USD\").\n5.  **Update `RangeParseResult`:** Ensure the `RangeParseResult` interface is correctly populated with the parsed currency code.\n6.  **Error Handling:** Implement error handling for cases where the currency code is invalid or cannot be normalized.",
+        "testStrategy": "1.  **Unit Tests for ISO Code Parsing:**\n    *   Test with various input strings containing ISO currency codes in both prefix and suffix positions (e.g., \"100 - 200 USD\", \"USD 100 - 200\", \"100-200 EUR\", \"EUR 100 to 200\").\n    *   Test with different range separators (e.g., \"-\", \"to\", \"through\").\n    *   Test with various currency codes (e.g., \"USD\", \"EUR\", \"GBP\", \"CAD\").\n    *   Test with invalid currency codes to ensure proper error handling.\n    *   Test with ranges where only one value has a currency code (should default to null or throw an error based on configuration).\n2.  **Integration Tests:**\n    *   Integrate the ISO code parsing logic into the existing range parsing tests to ensure compatibility and correct behavior.\n3.  **Verify `RangeParseResult`:**\n    *   Verify that the `RangeParseResult` object is correctly populated with the parsed currency code, minimum value, and maximum value.",
+        "subtasks": [],
+        "complexity": 4,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add ISO currency code detection for ranges, handling both prefix and suffix positions"
       },
       {
         "id": 49,
         "title": "Implement Magnitude Suffix Range Parsing",
+        "status": "done",
         "description": "Add support for parsing monetary ranges with magnitude suffixes (k, m, b) in ranges.ts, handling mixed magnitudes and currency symbols.",
-        "details": "1.  **Modify `parseSingleValue` Function:** Update the `parseSingleValue` function in `src/patterns/ranges.ts` to correctly parse monetary values with magnitude suffixes (k, m, b). This will involve checking for and extracting the suffix, then multiplying the numeric value accordingly.\n2.  **Handle Mixed Magnitudes:** Ensure the parsing logic can handle ranges with mixed magnitudes (e.g., \"200k - 1M\"). This might require parsing each value in the range separately and then comparing/combining them.\n3.  **Currency Symbol Handling:** Extend the parsing logic to correctly handle currency symbols within the range string (e.g., \"$10k - $20k\", \"10k - 20k USD\"). Ensure the currency is consistently extracted and applied to both the minimum and maximum values.\n4.  **Update Range Parsing Logic:** Modify the range parsing logic to utilize the updated `parseSingleValue` function to parse the individual values within the range.\n5.  **Error Handling:** Implement error handling to gracefully handle invalid magnitude suffixes or malformed range strings.\n6.  **Considerations:**\n    *   Ensure that the magnitude suffixes are case-insensitive (e.g., 'k' and 'K' should both be recognized).\n    *   Handle potential whitespace variations around the magnitude suffixes and currency symbols.\n    *   Consider the impact on performance and optimize the parsing logic if necessary.",
-        "testStrategy": "1.  **Unit Tests for `parseSingleValue`:**\n    *   Test with various input strings containing magnitude suffixes (e.g., \"10k\", \"200k\", \"1M\", \"2M\", \"1b\", \"10B\").\n    *   Test with mixed magnitudes (e.g., \"200k\", \"1M\").\n    *   Test with currency symbols (e.g., \"$10k\", \"10k USD\", \"€2M\").\n    *   Test with whitespace variations (e.g., \"10 k\", \"$ 10k\", \"10k USD\").\n    *   Test with invalid magnitude suffixes (e.g., \"10x\", \"200z\").\n2.  **Integration Tests for Range Parsing:**\n    *   Test with various range strings containing magnitude suffixes (e.g., \"10k - 20k\", \"200k - 1M\", \"1M - 2M\", \"$10k - $20k\", \"10k - 20k USD\").\n    *   Test with mixed magnitudes (e.g., \"200k - 1M\").\n    *   Test with different currency symbols and placements.\n    *   Test with invalid range strings (e.g., missing separator, invalid magnitude suffixes).\n3.  **Verify Correct Value Extraction:**\n    *   Ensure that the parsed minimum and maximum values are correctly extracted and converted to numeric values.\n    *   Verify that the currency is correctly identified and associated with the range.\n4.  **Error Handling Verification:**\n    *   Ensure that appropriate errors are thrown or handled for invalid input strings.",
-        "status": "pending",
         "dependencies": [
-          46,
-          10,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          19,
-          20,
-          45
+          "46",
+          "10",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "19",
+          "20",
+          "45"
         ],
         "priority": "high",
-        "subtasks": []
+        "details": "1.  **Modify `parseSingleValue` Function:** Update the `parseSingleValue` function in `src/patterns/ranges.ts` to correctly parse monetary values with magnitude suffixes (k, m, b). This will involve checking for and extracting the suffix, then multiplying the numeric value accordingly.\n2.  **Handle Mixed Magnitudes:** Ensure the parsing logic can handle ranges with mixed magnitudes (e.g., \"200k - 1M\"). This might require parsing each value in the range separately and then comparing/combining them.\n3.  **Currency Symbol Handling:** Extend the parsing logic to correctly handle currency symbols within the range string (e.g., \"$10k - $20k\", \"10k - 20k USD\"). Ensure the currency is consistently extracted and applied to both the minimum and maximum values.\n4.  **Update Range Parsing Logic:** Modify the range parsing logic to utilize the updated `parseSingleValue` function to parse the individual values within the range.\n5.  **Error Handling:** Implement error handling to gracefully handle invalid magnitude suffixes or malformed range strings.\n6.  **Considerations:**\n    *   Ensure that the magnitude suffixes are case-insensitive (e.g., 'k' and 'K' should both be recognized).\n    *   Handle potential whitespace variations around the magnitude suffixes and currency symbols.\n    *   Consider the impact on performance and optimize the parsing logic if necessary.",
+        "testStrategy": "1.  **Unit Tests for `parseSingleValue`:**\n    *   Test with various input strings containing magnitude suffixes (e.g., \"10k\", \"200k\", \"1M\", \"2M\", \"1b\", \"10B\").\n    *   Test with mixed magnitudes (e.g., \"200k\", \"1M\").\n    *   Test with currency symbols (e.g., \"$10k\", \"10k USD\", \"€2M\").\n    *   Test with whitespace variations (e.g., \"10 k\", \"$ 10k\", \"10k USD\").\n    *   Test with invalid magnitude suffixes (e.g., \"10x\", \"200z\").\n2.  **Integration Tests for Range Parsing:**\n    *   Test with various range strings containing magnitude suffixes (e.g., \"10k - 20k\", \"200k - 1M\", \"1M - 2M\", \"$10k - $20k\", \"10k - 20k USD\").\n    *   Test with mixed magnitudes (e.g., \"200k - 1M\").\n    *   Test with different currency symbols and placements.\n    *   Test with invalid range strings (e.g., missing separator, invalid magnitude suffixes).\n3.  **Verify Correct Value Extraction:**\n    *   Ensure that the parsed minimum and maximum values are correctly extracted and converted to numeric values.\n    *   Verify that the currency is correctly identified and associated with the range.\n4.  **Error Handling Verification:**\n    *   Ensure that appropriate errors are thrown or handled for invalid input strings.",
+        "subtasks": [],
+        "complexity": 4,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Handle magnitude suffixes (k, m, b) in range values, including mixed magnitudes"
       },
       {
         "id": 50,
         "title": "Implement Slang Term Range Parsing in ranges.ts",
+        "status": "done",
         "description": "Add support for parsing ranges with slang terms like \"500 to 1000 bucks\", \"50 - 100 quid\", \"five to ten bucks\" in ranges.ts. Integrate with existing slangTerms.ts parser.",
-        "details": "1.  **Update `parseSingleValue` Function:** Modify the `parseSingleValue(input: string)` function in `src/patterns/ranges.ts` to correctly handle slang terms within range expressions.\n2.  **Slang Term Integration:** Ensure that the existing slang term parser (`src/patterns/slangTerms.ts` and Task 17) is utilized within `parseSingleValue` to identify and extract slang terms.\n3.  **Range Parsing Logic:** Adapt the range parsing logic to accommodate slang terms. This includes correctly identifying the currency associated with the slang term and extracting the numeric values.\n4.  **Handle Mixed Units:** Consider cases where slang terms might be mixed with standard currency symbols or abbreviations (e.g., \"50 USD to 100 bucks\"). Implement logic to handle such scenarios, potentially prioritizing explicit currency symbols or abbreviations.\n5.  **Update `rangeSeparatorRegex` (if needed):** Review the `rangeSeparatorRegex` in `src/patterns/ranges.ts` (defined in Task 45) and update it if necessary to correctly handle range separators used with slang terms.\n6.  **Error Handling:** Implement appropriate error handling for cases where slang terms cannot be parsed or are used in invalid range expressions.\n7.  **Return Values:** Ensure that the `parseSingleValue` function returns the correct value and currency information when slang terms are successfully parsed within a range.",
-        "testStrategy": "1.  **Unit Tests for `parseSingleValue` with Slang Terms:**\n    *   Test with various input strings containing slang terms in range expressions (e.g., \"500 to 1000 bucks\", \"50 - 100 quid\", \"five to ten bucks\").\n    *   Test with different range separators (e.g., \"to\", \"-\", \"–\") used with slang terms.\n    *   Test with mixed units (e.g., \"50 USD to 100 bucks\", \"10 EUR - 20 quid\").\n    *   Test with invalid or unparseable slang term expressions.\n    *   Verify that the correct numeric values and currency information are extracted and returned.\n2.  **Integration Tests:**\n    *   Create integration tests that combine slang term range parsing with other range parsing scenarios to ensure compatibility and correct behavior.\n3.  **Edge Cases:**\n    *   Test with edge cases such as very large or very small numbers combined with slang terms.\n    *   Test with different regional variations in slang term usage (if applicable).",
-        "status": "pending",
         "dependencies": [
-          17,
-          45,
-          46
+          "17",
+          "45",
+          "46"
         ],
         "priority": "medium",
-        "subtasks": []
+        "details": "1.  **Update `parseSingleValue` Function:** Modify the `parseSingleValue(input: string)` function in `src/patterns/ranges.ts` to correctly handle slang terms within range expressions.\n2.  **Slang Term Integration:** Ensure that the existing slang term parser (`src/patterns/slangTerms.ts` and Task 17) is utilized within `parseSingleValue` to identify and extract slang terms.\n3.  **Range Parsing Logic:** Adapt the range parsing logic to accommodate slang terms. This includes correctly identifying the currency associated with the slang term and extracting the numeric values.\n4.  **Handle Mixed Units:** Consider cases where slang terms might be mixed with standard currency symbols or abbreviations (e.g., \"50 USD to 100 bucks\"). Implement logic to handle such scenarios, potentially prioritizing explicit currency symbols or abbreviations.\n5.  **Update `rangeSeparatorRegex` (if needed):** Review the `rangeSeparatorRegex` in `src/patterns/ranges.ts` (defined in Task 45) and update it if necessary to correctly handle range separators used with slang terms.\n6.  **Error Handling:** Implement appropriate error handling for cases where slang terms cannot be parsed or are used in invalid range expressions.\n7.  **Return Values:** Ensure that the `parseSingleValue` function returns the correct value and currency information when slang terms are successfully parsed within a range.",
+        "testStrategy": "1.  **Unit Tests for `parseSingleValue` with Slang Terms:**\n    *   Test with various input strings containing slang terms in range expressions (e.g., \"500 to 1000 bucks\", \"50 - 100 quid\", \"five to ten bucks\").\n    *   Test with different range separators (e.g., \"to\", \"-\", \"–\") used with slang terms.\n    *   Test with mixed units (e.g., \"50 USD to 100 bucks\", \"10 EUR - 20 quid\").\n    *   Test with invalid or unparseable slang term expressions.\n    *   Verify that the correct numeric values and currency information are extracted and returned.\n2.  **Integration Tests:**\n    *   Create integration tests that combine slang term range parsing with other range parsing scenarios to ensure compatibility and correct behavior.\n3.  **Edge Cases:**\n    *   Test with edge cases such as very large or very small numbers combined with slang terms.\n    *   Test with different regional variations in slang term usage (if applicable).",
+        "subtasks": [],
+        "complexity": 4,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Integrate slang term parsing (bucks, quid) into range expressions"
       },
       {
         "id": 51,
         "title": "Implement Worded Number Range Parsing in ranges.ts",
+        "status": "done",
         "description": "Add support for parsing ranges with worded numbers like 'five to ten dollars' in ranges.ts, integrating with the existing wordedNumbers.ts parser and parseSingleValue function.",
-        "details": "1.  **Update `src/patterns/ranges.ts`:** Modify the `parseRange` function (or create it if it doesn't exist) in `src/patterns/ranges.ts` to handle worded number ranges.\n2.  **Leverage `parseSingleValue`:** Use the `parseSingleValue` function (Task 46) to parse the individual values within the range string.\n3.  **Worded Number Detection:** Enhance the range parsing logic to detect range separators (e.g., 'to', 'through') between worded numbers. Ensure the `rangeSeparatorRegex` (Task 45) is used effectively.\n4.  **Integration with `wordedNumbers.ts`:** Ensure that the existing worded number parsing logic (Task 14) is correctly utilized via `parseSingleValue` when encountering worded numbers in the range string.\n5.  **Currency Handling:** Handle currency symbols or abbreviations that may appear before, after, or within the worded number range (e.g., 'five to ten dollars', 'USD five to ten').\n6.  **Error Handling:** Implement error handling to gracefully manage cases where the input string is not a valid worded number range.\n7.  **Update `RangeParseResult`:** Ensure the parsed values are correctly assigned to the `min` and `max` properties of the `RangeParseResult` interface (Task 44).\n8.  **Consider edge cases:** Handle cases where only one value is provided (e.g., \"up to five dollars\") or where the range is open-ended.\n9.  **Normalization:** Ensure input normalization (Task 45) is applied before parsing to handle variations in spacing and casing.",
-        "testStrategy": "1.  **Unit Tests for Worded Number Ranges:**\n    *   Test with various worded number ranges, including different currencies and range separators (e.g., 'five to ten dollars', 'one hundred to two hundred euros', 'fifty - one hundred pounds').\n    *   Test with ranges where the currency is specified before, after, or within the numbers (e.g., 'USD five to ten', 'five to ten USD').\n    *   Test with single-value ranges (e.g., 'up to five dollars').\n    *   Test with invalid inputs to ensure proper error handling.\n2.  **Integration Tests:**\n    *   Create integration tests that combine worded number ranges with other types of monetary expressions to ensure compatibility.\n3.  **Edge Case Testing:**\n    *   Test with unusual or ambiguous inputs to verify the parser's robustness.\n4.  **Verify `RangeParseResult`:**\n    *   Ensure that the `min`, `max`, and `currency` properties of the `RangeParseResult` object are correctly populated for all test cases.",
-        "status": "pending",
         "dependencies": [
-          14,
-          44,
-          45,
-          46
+          "14",
+          "44",
+          "45",
+          "46"
         ],
         "priority": "medium",
-        "subtasks": []
+        "details": "1.  **Update `src/patterns/ranges.ts`:** Modify the `parseRange` function (or create it if it doesn't exist) in `src/patterns/ranges.ts` to handle worded number ranges.\n2.  **Leverage `parseSingleValue`:** Use the `parseSingleValue` function (Task 46) to parse the individual values within the range string.\n3.  **Worded Number Detection:** Enhance the range parsing logic to detect range separators (e.g., 'to', 'through') between worded numbers. Ensure the `rangeSeparatorRegex` (Task 45) is used effectively.\n4.  **Integration with `wordedNumbers.ts`:** Ensure that the existing worded number parsing logic (Task 14) is correctly utilized via `parseSingleValue` when encountering worded numbers in the range string.\n5.  **Currency Handling:** Handle currency symbols or abbreviations that may appear before, after, or within the worded number range (e.g., 'five to ten dollars', 'USD five to ten').\n6.  **Error Handling:** Implement error handling to gracefully manage cases where the input string is not a valid worded number range.\n7.  **Update `RangeParseResult`:** Ensure the parsed values are correctly assigned to the `min` and `max` properties of the `RangeParseResult` interface (Task 44).\n8.  **Consider edge cases:** Handle cases where only one value is provided (e.g., \"up to five dollars\") or where the range is open-ended.\n9.  **Normalization:** Ensure input normalization (Task 45) is applied before parsing to handle variations in spacing and casing.",
+        "testStrategy": "1.  **Unit Tests for Worded Number Ranges:**\n    *   Test with various worded number ranges, including different currencies and range separators (e.g., 'five to ten dollars', 'one hundred to two hundred euros', 'fifty - one hundred pounds').\n    *   Test with ranges where the currency is specified before, after, or within the numbers (e.g., 'USD five to ten', 'five to ten USD').\n    *   Test with single-value ranges (e.g., 'up to five dollars').\n    *   Test with invalid inputs to ensure proper error handling.\n2.  **Integration Tests:**\n    *   Create integration tests that combine worded number ranges with other types of monetary expressions to ensure compatibility.\n3.  **Edge Case Testing:**\n    *   Test with unusual or ambiguous inputs to verify the parser's robustness.\n4.  **Verify `RangeParseResult`:**\n    *   Ensure that the `min`, `max`, and `currency` properties of the `RangeParseResult` object are correctly populated for all test cases.",
+        "subtasks": [],
+        "complexity": 4,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Support worded number ranges like 'five to ten dollars'"
       },
       {
         "id": 52,
         "title": "Implement Contextual Phrase Range Parsing in ranges.ts",
+        "status": "done",
         "description": "Add support for parsing contextual range phrases like \"between $100 and $200\" and \"from $50 to $100\" in the ranges.ts module. This involves creating new parsing logic to identify and extract monetary values from these specific phrase patterns.",
-        "details": "1.  **Update `src/patterns/ranges.ts`:** Modify the `ranges.ts` file to include the new parsing logic.\n2.  **Implement `parseContextualRange` Function:** Create a function `parseContextualRange(input: string): RangeParseResult | null` within `ranges.ts`. This function will handle the parsing of contextual range phrases.\n3.  **Define Regex Patterns:** Define regular expression patterns to match the \"between X and Y\" and \"from X to Y\" patterns, ensuring they are case-insensitive and can handle various currency symbols/codes and number formats.\n4.  **Use `parseSingleValue`:** Utilize the `parseSingleValue` helper function (Task 46) to extract the individual monetary values (X and Y) from the matched phrases.\n5.  **Handle Currency Consistency:** Ensure that both values (X and Y) have the same currency. If currencies differ or are not present, handle the scenario appropriately (e.g., return null or a specific error).\n6.  **Create RangeParseResult:** Construct and return a `RangeParseResult` object (defined in Task 44) containing the min, max, and currency values. Ensure `min` and `max` are correctly assigned based on the parsed values.\n7.  **Integrate with Main Parsing Logic:** Integrate the `parseContextualRange` function into the main parsing logic within `ranges.ts`, ensuring it's called appropriately when contextual range phrases are detected.\n8.  **Error Handling:** Implement robust error handling to manage cases where the input string does not match the expected patterns or contains invalid monetary values.",
-        "testStrategy": "1.  **Unit Tests for `parseContextualRange`:**\n    *   Test with various input strings containing \"between X and Y\" and \"from X to Y\" phrases, covering different currency symbols/codes, number formats, and whitespace variations.\n    *   Test with strings where X and Y are in different currencies or one/both are missing currency information. Verify that the function returns `null` or handles the error appropriately.\n    *   Test with strings where X is greater than Y and vice versa to ensure `min` and `max` are correctly assigned in the `RangeParseResult`.\n    *   Test with invalid input strings that do not match the expected patterns. Verify that the function returns `null`.\n2.  **Integration Tests:**\n    *   Create integration tests that combine contextual range phrases with other types of monetary expressions to ensure the parsing logic works correctly in complex scenarios.\n3.  **Edge Cases:**\n    *   Test with very large or very small numbers to ensure the parsing logic handles them correctly.\n    *   Test with strings containing special characters or potentially malicious input to ensure the parsing logic is robust and secure.",
-        "status": "pending",
         "dependencies": [
-          44,
-          45,
-          46
+          "44",
+          "45",
+          "46"
         ],
         "priority": "medium",
-        "subtasks": []
+        "details": "1.  **Update `src/patterns/ranges.ts`:** Modify the `ranges.ts` file to include the new parsing logic.\n2.  **Implement `parseContextualRange` Function:** Create a function `parseContextualRange(input: string): RangeParseResult | null` within `ranges.ts`. This function will handle the parsing of contextual range phrases.\n3.  **Define Regex Patterns:** Define regular expression patterns to match the \"between X and Y\" and \"from X to Y\" patterns, ensuring they are case-insensitive and can handle various currency symbols/codes and number formats.\n4.  **Use `parseSingleValue`:** Utilize the `parseSingleValue` helper function (Task 46) to extract the individual monetary values (X and Y) from the matched phrases.\n5.  **Handle Currency Consistency:** Ensure that both values (X and Y) have the same currency. If currencies differ or are not present, handle the scenario appropriately (e.g., return null or a specific error).\n6.  **Create RangeParseResult:** Construct and return a `RangeParseResult` object (defined in Task 44) containing the min, max, and currency values. Ensure `min` and `max` are correctly assigned based on the parsed values.\n7.  **Integrate with Main Parsing Logic:** Integrate the `parseContextualRange` function into the main parsing logic within `ranges.ts`, ensuring it's called appropriately when contextual range phrases are detected.\n8.  **Error Handling:** Implement robust error handling to manage cases where the input string does not match the expected patterns or contains invalid monetary values.",
+        "testStrategy": "1.  **Unit Tests for `parseContextualRange`:**\n    *   Test with various input strings containing \"between X and Y\" and \"from X to Y\" phrases, covering different currency symbols/codes, number formats, and whitespace variations.\n    *   Test with strings where X and Y are in different currencies or one/both are missing currency information. Verify that the function returns `null` or handles the error appropriately.\n    *   Test with strings where X is greater than Y and vice versa to ensure `min` and `max` are correctly assigned in the `RangeParseResult`.\n    *   Test with invalid input strings that do not match the expected patterns. Verify that the function returns `null`.\n2.  **Integration Tests:**\n    *   Create integration tests that combine contextual range phrases with other types of monetary expressions to ensure the parsing logic works correctly in complex scenarios.\n3.  **Edge Cases:**\n    *   Test with very large or very small numbers to ensure the parsing logic handles them correctly.\n    *   Test with strings containing special characters or potentially malicious input to ensure the parsing logic is robust and secure.",
+        "subtasks": [],
+        "complexity": 5,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Handle 'between X and Y' and 'from X to Y' phrase patterns"
       },
       {
         "id": 53,
@@ -1479,22 +1578,26 @@
         "description": "Add support for parsing ranges with mixed formats like \"10k - 1M\" (different magnitudes), \"ten to 100 dollars\" (worded + numeric), \"$50 - 100\" (symbol on one side) in ranges.ts. The `parseSingleValue` helper should handle each side independently.",
         "details": "1. **Modify `parseSingleValue` Function:** Update the `parseSingleValue` function in `src/patterns/ranges.ts` to handle mixed formats within range expressions. This will involve checking for and correctly parsing different magnitude suffixes, worded and numeric combinations, and currency symbols on either side of the range.\n2. **Handle Mixed Magnitudes:** Ensure the parsing logic can handle ranges with mixed magnitudes (e.g., \"200k - 1M\"). This might require parsing each value in the range separately and then comparing/combining the results.\n3. **Handle Worded and Numeric Combinations:** Implement logic to handle ranges that combine worded numbers and numeric values (e.g., \"ten to 100 dollars\"). This will require correctly parsing the worded number and converting it to its numeric equivalent.\n4. **Handle Currency Symbols on One Side:** Adapt the parsing logic to accommodate currency symbols appearing only on one side of the range (e.g., \"$50 - 100\"). The currency should be applied to both values in the range.\n5. **Reuse Existing Parsers:** Ensure that the existing pattern parsers (Plain Numbers, Symbols, Abbreviations, Worded Numbers, Fractional Worded Numbers, Magnitude Suffixes, Slang Terms, Regional Formats) are reused within `parseSingleValue` to handle the different formats.",
         "testStrategy": "1. **Unit Tests for `parseSingleValue` with Mixed Formats:**\n    * Test with various input strings containing mixed formats in range expressions (e.g., \"10k - 1M\", \"ten to 100 dollars\", \"$50 - 100\", \"50 - 100 bucks\", \"five to 100\").\n    * Test with different range separators (e.g., \"to\", \"-\", \"–\") used with mixed formats.\n    * Test with currency symbols on the first value only (e.g., \"$50 - 100\", \"€20 - 30\").\n    * Test with magnitude suffixes on one or both values (e.g., \"10k - 1M\", \"10 - 1M\").\n2. **Integration Tests for Range Parsing:**\n    * Write integration tests to verify that the range parsing logic correctly handles mixed formats and returns the expected `RangeParseResult` object.\n    * Ensure that the `min`, `max`, and `currency` properties of the `RangeParseResult` object are correctly populated.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          10,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          19,
-          20,
-          45,
-          46
+          "10",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "19",
+          "20",
+          "45",
+          "46"
         ],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 5,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Handle heterogeneous formats like '10k - 1M', 'ten to 100 dollars', '$50 - 100'",
+        "updatedAt": "2026-04-03T19:39:02.027Z"
       },
       {
         "id": 54,
@@ -1502,14 +1605,18 @@
         "description": "Implement validation logic in `ranges.ts` to ensure that the minimum value of a range is less than the maximum value, throwing a `MoneyParseError` if the range is invalid. This validation should be called within the `parseRange` function before returning the results.",
         "details": "1.  **Locate `ranges.ts`:** Open the `src/patterns/ranges.ts` file.\n2.  **Implement `validateRange` Function:** Create a new function `validateRange(min: number | null, max: number | null): void` within `ranges.ts`. This function should:\n    *   Check if both `min` and `max` are not `null`.\n    *   If both are numbers, compare `min` and `max`. If `min >= max`, throw a `MoneyParseError` with a descriptive message: \"Invalid range: min (X) must be less than max (Y)\", where X and Y are the actual values of min and max.\n3.  **Integrate `validateRange` in `parseRange`:** Modify the `parseRange` function to call `validateRange(min, max)` before returning the `RangeParseResult`. This ensures that all parsed ranges are validated before being returned.\n4.  **MoneyParseError:** Ensure that MoneyParseError is properly imported and used.",
         "testStrategy": "1.  **Unit Tests for `validateRange`:**\n    *   Create a new test file or add to an existing one for range parsing.\n    *   Write unit tests to cover the following cases:\n        *   Valid range: `min` less than `max` (e.g., `validateRange(10, 20)` should not throw an error).\n        *   Invalid range: `min` greater than `max` (e.g., `validateRange(20, 10)` should throw a `MoneyParseError` with the correct message).\n        *   Invalid range: `min` equal to `max` (e.g., `validateRange(10, 10)` should throw a `MoneyParseError` with the correct message).\n        *   `min` is `null`, `max` is a number (e.g., `validateRange(null, 20)` should not throw an error).\n        *   `min` is a number, `max` is `null` (e.g., `validateRange(10, null)` should not throw an error).\n        *   Both `min` and `max` are `null` (e.g., `validateRange(null, null)` should not throw an error).\n2.  **Integration Tests for `parseRange`:**\n    *   Write integration tests that call `parseRange` with various range strings.\n    *   Verify that `parseRange` throws a `MoneyParseError` when given an invalid range string (e.g., \"$20 - $10\").\n    *   Verify that `parseRange` returns a valid `RangeParseResult` when given a valid range string (e.g., \"$10 - $20\").",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          45,
-          44,
-          47
+          "45",
+          "44",
+          "47"
         ],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 2,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add validateRange function to check min < max and throw MoneyParseError if invalid",
+        "updatedAt": "2026-04-03T19:33:54.266Z"
       },
       {
         "id": 55,
@@ -1517,17 +1624,21 @@
         "description": "Implement the `matchRange(input: string): RangeParseResult | null` function in `ranges.ts` to find and parse a range from a string. This function will be used by the rangeDetectionStep in the pipeline and should return null if no range is found.",
         "details": "1.  **Locate `ranges.ts`:** Open the `src/patterns/ranges.ts` file.\n2.  **Implement `matchRange` Function:** Implement the `matchRange` function with the following signature: `matchRange(input: string): RangeParseResult | null`.\n3.  **Normalize Input:** Use the `normalizeInput` helper function (Task 45) to normalize the input string.\n4.  **Range Detection Logic:** Implement logic to detect if the input string contains a range. This might involve checking for range separators (using `rangeSeparatorRegex` from Task 45) or other patterns indicative of a range.\n5.  **Parsing Logic:** If a range is detected, use the existing range parsing logic (including `parseSingleValue` from Task 46 and symbol-based range parsing from Task 47) to extract the minimum and maximum values of the range.\n6.  **Return Value:**\n    *   If a range is successfully parsed, return a `RangeParseResult` object (as defined in Task 44) containing the `min`, `max`, `currency`, and `raw` values.\n    *   If no range is found, return `null`.\n7.  **Error Handling:** Handle any potential errors during parsing (e.g., invalid range format) gracefully. Consider logging errors or returning a specific error code in the `RangeParseResult` (if applicable).\n8.  **Integration with Pipeline:** Ensure the `matchRange` function is designed to be easily integrated into the regex pipeline as a range detection step.",
         "testStrategy": "1.  **Unit Tests for `matchRange`:**\n    *   Create a new test file or add to an existing one for range parsing.\n    *   Write unit tests to cover the following cases:\n        *   Valid ranges with various formats (e.g., \"$500 - $1000\", \"50 to 100 USD\", \"10k - 1M\", \"five to ten dollars\").\n        *   Ranges with different range separators (e.g., \"-\", \"–\", \"to\", \"through\").\n        *   Ranges with currency symbols on both values, only on the first value, or no currency symbols.\n        *   Invalid ranges (e.g., \"100 - 50\", where min > max). These should be handled gracefully (e.g., by throwing an error or returning null).\n        *   Input strings that do not contain a range. These should return `null`.\n        *   Edge cases and boundary conditions.\n2.  **Integration Tests:**\n    *   Create integration tests to verify that the `matchRange` function can be seamlessly integrated into the regex pipeline.\n    *   Test with various input strings to ensure the pipeline correctly identifies and parses ranges using the `matchRange` function.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          44,
-          45,
-          46,
-          47,
-          53,
-          54
+          "44",
+          "45",
+          "46",
+          "47",
+          "53",
+          "54"
         ],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 3,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Implement matchRange that uses normalizeInput and rangeSeparatorRegex to detect and parse ranges",
+        "updatedAt": "2026-04-03T19:45:55.797Z"
       },
       {
         "id": 56,
@@ -1535,17 +1646,21 @@
         "description": "Extend the PipelineContext interface in regexPipeline.ts with isRange, min, and max fields to support range expression detection. These fields will be populated when a range expression is identified during parsing.",
         "details": "1.  **Locate `regexPipeline.ts`:** Open the `src/regexPipeline.ts` file.\n2.  **Extend `PipelineContext` Interface:** Modify the `PipelineContext` interface to include the following properties:\n    *   `isRange?: boolean` - Indicates whether the parsed value is a range (true) or a single value (false). Defaults to `false` if not present.\n    *   `min?: number` - The minimum value of the range. Only populated if `isRange` is `true`.\n    *   `max?: number` - The maximum value of the range. Only populated if `isRange` is `true`.\n3.  **Conditional Population:** Ensure that these new fields are only populated when a range expression is detected during the parsing process. The `isRange` field should be set to `true`, and the `min` and `max` fields should contain the parsed minimum and maximum values, respectively.\n4.  **Default Values:** If a range is not detected, these fields should remain undefined or their default values should be used (i.e., `isRange` should be `false`, and `min` and `max` should be undefined or null).\n5.  **Type Safety:** Ensure that the types for `min` and `max` are consistent with the existing numeric parsing logic (likely `number | null`).",
         "testStrategy": "1.  **Unit Tests for `PipelineContext` Extension:**\n    *   Create or modify existing unit tests to verify that the `PipelineContext` interface is correctly extended with the `isRange`, `min`, and `max` properties.\n    *   Verify that the types of these properties are as expected (`isRange: boolean`, `min: number | null`, `max: number | null`).\n2.  **Integration Tests with Range Parsing:**\n    *   Create integration tests that simulate the parsing of range expressions. These tests should:\n        *   Parse a valid range expression (e.g., \"$50 - $100\").\n        *   Assert that the `isRange` field in the `PipelineContext` is set to `true`.\n        *   Assert that the `min` and `max` fields contain the correct minimum and maximum values (50 and 100, respectively).\n        *   Assert that the currency is correctly parsed and stored in the context, if applicable.\n    *   Create integration tests that simulate the parsing of single values. These tests should:\n        *   Parse a single value (e.g., \"$50\").\n        *   Assert that the `isRange` field in the `PipelineContext` is either `false` or undefined.\n        *   Assert that the `min` and `max` fields are either `null` or undefined.\n3.  **Error Handling Tests:**\n    *   Create tests to ensure that the parsing logic handles invalid range expressions gracefully (e.g., \"$100 - $50\"). The `min` and `max` values should not be populated if the range is invalid, or an error should be thrown, depending on the desired behavior.\n4.  **Regression Tests:**\nEnsure that existing tests continue to pass after the changes, to avoid breaking existing functionality.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          44,
-          55,
-          54,
-          53,
-          52,
-          51
+          "44",
+          "55",
+          "54",
+          "53",
+          "52",
+          "51"
         ],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 2,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add isRange, min, max fields to PipelineContext interface in regexPipeline.ts",
+        "updatedAt": "2026-04-04T18:36:06.759Z"
       },
       {
         "id": 57,
@@ -1553,15 +1668,19 @@
         "description": "Implement a new pipeline step that detects range expressions and sets isRange, min, max, and currency on the context. This step should run BEFORE numericDetectionStep to prevent partial parsing of ranges.",
         "details": "1.  **Locate `regexPipeline.ts`:** Open the `src/regexPipeline.ts` file.\n2.  **Import `matchRange`:** Import the `matchRange` function from `src/patterns/ranges.ts`.\n3.  **Create `rangeDetectionStep` Function:** Implement a new function `rangeDetectionStep(context: PipelineContext): PipelineContext`.\n4.  **Range Detection Logic:** Inside `rangeDetectionStep`, call `matchRange(context.input)` to attempt to parse a range from the input string.\n5.  **Update Context on Success:** If `matchRange` returns a non-null `RangeParseResult`:\n    *   Set `context.isRange` to `true`.\n    *   Set `context.min` to `RangeParseResult.min`.\n    *   Set `context.max` to `RangeParseResult.max`.\n    *   Set `context.currency` to `RangeParseResult.currency`.\n    *   Update `context.value` to represent the range (e.g., string representation like \"min - max\").\n6.  **Return Context:** Return the updated `context`.\n7.  **Integrate into Pipeline:** Insert `rangeDetectionStep` into the regex pipeline in `regexPipeline.ts` BEFORE `numericDetectionStep`.",
         "testStrategy": "1.  **Unit Tests for `rangeDetectionStep`:**\n    *   Create new unit tests or modify existing ones to test the `rangeDetectionStep` function.\n    *   Test with various input strings containing range expressions (e.g., \"$500 - $1000\", \"50 to 100 USD\", \"10k - 1M\").\n    *   Verify that the `context.isRange`, `context.min`, `context.max`, and `context.currency` properties are correctly set when a range is detected.\n    *   Test with input strings that do not contain range expressions. Verify that `context.isRange` remains `undefined` or `false`, and `context.min` and `context.max` remain `undefined`.\n    *   Test that the `rangeDetectionStep` is executed before the `numericDetectionStep` and that the numeric detection step does not interfere with the range parsing.\n2.  **Integration Tests:**\n    *   Run integration tests to ensure that the entire pipeline, including the new `rangeDetectionStep`, correctly parses range expressions and produces the expected output.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          7,
-          9,
-          55,
-          56
+          "7",
+          "9",
+          "55",
+          "56"
         ],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 4,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Create rangeDetectionStep that calls matchRange and updates PipelineContext with range data",
+        "updatedAt": "2026-04-04T18:43:28.046Z"
       },
       {
         "id": 58,
@@ -1569,15 +1688,19 @@
         "description": "Integrate the rangeDetectionStep into the default regex pipeline and update the numericDetectionStep to skip processing if a range is detected.",
         "details": "1.  **Locate `regexPipeline.ts`:** Open the `src/regexPipeline.ts` file.\n2.  **Update `RegexPipeline.default()`:** Modify the `RegexPipeline.default()` method to include `rangeDetectionStep` after `currencyDetectionStep` but before `numericDetectionStep`.\n3.  **Update `numericDetectionStep`:** Modify the `numericDetectionStep` function to check `ctx.isRange`. If `ctx.isRange` is true, skip the numeric detection processing and return the context without modifications.\n4.  **Ensure correct order:** Verify that the pipeline steps are executed in the correct order: currency detection, range detection, then numeric detection (only if not a range).\n5.  **Handle defaultCurrency:** Ensure that the `defaultCurrency` option is correctly propagated through the pipeline and used in the `rangeDetectionStep` if no currency is detected in the range.",
         "testStrategy": "1.  **Unit Tests for Pipeline Integration:**\n    *   Create new unit tests or modify existing ones to test the integration of `rangeDetectionStep` into the `RegexPipeline.default()` method.\n    *   Test with various input strings containing range expressions (e.g., \"$500 - $1000\", \"50 to 100 USD\", \"10k - 1M\").\n    *   Verify that the `rangeDetectionStep` is executed before `numericDetectionStep`.\n    *   Verify that the `numericDetectionStep` is skipped when `ctx.isRange` is true.\n2.  **Unit Tests for `numericDetectionStep` Skipping:**\n    *   Create unit tests specifically to verify that `numericDetectionStep` correctly skips processing when `ctx.isRange` is true.\n    *   Test with input strings that would normally be parsed by `numericDetectionStep` but are now part of a range (e.g., \"1000\" in the context of \"$500 - $1000\").\n3.  **End-to-End Tests:**\n    *   Create end-to-end tests that use the `parseMoney()` function with range inputs to ensure the entire pipeline works correctly with the new integration.\n    *   Verify that the correct values and currencies are extracted from range expressions.\n    *   Verify that the `defaultCurrency` option is correctly applied when no currency is detected in the range.\n4.  **Test with Regional Formats:**\n    *   Include tests with regional number formats to ensure compatibility with the `regionalFormatDetectionStep`.\n5.  **Regression Tests:**\n    *   Run existing unit tests to ensure that the changes do not introduce any regressions in the existing functionality.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          7,
-          57,
-          56,
-          40
+          "7",
+          "57",
+          "56",
+          "40"
         ],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 3,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add rangeDetectionStep to default pipeline and make numericDetectionStep skip when isRange is true",
+        "updatedAt": "2026-04-04T18:44:48.740Z"
       },
       {
         "id": 59,
@@ -1585,19 +1708,23 @@
         "description": "Add range-specific regex patterns to the MONETARY_PATTERNS array in `parseAll.ts` to detect ranges in text, ensuring ranges are detected as single expressions.",
         "details": "1.  **Locate `parseAll.ts`:** Open the `src/parseAll.ts` file.\n2.  **Import necessary modules:** Ensure that the necessary modules for range parsing (e.g., `matchRange` from `src/patterns/ranges.ts`) are imported.\n3.  **Update `MONETARY_PATTERNS`:** Modify the `MONETARY_PATTERNS` array to include new regex patterns that specifically target range expressions. These patterns should cover:\n    *   Symbol ranges (e.g., \"$500 - $1000\")\n    *   ISO code ranges (e.g., \"USD 500 - USD 1000\")\n    *   Magnitude suffix ranges (e.g., \"10k - 1M\")\n    *   Between/from contextual phrases (e.g., \"between $100 and $200\", \"from $50 to $100\")\n4.  **Ensure correct pattern order:** Place the range patterns in the `MONETARY_PATTERNS` array BEFORE any single-value patterns to prevent partial parsing of ranges. This is crucial for correct detection.\n5.  **Test range pattern integration:** Add unit tests to verify that the new range patterns are correctly integrated into the `parseAll` function and that ranges are detected as single expressions.\n6.  **Refactor if necessary:** If the existing `parseAll` logic needs adjustments to handle ranges correctly, refactor the code to accommodate the new patterns.\n7.  **Consider performance:** Ensure that the addition of new regex patterns does not significantly degrade the performance of the `parseAll` function. Optimize the patterns if necessary.",
         "testStrategy": "1.  **Unit Tests for Range Detection:**\n    *   Create new unit tests or modify existing ones to test the `parseAll` function with various input strings containing range expressions.\n    *   Test with different range formats, including:\n        *   Symbol ranges: \"$500 - $1000\", \"€50 - €100\"\n        *   ISO code ranges: \"USD 500 - USD 1000\", \"GBP 50 - GBP 100\"\n        *   Magnitude suffix ranges: \"10k - 1M\", \"5m - 10m\"\n        *   Contextual phrases: \"between $100 and $200\", \"from $50 to $100\"\n        *   Mixed formats: \"$50 - 100\", \"ten to 100 dollars\"\n    *   Verify that the `parseAll` function correctly identifies and parses the entire range expression as a single unit.\n    *   Verify that the `isRange` flag is set correctly in the `ParseResult` object.\n    *   Verify that the `min` and `max` values are correctly extracted from the range.\n    *   Verify that the currency is correctly identified for each range.\n2.  **Integration Tests:**\n    *   Create integration tests with strings containing multiple monetary expressions, including both single values and ranges (e.g., \"I have $100 and a range of $500 - $1000\").\n    *   Verify that all instances are found and parsed correctly into an array of `ParseResult` objects.\n3.  **Performance Tests:**\n    *   Run performance tests to ensure that the addition of new regex patterns does not significantly impact the performance of the `parseAll` function.\n    *   Optimize the patterns if necessary to maintain acceptable performance.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          22,
-          55,
-          57,
-          58,
-          47,
-          52,
-          51,
-          53
+          "22",
+          "55",
+          "57",
+          "58",
+          "47",
+          "52",
+          "51",
+          "53"
         ],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 5,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add range regex patterns to MONETARY_PATTERNS array in parseAll.ts before single-value patterns",
+        "updatedAt": "2026-04-04T19:30:18.725Z"
       },
       {
         "id": 60,
@@ -1605,13 +1732,17 @@
         "description": "Add exports for RangeParseResult interface, parseRange function, and matchRange function from patterns/ranges.ts to the public API.",
         "details": "1. Open `src/index.ts`.\n2. Add the following exports:\n   - `export { RangeParseResult } from './types';`\n   - `export { parseRange } from './patterns/ranges';`\n   - `export { matchRange } from './patterns/ranges';`\n3. Ensure that the exported functions and interface are correctly re-exported from the main entry point of the library.",
         "testStrategy": "1.  Verify that `RangeParseResult`, `parseRange`, and `matchRange` are accessible when importing the library.\n2.  Write a test file (e.g., `index.test.ts`) to import the functions and interface from the main entry point.\n3.  Use the imported functions and interface in a simple test case to ensure they are correctly exported and functional.\n4. Run the tests to confirm the exports are working as expected.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          44,
-          55
+          "44",
+          "55"
         ],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 1,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add exports for RangeParseResult, parseRange, matchRange to src/index.ts",
+        "updatedAt": "2026-04-04T19:31:27.212Z"
       },
       {
         "id": 61,
@@ -1619,14 +1750,18 @@
         "description": "Create test/patterns/ranges.test.ts with tests for symbol-based range parsing: \"$500 - $1000\", \"$500-$1000\", \"$500 to $1000\", \"€50 - €100\", \"$500 - 1000\" (symbol on first only). Test both parseRange and matchRange functions.",
         "details": "1.  **Create `test/patterns/ranges.test.ts`:** If it doesn't exist, create a new file `test/patterns/ranges.test.ts`.\n2.  **Import necessary modules:** Import the `parseRange` and `matchRange` functions from `src/patterns/ranges.ts`, as well as any necessary testing utilities (e.g., `describe`, `it`, `expect` from Jest or similar).\n3.  **Define test suites:** Create separate test suites (using `describe`) for `parseRange` and `matchRange`.\n4.  **Implement test cases:** Within each test suite, implement test cases (using `it`) for the following scenarios:\n    *   Ranges with currency symbols on both values (e.g., \"$500 - $1000\", \"€50 - €100\").\n    *   Ranges with a currency symbol only on the first value (e.g., \"$500 - 1000\").\n    *   Ranges with different separators (e.g., \"$500 - $1000\", \"$500-$1000\", \"$500 to $1000\").\n    *   Ranges with different currency symbols (e.g., \"$500 - $1000\", \"€50 - €100\").\n    *   Invalid ranges (e.g., missing separator, invalid currency symbol).\n5.  **Assert correct parsing:** In each test case, assert that the `parseRange` function returns the correct `RangeParseResult` object, with the correct `min`, `max`, and `currency` values.  For `matchRange`, assert that it returns true if the input matches the expected pattern and false otherwise.\n6.  **Consider edge cases:** Include test cases for edge cases such as very large numbers, very small numbers, and numbers with different decimal separators.\n7.  **Re-use existing symbol parsing logic:** Ensure that the tests validate that the existing symbol parsing logic (from Task 12) is being correctly re-used within the range parsing logic.",
         "testStrategy": "1.  **Run all tests:** Execute the test suite using your testing framework (e.g., `npm test`).\n2.  **Verify test results:** Ensure that all tests pass, indicating that the symbol-based range parsing is working correctly.\n3.  **Check code coverage:** Use a code coverage tool to ensure that the tests cover all relevant code paths in the `parseRange` and `matchRange` functions.\n4.  **Manual testing:** Manually test the parsing logic with a variety of input strings to ensure that it handles different scenarios correctly.\n5.  **Regression testing:** After making any changes to the parsing logic, re-run the tests to ensure that no existing functionality has been broken.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          12,
-          45,
-          47
+          "12",
+          "45",
+          "47"
         ],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 3,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Create test/patterns/ranges.test.ts with tests for symbol-based range parsing",
+        "updatedAt": "2026-04-04T19:32:09.533Z"
       },
       {
         "id": 62,
@@ -1634,16 +1769,20 @@
         "description": "Add tests to test/patterns/ranges.test.ts for ISO code range parsing, verifying correct currency code extraction and amount parsing.",
         "details": "1.  **Locate `test/patterns/ranges.test.ts`:** Find the file `test/patterns/ranges.test.ts`. If it doesn't exist, create it.\n2.  **Import necessary modules:** Import the `parseRange` and `matchRange` functions from `src/patterns/ranges.ts`, as well as any necessary testing utilities (e.g., `describe`, `it`, `expect` from Jest or similar).\n3.  **Define test suites:** Create separate test suites (using `describe`) for `parseRange` and `matchRange` if they don't already exist. If the suites exist, add the new tests to the existing suites.\n4.  **Implement test cases:** Within each test suite, add the following test cases using `it`:\n    *   `\"100 - 200 USD\"`: Verify that `parseRange` and `matchRange` correctly parse the minimum value (100), maximum value (200), and currency code (USD).\n    *   `\"100-200 EUR\"`: Verify that `parseRange` and `matchRange` correctly parse the minimum value (100), maximum value (200), and currency code (EUR).\n    *   `\"USD 100 - 200\"`: Verify that `parseRange` and `matchRange` correctly parse the minimum value (100), maximum value (200), and currency code (USD).\n    *   `\"EUR 100 to 200\"`: Verify that `parseRange` and `matchRange` correctly parse the minimum value (100), maximum value (200), and currency code (EUR).\n5.  **Use `expect` for assertions:** Use `expect` to assert that the parsed values and currency codes match the expected values. Ensure that both `parseRange` and `matchRange` return the same results for each test case.",
         "testStrategy": "1.  **Run all tests:** Execute the test suite using your testing framework (e.g., `npm test`).\n2.  **Verify test results:** Ensure that all tests pass, indicating that the ISO code range parsing is working correctly.\n3.  **Check code coverage:** Use a code coverage tool to ensure that the tests cover the relevant code paths in `src/patterns/ranges.ts`.\n4.  **Manual Verification:** Manually inspect the test results to ensure that the parsed values and currency codes are correct for each test case.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          12,
-          13,
-          45,
-          48,
-          61
+          "12",
+          "13",
+          "45",
+          "48",
+          "61"
         ],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 2,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add ISO code range tests to ranges.test.ts",
+        "updatedAt": "2026-04-05T03:42:51.599Z"
       },
       {
         "id": 63,
@@ -1651,16 +1790,20 @@
         "description": "Add tests to test/patterns/ranges.test.ts for magnitude suffix range parsing, verifying correct multiplier application for ranges like \"10k - 20k\", \"200k - 1M\", \"1M - 2M\", \"$10k - $20k\", and \"10k - 20k USD\".",
         "details": "1.  **Locate/Create `test/patterns/ranges.test.ts`:** If it doesn't exist, create a new file `test/patterns/ranges.test.ts`. Otherwise, locate the existing file.\n2.  **Import necessary modules:** Import the `parseRange` and `matchRange` functions from `src/patterns/ranges.ts`, as well as any necessary testing utilities (e.g., `describe`, `it`, `expect` from Jest or similar).\n3.  **Define test suites:** Create a new test suite (using `describe`) specifically for magnitude suffix ranges.\n4.  **Implement test cases:** Within the test suite, implement test cases (using `it`) for the following scenarios:\n    *   \"10k - 20k\"\n    *   \"200k - 1M\"\n    *   \"1M - 2M\"\n    *   \"$10k - $20k\"\n    *   \"10k - 20k USD\"\n    *   Ensure tests cover both `parseRange` and `matchRange` functions.\n5.  **Verify correct multiplier application:** Each test case should assert that the parsed range values have the correct multiplier applied based on the magnitude suffix (e.g., 'k' for thousand, 'M' for million).\n6.  **Handle currency symbols:** Ensure that the tests correctly handle currency symbols within the ranges, both when present on one or both values.\n7.  **Consider edge cases:** Add tests for edge cases such as zero values, negative values (if applicable), and very large magnitude values.",
         "testStrategy": "1.  **Run all tests:** Execute the test suite using your testing framework (e.g., `npm test`).\n2.  **Verify test results:** Ensure that all tests pass, indicating that the magnitude suffix range parsing is working correctly.\n3.  **Check code coverage:** Use a code coverage tool to ensure that the tests provide adequate coverage of the `parseRange` and `matchRange` functions, especially the parts dealing with magnitude suffixes.\n4.  **Manual inspection:** Manually inspect the test results and the parsed values to ensure that the multipliers are being applied correctly and that the currency symbols are being handled as expected.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          12,
-          16,
-          45,
-          49,
-          61
+          "12",
+          "16",
+          "45",
+          "49",
+          "61"
         ],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 2,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add magnitude suffix range tests to ranges.test.ts",
+        "updatedAt": "2026-04-05T03:42:51.608Z"
       },
       {
         "id": 64,
@@ -1668,16 +1811,20 @@
         "description": "Add tests to test/patterns/ranges.test.ts for slang term range parsing, verifying currency inference from slang terms like \"500 to 1000 bucks\", \"50 - 100 quid\", and \"five to ten bucks\".",
         "details": "1.  **Locate/Create `test/patterns/ranges.test.ts`:** If it doesn't exist, create a new file `test/patterns/ranges.test.ts`. Otherwise, locate the existing file.\n2.  **Import necessary modules:** Import the `parseRange` and `matchRange` functions from `src/patterns/ranges.ts`, as well as any necessary testing utilities (e.g., `describe`, `it`, `expect` from Jest or similar).\n3.  **Define test suites:** Create a new test suite (using `describe`) specifically for slang term ranges.\n4.  **Implement test cases:** Within the slang term range test suite, implement the following test cases:\n    *   \"500 to 1000 bucks\": Verify that the range is correctly parsed, with a minimum value of 500, a maximum value of 1000, and the currency inferred as USD.\n    *   \"50 - 100 quid\": Verify that the range is correctly parsed, with a minimum value of 50, a maximum value of 100, and the currency inferred as GBP.\n    *   \"five to ten bucks\": Verify that the range is correctly parsed, with a minimum value of 5, a maximum value of 10, and the currency inferred as USD. Ensure that worded numbers are correctly parsed within the range.\n    *   Test variations of the above with different range separators (e.g., \"to\", \"-\", \"–\").\n5.  **Test both `parseRange` and `matchRange`:** Ensure that the tests cover both the `parseRange` and `matchRange` functions to verify their correct behavior with slang term ranges.",
         "testStrategy": "1.  **Run all tests:** Execute the test suite using your testing framework (e.g., `npm test`).\n2.  **Verify test results:** Ensure that all tests pass, indicating that the slang term range parsing is working correctly and that the currency is correctly inferred.\n3.  **Check code coverage:** Use a code coverage tool to ensure that the tests provide adequate coverage of the `parseRange` and `matchRange` functions, especially the parts dealing with slang terms.\n4.  **Manual inspection:** Manually inspect the parsed results in case of test failures to ensure that the values and currencies are being extracted and interpreted correctly.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          12,
-          17,
-          45,
-          50,
-          61
+          "12",
+          "17",
+          "45",
+          "50",
+          "61"
         ],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 2,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add slang term range tests to ranges.test.ts",
+        "updatedAt": "2026-04-05T03:42:51.617Z"
       },
       {
         "id": 65,
@@ -1685,16 +1832,20 @@
         "description": "Add tests to test/patterns/ranges.test.ts for worded number range parsing: \"five to ten dollars\", \"one hundred to two hundred euros\", \"fifty to one hundred pounds\". Verify worded number conversion.",
         "details": "1.  **Locate/Create `test/patterns/ranges.test.ts`:** If it doesn't exist, create a new file `test/patterns/ranges.test.ts`. Otherwise, locate the existing file.\n2.  **Import necessary modules:** Import the `parseRange` and `matchRange` functions from `src/patterns/ranges.ts`, as well as any necessary testing utilities (e.g., `describe`, `it`, `expect` from Jest or similar).\n3.  **Define test suites:** Create a new test suite (using `describe`) specifically for worded number ranges.\n4.  **Implement test cases:** Within the worded number ranges test suite, add test cases for the following scenarios:\n    *   \"five to ten dollars\"\n    *   \"one hundred to two hundred euros\"\n    *   \"fifty to one hundred pounds\"\n    *   Variations of the above with different range separators (e.g., \"five - ten dollars\", \"one hundred – two hundred euros\")\n    *   Test both `parseRange` and `matchRange` functions with the above test cases.\n5.  **Verify Worded Number Conversion:** Ensure that the tests assert the correct numeric values are extracted from the worded numbers (e.g., \"five\" is converted to 5, \"ten\" is converted to 10).\n6.  **Verify Currency Detection:** Ensure that the tests assert the correct currency is detected for each range (e.g., \"dollars\" is mapped to USD, \"euros\" is mapped to EUR, \"pounds\" is mapped to GBP).",
         "testStrategy": "1.  **Run all tests:** Execute the test suite using your testing framework (e.g., `npm test`).\n2.  **Verify test results:** Ensure that all tests pass, indicating that the worded number range parsing is working correctly and that the currency is correctly detected and the worded numbers are correctly converted.\n3.  **Check code coverage:** Use a code coverage tool to ensure that the tests cover the relevant code paths in `src/patterns/ranges.ts`.\n4.  **Manual Inspection:** Manually inspect the test results to ensure that the parsed values and currencies are correct for all test cases.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          12,
-          14,
-          45,
-          51,
-          61
+          "12",
+          "14",
+          "45",
+          "51",
+          "61"
         ],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 2,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add worded number range tests to ranges.test.ts",
+        "updatedAt": "2026-04-05T03:55:31.115Z"
       },
       {
         "id": 66,
@@ -1702,15 +1853,19 @@
         "description": "Add tests to test/patterns/ranges.test.ts for contextual phrase range parsing: \"between $100 and $200\", \"from $50 to $100\", \"anywhere from 10k to 20k\". Verify \"between X and Y\" and \"from X to Y\" patterns.",
         "details": "1.  **Locate/Create `test/patterns/ranges.test.ts`:** If it doesn't exist, create a new file `test/patterns/ranges.test.ts`. Otherwise, locate the existing file.\n2.  **Import necessary modules:** Import the `parseRange` and `matchRange` functions from `src/patterns/ranges.ts`, as well as any necessary testing utilities (e.g., `describe`, `it`, `expect` from Jest or similar).\n3.  **Define test suites:** Create a new test suite (using `describe`) specifically for contextual phrase ranges.\n4.  **Implement test cases:** Within the test suite, implement the following test cases:\n    *   Test cases for \"between X and Y\" patterns with different currency symbols/codes, number formats, and whitespace variations (e.g., \"between $100 and $200\", \"between  €50 and €100\", \"between USD 100 and 200\", \"between 100 and 200 CAD\").\n    *   Test cases for \"from X to Y\" patterns with similar variations (e.g., \"from $50 to $100\", \"from  €25 to €75\", \"from USD 50 to 100\", \"from 50 to 100 CAD\").\n    *   Test cases for \"anywhere from X to Y\" patterns with similar variations (e.g., \"anywhere from 10k to 20k\", \"anywhere from $100 to $200\", \"anywhere from  €50 to €100\", \"anywhere from USD 100 to 200\", \"anywhere from 100 to 200 CAD\").\n    *   Test cases with X and Y being worded numbers (e.g., \"between one hundred and two hundred dollars\").\n    *   Test cases with X and Y using magnitude suffixes (e.g., \"between 10k and 20k\", \"from 1M to 2M\").\n    *   Test cases with mixed number formats (e.g., \"between $100 and two hundred dollars\").\n5.  **Call `parseRange` and `matchRange`:**  Use both `parseRange` and `matchRange` functions to test the parsing.\n6.  **Verify results:** Ensure that the parsed `min`, `max`, and `currency` values are correct for each test case.  Pay attention to the correct extraction and conversion of monetary values and currency codes.",
         "testStrategy": "1.  **Run all tests:** Execute the test suite using your testing framework (e.g., `npm test`).\n2.  **Verify test results:** Ensure that all tests pass, indicating that the contextual phrase range parsing is working correctly and that the currency is correctly detected.\n3.  **Check code coverage:** Use a code coverage tool to ensure that the new parsing logic is adequately covered by the tests.\n4.  **Manual Verification:** Manually verify the parsing with a variety of input strings to ensure robustness and accuracy.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          12,
-          45,
-          52,
-          61
+          "12",
+          "45",
+          "52",
+          "61"
         ],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 2,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add contextual phrase range tests to ranges.test.ts",
+        "updatedAt": "2026-04-05T03:19:28.066Z"
       },
       {
         "id": 67,
@@ -1718,21 +1873,25 @@
         "description": "Add tests to test/patterns/ranges.test.ts for mixed format range parsing: \"10k - 1M\" (different magnitudes), \"ten to 100 dollars\" (worded + numeric), \"$50 - 100\" (symbol on one side). Verify parser handles heterogeneous formats.",
         "details": "1. **Locate/Create `test/patterns/ranges.test.ts`:** If it doesn't exist, create a new file `test/patterns/ranges.test.ts`. Otherwise, locate the existing file.\n2. **Import necessary modules:** Import the `parseRange` and `matchRange` functions from `src/patterns/ranges.ts`, as well as any necessary testing utilities (e.g., `describe`, `it`, `expect` from Jest or similar).\n3. **Define test suites:** Create a new test suite (using `describe`) specifically for mixed format ranges.\n4. **Implement test cases:** Within the test suite, implement the following test cases:\n    *   Test case for \"10k - 1M\": Verify that the parser correctly interprets the range with different magnitude suffixes.\n    *   Test case for \"ten to 100 dollars\": Verify that the parser correctly handles the combination of worded and numeric values.\n    *   Test case for \"$50 - 100\": Verify that the parser correctly handles currency symbols on only one side of the range.\n    *   Test case for \"50 - 100 bucks\": Verify that the parser correctly handles slang terms on only one side of the range.\n    *   Test case for \"five to 100\": Verify that the parser correctly handles worded numbers on one side and numeric on the other.\n5. **Use `parseRange` and `matchRange`:** Test both `parseRange` and `matchRange` functions with the defined test cases.\n6. **Assert correct values:** Ensure that the parsed `min` and `max` values are correct for each test case. Also, verify that the correct currency is detected (if applicable).",
         "testStrategy": "1. **Run all tests:** Execute the test suite using your testing framework (e.g., `npm test`).\n2. **Verify test results:** Ensure that all tests pass, indicating that the mixed format range parsing is working correctly.\n3. **Check code coverage:** Use a code coverage tool to ensure that the tests cover the relevant parts of the `parseRange` and `matchRange` functions, especially the parts that handle mixed formats.\n4. **Manual inspection:** Manually inspect the test results to ensure that the parsed values and currencies are correct for each test case.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          12,
-          14,
-          15,
-          16,
-          17,
-          45,
-          53,
-          61,
-          63,
-          65
+          "12",
+          "14",
+          "15",
+          "16",
+          "17",
+          "45",
+          "53",
+          "61",
+          "63",
+          "65"
         ],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 2,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add mixed format range tests to ranges.test.ts",
+        "updatedAt": "2026-04-05T03:19:28.083Z"
       },
       {
         "id": 68,
@@ -1740,14 +1899,18 @@
         "description": "Add tests to test/patterns/ranges.test.ts for validation error cases, including min > max, currency inconsistencies, same values, and overflow checks.",
         "details": "1.  **Locate/Create `test/patterns/ranges.test.ts`:** If it doesn't exist, create a new file `test/patterns/ranges.test.ts`. Otherwise, locate the existing file.\n2.  **Import necessary modules:** Import the `parseRange` and `matchRange` functions from `src/patterns/ranges.ts`, the `MoneyParseError` class (if it exists, or define a mock), as well as any necessary testing utilities (e.g., `describe`, `it`, `expect` from Jest or similar).\n3.  **Define test suites:** Create a new test suite (using `describe`) specifically for range validation errors.\n4.  **Implement test cases:** Within the test suite, implement the following test cases:\n    *   **Min > Max Error:** Test cases like \"1000 - 500 USD\" should throw a `MoneyParseError` indicating that the minimum value is greater than the maximum value.  Ensure the error message is descriptive.\n    *   **Currency Mismatch Error:** Test cases like \"$100 - €200\" should either throw a `MoneyParseError` or consistently use the first currency (USD in this case). Add a configuration option to control this behavior if needed. Test both scenarios.\n    *   **Same Values:** Test edge cases where the minimum and maximum values are the same (e.g., \"100 - 100 USD\").  Determine the desired behavior (should it be valid or invalid?) and implement the corresponding test.\n    *   **Overflow Checks:** Test cases with very large numbers that could potentially cause integer overflow issues during parsing or validation.  Ensure that the code handles these cases gracefully, either by throwing an error or by producing a valid result within the representable range.\n5.  **Implement Mock `MoneyParseError` (if needed):** If `MoneyParseError` is not available during testing, create a mock class that mimics its behavior for testing purposes.",
         "testStrategy": "1.  **Run all tests:** Execute the test suite using your testing framework (e.g., `npm test`).\n2.  **Verify test results:** Ensure that all tests pass or fail as expected, indicating that the range validation is working correctly.\n3.  **Check error messages:** Verify that the error messages thrown by the validation logic are clear, descriptive, and provide sufficient information for debugging.\n4.  **Code Coverage:** Use a code coverage tool to ensure that the validation logic in `ranges.ts` is adequately covered by the tests.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          45,
-          54,
-          61
+          "45",
+          "54",
+          "61"
         ],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 2,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add validation error tests to ranges.test.ts for min > max, currency mismatch, etc.",
+        "updatedAt": "2026-04-05T02:52:34.180Z"
       },
       {
         "id": 69,
@@ -1755,27 +1918,31 @@
         "description": "Create integration tests for parseMoney() with range inputs to verify correct range parsing behavior. This includes verifying the isRange flag, min and max values, amount being undefined, currency detection, and defaultCurrency option handling.",
         "details": "1.  **Create `test/parseMoney.range.test.ts`:** Create a new file `test/parseMoney.range.test.ts`.\n2.  **Import necessary modules:** Import the `parseMoney` function from `src/parseMoney.ts`, as well as any necessary testing utilities (e.g., `describe`, `it`, `expect` from Jest or similar).\n3.  **Define test suites:** Create separate test suites (using `describe`) for different range input scenarios.\n4.  **Implement test cases:** Within each test suite, implement test cases (using `it`) to cover the following:\n    *   **isRange flag:** Verify that the `isRange` flag is set to `true` in the parsed result.\n    *   **min and max values:** Verify that the `min` and `max` properties in the parsed result contain the correct numeric values.\n    *   **amount is undefined:** Verify that the `amount` property is `undefined` or `null` in the parsed result for ranges.\n    *   **Currency detection:** Test various range inputs with different currency symbols and abbreviations to ensure that the correct currency is detected.\n    *   **defaultCurrency option:** Test range inputs with the `defaultCurrency` option to verify that the specified currency is used when no currency symbol or abbreviation is present in the input string.\n    *   **Invalid ranges:** Test cases where min >= max and ensure an error is thrown.\n5.  **Test Scenarios:**\n    *   Ranges with currency symbols on both values (e.g., \"$500 - $1000\", \"€50 - €100\").\n    *   Ranges with a currency symbol only on the first value (e.g., \"$500 - 1000\").\n    *   Ranges with currency abbreviations (e.g., \"USD 500 - 1000\", \"500 to 1000 EUR\").\n    *   Ranges with worded numbers (e.g., \"five to ten dollars\").\n    *   Ranges with magnitude suffixes (e.g., \"10k - 20k\", \"1M - 2M\").\n    *   Ranges with mixed formats (e.g., \"10k - 1M\", \"ten to 100 dollars\", \"$50 - 100\").\n    *   Ranges with contextual phrases (e.g., \"between $100 and $200\", \"from $50 to $100\").\n    *   Ranges with default currency specified (e.g., \"500 - 1000\" with `defaultCurrency: 'USD'`).\n6.  **Code Coverage:** Aim for high code coverage to ensure that all parts of the `parseMoney` function related to range parsing are thoroughly tested.",
         "testStrategy": "1.  **Run all tests:** Execute the test suite using your testing framework (e.g., `npm test`).\n2.  **Verify test results:** Ensure that all tests pass, indicating that the range parsing is working correctly.\n3.  **Check code coverage:** Use a code coverage tool to ensure that the tests cover a significant portion of the `parseMoney` function's range parsing logic.\n4.  **Manual testing:** Perform manual testing with various range inputs to ensure that the parsing is accurate and handles edge cases correctly.\n5.  **Review test cases:** Have another developer review the test cases to ensure that they are comprehensive and cover all relevant scenarios.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          7,
-          58,
-          57,
-          55,
-          44,
-          45,
-          46,
-          47,
-          53,
-          54,
-          56,
-          52,
-          51,
-          61,
-          63,
-          65
+          "7",
+          "58",
+          "57",
+          "55",
+          "44",
+          "45",
+          "46",
+          "47",
+          "53",
+          "54",
+          "56",
+          "52",
+          "51",
+          "61",
+          "63",
+          "65"
         ],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 3,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Create test/parseMoney.range.test.ts with integration tests for parseMoney with range inputs",
+        "updatedAt": "2026-04-05T02:52:34.194Z"
       },
       {
         "id": 70,
@@ -1783,15 +1950,19 @@
         "description": "Create integration tests for parseAll() with range inputs to verify correct range parsing behavior. This includes testing various range formats and ensuring correct start/end indices for range matches.",
         "details": "1.  **Create `test/parseAll.range.test.ts`:** Create a new file `test/parseAll.range.test.ts`.\n2.  **Import necessary modules:** Import the `parseAll` function from `src/parseAll.ts`, as well as any necessary testing utilities (e.g., `describe`, `it`, `expect` from Jest or similar).\n3.  **Define test suites:** Create separate test suites (using `describe`) for different range input scenarios.\n4.  **Implement test cases:** Within each test suite, implement test cases (using `it`) to cover the following scenarios:\n    *   Single range in text (e.g., \"The price is $50 - $100\").\n    *   Multiple ranges in text (e.g., \"The price is $50 - $100 and the shipping is $10 - $20\").\n    *   Mix of ranges and single values (e.g., \"The price is $50 - $100 and the tax is $5\").\n    *   Overlapping match handling (e.g., ensure that ranges are not double-counted or incorrectly parsed when they overlap).\n    *   Correct start/end indices for range matches: Verify that the `ParseResult` objects returned by `parseAll` have the correct `start` and `end` indices for each range found in the input string.\n5.  **Test different range formats:** Ensure that the tests cover different range formats, including:\n    *   Symbol ranges (e.g., \"$500 - $1000\", \"€50 - €100\").\n    *   ISO code ranges (e.g., \"USD 500 - USD 1000\").\n    *   Ranges with different separators (e.g., \"50 to 100\", \"50-100\").\n    *   Ranges with mixed formats (e.g., \"10k - 1M\").\n6.  **Handle defaultCurrency option:** Test how the `defaultCurrency` option affects range parsing when no currency symbol or code is present in the input string.\n7.  **Consider edge cases:** Include tests for edge cases, such as empty input strings, strings with no monetary expressions, and strings with invalid range formats.",
         "testStrategy": "1.  **Run all tests:** Execute the test suite using your testing framework (e.g., `npm test`).\n2.  **Verify test results:** Ensure that all tests pass, indicating that the range parsing is working correctly.\n3.  **Check code coverage:** Use a code coverage tool to ensure that the tests cover a significant portion of the `parseAll` function's range parsing logic.\n4.  **Manual inspection:** Manually inspect the test results to ensure that the `start` and `end` indices are correctly calculated for each range match.\n5.  **Test with different locales:** If locale-specific range parsing is supported, test with different locales to ensure that the range parsing is working correctly for different regional formats.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          7,
-          22,
-          59,
-          69
+          "7",
+          "22",
+          "59",
+          "69"
         ],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 3,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Create test/parseAll.range.test.ts with integration tests for parseAll with range inputs",
+        "updatedAt": "2026-04-05T02:52:34.201Z"
       },
       {
         "id": 71,
@@ -1799,25 +1970,29 @@
         "description": "Update the demo site (demo/src/) to include range parsing examples in the example prompts UI. Update the output panel to display isRange, min, max fields.",
         "details": "1.  **Update Example Prompts:** Modify the `ExamplePrompts.vue` component (or equivalent) in the `demo/src/` directory to include range parsing examples in the array of example prompts. Add examples such as: \"$500 to $1000\", \"200k - 1M USD\", \"between 50 and 100 euros\", \"five to ten bucks\".\n2.  **Update Output Panel:** Modify the component responsible for displaying the parsing results to include the following fields: `isRange` (boolean), `min` (number), and `max` (number). These fields should be displayed only when `isRange` is true in the parsing result.\n3.  **Data Handling:** Ensure that the parsing result from the core library is correctly passed to the output panel component and that the `isRange`, `min`, and `max` fields are extracted and displayed appropriately.\n4.  **Styling:** Adjust the styling of the example prompts and output panel as needed to ensure a clean and user-friendly presentation.",
         "testStrategy": "1.  **Verify Example Prompts:** Confirm that the updated `ExamplePrompts` component displays the new range examples correctly.\n2.  **Click Examples and Verify Output:** Click on each range example and verify that the input field is populated with the selected example.\n3.  **Inspect Output Panel:** Ensure that the output panel displays the `isRange` field as `true` and that the `min` and `max` fields are populated with the correct values extracted from the range. Also verify that the currency is correctly identified and displayed.\n4.  **Test with Different Range Formats:** Test with all the provided range examples to ensure that different range formats (symbols, ISO codes, worded numbers, contextual phrases) are correctly parsed and displayed.\n5.  **Verify Non-Range Inputs:** Ensure that the `isRange` field is `false` and that the `min` and `max` fields are not displayed when a non-range input is used.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          37,
-          59,
-          58,
-          57,
-          55,
-          44,
-          45,
-          46,
-          47,
-          53,
-          56,
-          52,
-          51,
-          70
+          "37",
+          "59",
+          "58",
+          "57",
+          "55",
+          "44",
+          "45",
+          "46",
+          "47",
+          "53",
+          "56",
+          "52",
+          "51",
+          "70"
         ],
         "priority": "low",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 3,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Update demo/src/ with range examples and update output panel to display isRange, min, max",
+        "updatedAt": "2026-04-05T03:19:28.091Z"
       },
       {
         "id": 72,
@@ -1825,33 +2000,37 @@
         "description": "Execute the complete test suite to identify and resolve any failing tests or type errors. Ensure that all existing tests continue to pass after the integration of range parsing functionalities.",
         "details": "1.  **Execute Test Suite:** Run the complete test suite using the command `npm test`. This will execute all unit tests, integration tests, and any other tests defined in the project.\n2.  **Analyze Test Results:** Carefully examine the test results to identify any failing tests. Pay close attention to the error messages and stack traces to understand the cause of the failures.\n3.  **Fix Failing Tests:** For each failing test, investigate the code and identify the root cause of the failure. Implement the necessary code changes to fix the bug and ensure that the test passes.\n4.  **Address Type Errors:** Check for any TypeScript type errors reported by the compiler. Resolve these errors by adjusting the code to satisfy the type checker.\n5.  **Regression Testing:** After fixing the failing tests and type errors, re-run the entire test suite to ensure that no new issues have been introduced. This is crucial to verify that the changes have not broken any existing functionality.\n6.  **Range Parsing Integration Verification:** Specifically verify that all tests related to range parsing (Tasks 47, 48, 49, 50, 51, 52, 53, 55, 57, 58, 59, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70) are passing. This includes tests for symbol-based ranges, ISO code ranges, magnitude suffix ranges, slang term ranges, worded number ranges, contextual phrase ranges, and mixed format ranges.\n7.  **Code Review:** After making the necessary changes, submit the code for review to ensure that it meets the project's quality standards.",
         "testStrategy": "1.  **Execute `npm test`:** Run the command `npm test` to execute the complete test suite.\n2.  **Verify All Tests Pass:** Ensure that all tests in the test suite pass without any failures or errors. This includes unit tests, integration tests, and any other tests defined in the project.\n3.  **Check for Type Errors:** Verify that the TypeScript compiler reports no type errors.\n4.  **Code Coverage Analysis:** Use a code coverage tool to ensure that the tests cover a significant portion of the codebase, including the newly integrated range parsing functionalities. Aim for a high percentage of code coverage to minimize the risk of undetected bugs.\n5.  **Manual Testing (Optional):** Perform manual testing of the range parsing functionalities to verify that they work as expected in real-world scenarios. This can involve entering various monetary expressions with ranges and verifying that they are parsed correctly.\n6.  **Review Test Results:** Carefully review the test results to identify any potential issues or areas for improvement. Pay attention to the performance of the tests and look for opportunities to optimize the code.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          5,
-          47,
-          48,
-          49,
-          50,
-          51,
-          52,
-          53,
-          55,
-          57,
-          58,
-          59,
-          61,
-          62,
-          63,
-          64,
-          65,
-          66,
-          67,
-          68,
-          69,
-          70
+          "5",
+          "47",
+          "48",
+          "49",
+          "50",
+          "51",
+          "52",
+          "53",
+          "55",
+          "57",
+          "58",
+          "59",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "67",
+          "68",
+          "69",
+          "70"
         ],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 4,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Run npm test and fix any failing tests or type errors",
+        "updatedAt": "2026-04-05T03:55:31.125Z"
       },
       {
         "id": 73,
@@ -1859,15 +2038,19 @@
         "description": "Execute the build process and resolve any resulting type errors or build failures. Verify that the built output includes range parsing exports.",
         "details": "1.  **Execute Build:** Run the command `npm run build` to compile the TypeScript code and generate the output bundles (ESM, CJS, UMD).\n2.  **Analyze Build Output:** Carefully examine the output of the build process for any type errors or build failures. Note the specific error messages and file locations.\n3.  **Fix Type Errors:** Address each type error by modifying the TypeScript code to resolve the issue. This may involve correcting type annotations, adding missing properties, or adjusting the logic of the code.\n4.  **Verify Range Parsing Exports:** Ensure that the built output includes the necessary exports for range parsing functionality. Specifically, verify that `RangeParseResult`, `parseRange`, and `matchRange` are correctly exported from the library's main entry point (`index.ts`).\n5.  **Re-run Build:** After fixing the type errors, re-run the build process to ensure that all errors have been resolved and that the build completes successfully.\n6.  **Inspect Generated Files:** Examine the generated files in the output directories (e.g., `dist/esm`, `dist/cjs`, `dist/umd`) to confirm that the range parsing exports are present and correctly formatted.",
         "testStrategy": "1.  **Execute `npm run build`:** Run the build command to generate the output bundles.\n2.  **Verify Build Success:** Ensure that the build process completes without any errors or warnings.\n3.  **Check for Range Parsing Exports:** Inspect the generated files (e.g., `dist/index.js`, `dist/index.d.ts`) to verify that `RangeParseResult`, `parseRange`, and `matchRange` are correctly exported.\n4.  **Import and Use Exports:** Create a temporary test file to import the range parsing exports from the generated bundles and use them in a simple test case. This will confirm that the exports are accessible and functional.\n5.  **Run Test Suite:** Execute the complete test suite (using `npm test`) to ensure that all existing tests continue to pass after the build process.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          2,
-          5,
-          60,
-          72
+          "2",
+          "5",
+          "60",
+          "72"
         ],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [],
+        "complexity": 3,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Run npm run build and fix any type errors or build failures",
+        "updatedAt": "2026-04-05T03:55:31.135Z"
       },
       {
         "id": 74,
@@ -1875,36 +2058,135 @@
         "description": "Update the project documentation to include the new range parsing feature, covering supported patterns, output format, validation, and usage examples.",
         "details": "1.  **Locate `CLAUDE.md`:** Find the project documentation file `CLAUDE.md` in the repository.\n2.  **Add Range Parsing Section:** Create a new section dedicated to documenting the range parsing feature.\n3.  **Document Supported Range Patterns:**\n    *   List and describe all seven categories of supported range patterns:\n        *   Symbol ranges (e.g., \"$500 - $1000\")\n        *   ISO code ranges (e.g., \"USD 500 - USD 1000\")\n        *   Magnitude suffix ranges (e.g., \"10k - 1M\")\n        *   Slang term ranges (e.g., \"500 to 1000 bucks\")\n        *   Worded number ranges (e.g., \"five to ten dollars\")\n        *   Contextual phrase ranges (e.g., \"between $100 and $200\")\n        *   Mixed format ranges (e.g., \"10k - 1M\", \"ten to 100 dollars\", \"$50 - 100\")\n    *   Provide clear examples for each pattern category.\n4.  **Document Output Format:**\n    *   Explain the structure of the `RangeParseResult` object.\n    *   Describe the purpose and possible values of the following fields:\n        *   `isRange` (boolean): Indicates if the parsed result is a range.\n        *   `min` (number | null): The minimum value of the range.\n        *   `max` (number | null): The maximum value of the range.\n        *   `currency` (string | null): The ISO currency code, if detected.\n        *   `raw` (string): The original input string.\n5.  **Document Validation Behavior:**\n    *   Explain the validation rules applied to ranges (e.g., `min` must be less than `max`).\n    *   Describe the conditions under which a `MoneyParseError` is thrown (e.g., invalid range, currency inconsistencies).\n6.  **Provide Usage Examples:**\n    *   Show how to use `parseMoney()` and `parseAll()` with range inputs.\n    *   Include code snippets demonstrating how to extract the `min`, `max`, and `currency` values from the `RangeParseResult` object.\n7.  **Review and Edit:** Ensure the documentation is clear, concise, and accurate. Proofread for any grammatical errors or typos.",
         "testStrategy": "1.  **Verify Content:** Manually review the updated `CLAUDE.md` file to ensure that all the required information is present and accurate.\n2.  **Check Examples:** Verify that the provided examples are correct and demonstrate the intended usage of the range parsing feature.\n3.  **Validate Formatting:** Ensure that the documentation is well-formatted and easy to read.\n4.  **Build Project:** Run `npm run build` to ensure that the documentation changes do not introduce any build errors.\n5.  **Deploy Documentation:** If the documentation is deployed as part of the project website, verify that the changes are correctly reflected on the live site.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
-          44,
-          55,
-          57,
-          58,
-          59,
-          60,
-          61,
-          62,
-          63,
-          64,
-          65,
-          66,
-          67,
-          68,
-          69,
-          70,
-          71,
-          72,
-          73
+          "44",
+          "55",
+          "57",
+          "58",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "67",
+          "68",
+          "69",
+          "70",
+          "71",
+          "72",
+          "73"
         ],
+        "priority": "low",
+        "subtasks": [],
+        "complexity": 2,
+        "recommendedSubtasks": 0,
+        "expansionPrompt": "Add range parsing documentation to CLAUDE.md covering supported patterns and usage examples",
+        "updatedAt": "2026-04-05T03:59:17.726Z"
+      },
+      {
+        "id": 75,
+        "title": "Audit all regex patterns for ReDoS vulnerabilities",
+        "description": "Analyze every regex pattern in src/patterns/ for catastrophic backtracking. Test with known ReDoS payloads: long repeated words, nested separators, and exponential-match strings. Use safe-regex or manual fuzzing. Document which patterns are safe and which need fixing.",
+        "details": "",
+        "testStrategy": "Create a test suite that feeds known ReDoS payloads to each matcher and asserts completion within a time threshold (e.g., <100ms).",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "high",
+        "subtasks": []
+      },
+      {
+        "id": 76,
+        "title": "Add input length limits to public API",
+        "description": "Add a configurable maxInputLength option (default 10,000 chars) to parseMoney() and parseAll(). Reject or truncate inputs exceeding the limit to prevent ReDoS and memory exhaustion. Update ParseOptions and types.",
+        "details": "",
+        "testStrategy": "Write tests asserting: (1) inputs under limit parse normally, (2) inputs over limit return null/throw with a clear error, (3) custom limit is respected.",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "high",
+        "subtasks": []
+      },
+      {
+        "id": 77,
+        "title": "Run npm audit and check currency-codes for known CVEs",
+        "description": "Run npm audit --audit-level=moderate. Check the currency-codes package (and any transitive deps) for known CVEs via Snyk or OSV. Document findings and upgrade any vulnerable packages.",
+        "details": "",
+        "testStrategy": "Verify that npm audit exits clean after fixes. Add a CI step to run npm audit.",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "high",
+        "subtasks": []
+      },
+      {
+        "id": 78,
+        "title": "Fix or document shallow context cloning safety in regexPipeline",
+        "description": "The RegexPipeline uses shallow object cloning ({ ...ctx }). Audit every PipelineStep to ensure no step mutates nested objects in the context. If unsafe, switch to deep cloning or freeze the context. Document the safety guarantee.",
+        "details": "",
+        "testStrategy": "Write a test that mutates a nested array/object in a custom PipelineStep and verifies it does not affect the original context.",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": 79,
+        "title": "Verify published package contents and .npmignore",
+        "description": "Run npm pack --dry-run. Ensure only dist/, README.md, LICENSE, and package.json are published. Confirm that src/, test/, demo/, docs/, scripts/, .claude/, .taskmaster/, and .github/ are excluded from the published tarball.",
+        "details": "",
+        "testStrategy": "Inspect the dry-run output and assert no sensitive or unnecessary files are included.",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": 80,
+        "title": "Review error messages for information disclosure",
+        "description": "Audit MoneyParseError and ValueOverflowError messages. Ensure they do not leak internal regex patterns, file paths, or implementation details that could aid an attacker. Keep messages user-friendly but opaque.",
+        "details": "",
+        "testStrategy": "Assert that error.message does not contain regex source strings, internal variable names, or stack frames from src/patterns/.",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": 81,
+        "title": "Set up Socket.dev or Dependabot for supply chain monitoring",
+        "description": "Integrate Socket.dev GitHub App or enable Dependabot alerts on the repository to monitor currency-codes and build-time dependencies for malware, install scripts, and version anomalies. Document the choice in docs/infra/decisions.md.",
+        "details": "",
+        "testStrategy": "Verify that a PR adding a risky dependency triggers an alert/comment from the monitoring tool.",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "subtasks": []
+      },
+      {
+        "id": 82,
+        "title": "Add ReDoS regression test suite to CI",
+        "description": "After the ReDoS audit is complete, add a dedicated CI job that runs the ReDoS payload tests against every pattern on every push/PR. This ensures future regex changes do not reintroduce catastrophic backtracking.",
+        "details": "",
+        "testStrategy": "CI workflow step that runs jest --testPathPattern=\"redos\" and fails if any test exceeds a timing threshold.",
+        "status": "pending",
+        "dependencies": [],
         "priority": "low",
         "subtasks": []
       }
     ],
     "metadata": {
-      "created": "2025-06-22T05:27:52.739Z",
-      "updated": "2026-01-11T19:11:18.556Z",
-      "description": "Tasks for master context"
+      "version": "1.0.0",
+      "lastModified": "2026-04-05T03:59:17.726Z",
+      "taskCount": 74,
+      "completedCount": 74,
+      "tags": [
+        "master"
+      ],
+      "created": "2026-05-18T07:04:49.057Z",
+      "description": "Tasks for master context",
+      "updated": "2026-05-18T07:04:54.461Z"
     }
   }
 }

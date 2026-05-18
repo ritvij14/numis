@@ -42,6 +42,12 @@ export interface PipelineContext {
   defaultCurrency?: string; // Default currency to use when none detected
   currencyWasDefault?: boolean; // True if currency was set from default, not detected
   isNegative?: boolean; // True if the amount should be negative
+  /** Indicates whether the parsed value is a range (true) or a single value (false). Defaults to false if not present. */
+  isRange?: boolean;
+  /** The minimum value of the range. Only populated if isRange is true. */
+  min?: number;
+  /** The maximum value of the range. Only populated if isRange is true. */
+  max?: number;
 }
 
 /**
@@ -126,6 +132,8 @@ export class RegexPipeline {
     return new RegexPipeline([
       negativeDetectionStep,
       currencyDetectionStep,
+      comparisonDetectionStep,
+      rangeDetectionStep,
       numericDetectionStep,
       patternSpecificStep,
     ]);
@@ -145,6 +153,7 @@ import { matchFractionalWordedNumber } from "./patterns/wordedNumbers";
 import { matchRegionalFormat } from "./patterns/regionalFormats";
 import { detectNegative } from "./patterns/negativeNumbers";
 import { matchMinorUnitOnly } from "./patterns/minorUnitsOnly";
+import { matchComparisonOperator, matchRange } from "./patterns/ranges";
 
 // ---------------------------------------------------------------------------
 // Currency helpers
@@ -265,7 +274,55 @@ const negativeDetectionStep: PipelineStep = (input, ctx) => {
   return out;
 };
 
-/** 1) Currency detection step */
+/** 0) Comparison operator detection step (< or >) - runs before range detection */
+const comparisonOperatorRegex = /^<|>\s*/i;
+const comparisonDetectionStep: PipelineStep = (input, ctx) => {
+  const out = clone(ctx);
+
+  // Quick check: if no comparison operator at start, skip
+  if (!comparisonOperatorRegex.test(input)) {
+    return out;
+  }
+
+  const result = matchComparisonOperator(input);
+
+  if (result) {
+    out.isRange = true;
+    out.min = result.min ?? undefined;
+    out.max = result.max ?? undefined;
+    if (result.currency) {
+      out.currency = result.currency;
+    }
+  }
+
+  return out;
+};
+
+/** 1) Range detection step - runs before numeric detection to identify range expressions */
+const rangeSeparatorRegex = /\s*(?:-|–|—|to|through)\s*/i;
+const rangeDetectionStep: PipelineStep = (input, ctx) => {
+  const out = clone(ctx);
+
+  // Quick check: if no range separator, skip loading the module
+  if (!rangeSeparatorRegex.test(input)) {
+    return out;
+  }
+
+  const result = matchRange(input);
+
+  if (result) {
+    out.isRange = true;
+    out.min = result.min ?? undefined;
+    out.max = result.max ?? undefined;
+    if (result.currency) {
+      out.currency = result.currency;
+    }
+  }
+
+  return out;
+};
+
+/** 2) Currency detection step */
 const currencyDetectionStep: PipelineStep = (input, ctx) => {
   const out = clone(ctx);
 
@@ -326,6 +383,11 @@ const currencyDetectionStep: PipelineStep = (input, ctx) => {
 
 /** 2) Numeric / word-number detection (simple digits & decimals for now) */
 const numericDetectionStep: PipelineStep = (input, ctx) => {
+  // Skip if already processed as a range (to avoid double processing)
+  if (ctx.isRange) {
+    return ctx;
+  }
+
   const out = clone(ctx);
 
   // Normalize input: remove common thousand separators (",", "'") to simplify parsing.

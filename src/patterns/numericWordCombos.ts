@@ -54,6 +54,8 @@ function normalizeInput(input: string): string {
  * - "2b" -> 2,000,000,000
  * - "1.5k" -> 1,500
  * - "2.5m" -> 2,500,000
+ * - "1,000k" -> 1,000,000
+ * - "2,500m" -> 2,500,000,000
  *
  * @param input - The numeric-word combo string to parse
  * @returns The parsed numeric value
@@ -67,15 +69,17 @@ export function parseNumericWordCombo(input: string): number {
 
   const normalized = normalizeInput(input);
 
-  // Match pattern: optional digits, optional decimal point with digits, then magnitude suffix
-  const match = /^(\d+(?:\.\d+)?)(bn|[kmb])$/i.exec(normalized);
+  // Match pattern: digits with optional comma separators (or plain digits), optional decimal point with digits, then magnitude suffix
+  // Handles: 10k, 5m, 1,000k, 2,500m, 1.5k, 2.5m, 2bn
+  const match = /^(\d+(?:,\d{3})*(?:\.\d+)?)(bn|[kmb])$/i.exec(normalized);
 
   if (!match) {
     throw new Error(`Invalid numeric-word combo format: "${input}"`);
   }
 
   const [, numericPart, suffixPart] = match;
-  const numericValue = parseFloat(numericPart);
+  // Remove commas before parsing
+  const numericValue = parseFloat(numericPart.replace(/,/g, ""));
   const suffix = suffixPart.toLowerCase();
 
   if (!(suffix in MAGNITUDE_MULTIPLIERS)) {
@@ -100,7 +104,8 @@ export function parseNumericWordCombo(input: string): number {
  */
 function buildNumericWordComboRegex(): RegExp {
   // Match patterns like: 10k, 5m, 2b, 1.5k, 2.5m, 2bn
-  const pattern = "(\\d+(?:\\.\\d+)?(?:bn|[kmb]))";
+  // Also handles comma separators: 1,000k, 2,500m, 10,000b
+  const pattern = "(\\d+(?:,\\d{3})*(?:\\.\\d+)?(?:bn|[kmb]))";
   return new RegExp(`\\b${pattern}\\b`, "gi");
 }
 

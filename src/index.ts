@@ -49,3 +49,21 @@ export {
   RegexPipeline,
   RunOptions,
 } from "./regexPipeline";
+export {
+  parseAll,
+  MonetaryExpression,
+  MonetaryPattern,
+  MONETARY_PATTERNS,
+  RangeParseResult,
+} from "./parseAll";
+export { matchRange, parseRange } from "./patterns/ranges";
+export {
+  matchComparisonOperator,
+  parseComparisonOperator,
+  detectComparisonOperator,
+} from "./patterns/ranges";
+export {
+  NumericWordComboParseResult,
+  matchNumericWordCombo,
+  parseNumericWordCombo,
+} from "./patterns/numericWordCombos";
