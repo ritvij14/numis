@@ -1,0 +1,30 @@
+# numis — Natural Language Money Parser for JavaScript
+# License: MIT (https://github.com/ritvij14/numis/blob/main/LICENSE)
+
+## Overview
+numis is a lightweight JavaScript/TypeScript library that parses monetary expressions from free-form text into structured data ({ amount, currency }).
+
+## Key Capabilities
+- Currency symbols ($, €, £, ¥, ₹ and 70+ more)
+- ISO-4217 codes (USD, EUR, GBP)
+- Worded numbers ("one hundred dollars")
+- Magnitude suffixes ("10k", "5M")
+- Slang ("bucks", "quid", "fiver", "grand")
+- Ranges ("$50 to $100", "between 100 and 200 EUR")
+- Comparison bounds ("< 30k", "> 2 Million")
+- Regional formats (European, Swiss, Brazilian)
+- Negative values and minor units (cents, pence)
+
+## Quick Start
+npm install numis
+import { parseMoney } from "numis";
+const result = parseMoney("The price is $49.99");
+// { original: "The price is $49.99", amount: 49.99, currency: "USD" }
+
+## Documentation
+Full docs and API reference: https://numis.ritvij.dev/#documentation
+GitHub repository: https://github.com/ritvij14/numis
+npm package: https://www.npmjs.com/package/numis
+
+## Author
+Ritvij Kumar Sharma — https://ritvij.dev

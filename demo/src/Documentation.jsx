@@ -1,3 +1,5 @@
+// NOTE: When updating documentation content here, also update
+// scripts/noscript-template.html so the <noscript> fallback stays in sync.
 import { parseAll, parseMoney } from "numis";
 import { useState } from "react";
 import SyntaxHighlighter from "./SyntaxHighlighter";

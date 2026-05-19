@@ -40,6 +40,7 @@
 ```
 ├── .claude
 │   ├── commands
+│   ├── session-changed
 │   ├── settings.json
 │   └── settings.local.json
 ├── .forge
@@ -58,6 +59,8 @@
 ├── .windsurf
 │   └── rules
 ├── demo
+│   ├── public
+│   ├── scripts
 │   ├── src
 │   ├── .DS_Store
 │   ├── index.html
@@ -115,7 +118,6 @@
 ├── package.json
 ├── README.md
 ├── rollup.config.js
-├── sample.html
 ├── tsconfig.cjs.json
 └── tsconfig.json
 ```

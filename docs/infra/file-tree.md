@@ -3,7 +3,7 @@
 > **Auto-generated. Do not edit manually.**
 > Updated automatically after every Claude Code session via the `Stop` and `SubagentStop` hooks.
 > To regenerate manually: `bash scripts/generate-tree.sh`
-> Last generated: 2026-05-18 08:42:43 UTC
+> Last generated: 2026-05-19 05:20:07 UTC
 
 ---
 
@@ -18,6 +18,7 @@
 │   │   │   ├── next-task.md
 │   │   │   └── smart-workflow.md
 │   │   └── wrap-up.md
+│   ├── session-changed
 │   ├── settings.json
 │   └── settings.local.json
 ├── .forge
@@ -50,6 +51,16 @@
 │       ├── self_improve.mdc
 │       └── taskmaster.mdc
 ├── demo
+│   ├── public
+│   │   ├── favicon.svg
+│   │   ├── llms.txt
+│   │   ├── og-image.png
+│   │   ├── og-image.svg
+│   │   ├── robots.txt
+│   │   └── sitemap.xml
+│   ├── scripts
+│   │   ├── inject-noscript.cjs
+│   │   └── noscript-template.html
 │   ├── src
 │   │   ├── App.jsx
 │   │   ├── Documentation.jsx
@@ -148,7 +159,6 @@
 ├── package.json
 ├── README.md
 ├── rollup.config.js
-├── sample.html
 ├── tsconfig.cjs.json
 └── tsconfig.json
 ```

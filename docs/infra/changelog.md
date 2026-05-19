@@ -240,6 +240,25 @@
 
 ---
 
+## 2026-05-19 — SEO and crawler visibility overhaul for demo site
+
+**Changed:** demo/index.html, demo/public/robots.txt (new), demo/public/llms.txt (new), demo/scripts/noscript-template.html (new), demo/scripts/inject-noscript.cjs (new), demo/package.json, demo/src/Documentation.jsx
+**Why:** The demo SPA had no crawler-visible content, no structured data, and no AI-crawler directives, making it invisible to search engines and LLMs.
+
+**How:**
+1. Added JSON-LD `SoftwareApplication` and `WebSite` schema with `SearchAction` potentialAction to index.html
+2. Added Open Graph and Twitter Card meta tags with OG image reference
+3. Created `public/robots.txt` with explicit `Allow` directives for GPTBot, OAI-SearchBot, ClaudeBot, and PerplexityBot
+4. Created `public/llms.txt` with project overview, capabilities, quick start, and author attribution
+5. Created `scripts/noscript-template.html` as the source of truth for static fallback content
+6. Created `scripts/inject-noscript.cjs` build-time script that injects the template into `index.html`'s `<noscript>` block
+7. Added `"prebuild": "node scripts/inject-noscript.cjs"` to demo/package.json so injection runs automatically before every Vite build
+8. Added sync reminder comment to the top of `demo/src/Documentation.jsx`
+9. Escaped `<` characters in template text content to `&lt;` to avoid parse5 HTML parsing errors during Vite build
+10. Build succeeds cleanly; noscript injection verified in dist/index.html
+
+---
+
 ## Pre-2026-03-30
 
 See git history for earlier changes.

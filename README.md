@@ -273,6 +273,16 @@ Use clear formats: `$1,500.00` or `€1.500,00`.
 
 Try it live: [https://numis.ritvij.dev](https://numis.ritvij.dev)
 
+The demo site is a Vite + React SPA optimized for search engine and AI crawler visibility:
+
+- **Structured data** — JSON-LD schema for `SoftwareApplication` and `WebSite` (Google Rich Results compatible)
+- **Open Graph / Twitter Cards** — Social sharing previews with title, description, and OG image
+- **`<noscript>` fallback** — Full documentation content embedded as static HTML for crawlers without JavaScript
+- **`robots.txt`** — Explicit `Allow` directives for AI crawlers (GPTBot, ClaudeBot, PerplexityBot)
+- **`llms.txt`** — Attribution file for LLM ingestion
+- **Preload hints** — `dns-prefetch` and `modulepreload` for faster loading
+- **Build-time injection** — `scripts/inject-noscript.cjs` keeps the `<noscript>` block in sync with the React documentation component automatically
+
 ---
 
 ## License

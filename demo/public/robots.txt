@@ -2,4 +2,22 @@ User-agent: *
 Allow: /
 Disallow: /src/
 
+# AI Search crawlers (allow for indexing / citation)
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+
+# Optional: block training-only crawlers
+User-agent: CCBot
+Disallow: /
+User-agent: anthropic-ai
+Disallow: /
+User-agent: cohere-ai
+Disallow: /
+
 Sitemap: https://numis.ritvij.dev/sitemap.xml

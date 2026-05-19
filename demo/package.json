@@ -5,6 +5,7 @@
   "description": "Demo website for numis library",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/inject-noscript.cjs",
     "build": "vite build",
     "preview": "vite preview"
   },
