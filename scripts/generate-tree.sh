@@ -2,7 +2,7 @@
 
 # generate-tree.sh
 # Generates a clean file tree of the project and writes it to docs/infra/file-tree.md
-# Called automatically via Claude Code hooks on Stop and SubagentStop events
+# Called automatically via the shared agent Stop hook when .agents/session-changed exists
 # Can also be run manually: bash scripts/generate-tree.sh
 #
 # Skips update entirely if the tree hasn't changed.
@@ -118,7 +118,7 @@ cat > "$OUTPUT_FILE" << EOF
 # File Tree
 
 > **Auto-generated. Do not edit manually.**
-> Updated automatically after every Claude Code session via the \`Stop\` and \`SubagentStop\` hooks.
+> Updated automatically after agent sessions via the shared \`Stop\` hook.
 > To regenerate manually: \`bash scripts/generate-tree.sh\`
 > Last generated: $TIMESTAMP
 

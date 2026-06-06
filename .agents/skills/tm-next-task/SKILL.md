@@ -1,21 +1,14 @@
-Next Task
-
-Arguments: $ARGUMENTS
-Intelligently determine and prepare the next action based on comprehensive context.
-
-This enhanced version of 'next' considers:
-- Current task states
-- Recent activity
-- Time constraints
-- Dependencies
-- Your working patterns
+---
+description: Intelligently determine and prepare the next action based on comprehensive context.
+allowed-tools: Bash, Read, mcp__task-master-ai__next_task, mcp__task-master-ai__get_task, mcp__task-master-ai__get_tasks, mcp__task-master-ai__set_task_status
+---
 
 Arguments: $ARGUMENTS
 
 ## Intelligent Next Action
 
 ### 1. **Context Gathering**
-Let me analyze the current situation:
+Analyze the current situation:
 - Active tasks (in-progress)
 - Recently completed tasks
 - Blocked tasks
@@ -44,11 +37,10 @@ Let me analyze the current situation:
 
 Based on selected task:
 1. Show full context and history
-2. Set up development environment
-3. Run relevant tests
-4. Open related files
-5. Show similar completed tasks
-6. Estimate completion time
+2. Run relevant tests
+3. Open related files
+4. Show similar completed tasks
+5. Estimate completion time
 
 ### 4. **Alternative Suggestions**
 
@@ -61,9 +53,8 @@ Always provide options:
 ### 5. **Workflow Integration**
 
 Seamlessly connect to:
-- `/project:task-master:start [selected]`
-- `/project:workflows:auto-implement`
-- `/project:task-master:expand` (if complex)
-- `/project:utils:complexity-report` (if unsure)
+- `tm-auto-implement` (if ready to implement)
+- `tm-smart-workflow` (if unsure what to do)
+- `tm-analyze-project` (if complexity report needed)
 
 The goal: Zero friction from decision to implementation.

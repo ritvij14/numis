@@ -1,27 +1,45 @@
 # File Tree
 
 > **Auto-generated. Do not edit manually.**
-> Updated automatically after every Claude Code session via the `Stop` and `SubagentStop` hooks.
+> Updated automatically after agent sessions via the shared `Stop` hook.
 > To regenerate manually: `bash scripts/generate-tree.sh`
-> Last generated: 2026-05-19 05:20:07 UTC
+> Last generated: 2026-06-06 10:58:05 UTC
 
 ---
 
 ```
 /Users/ritvij14/Desktop/Projects/numis
+├── .agents
+│   ├── skills
+│   │   ├── git-push
+│   │   │   └── SKILL.md
+│   │   ├── sync-dataconnect
+│   │   │   └── SKILL.md
+│   │   ├── tm-analyze-project
+│   │   │   └── SKILL.md
+│   │   ├── tm-auto-implement
+│   │   │   └── SKILL.md
+│   │   ├── tm-command-pipeline
+│   │   │   └── SKILL.md
+│   │   ├── tm-next-task
+│   │   │   └── SKILL.md
+│   │   ├── tm-smart-workflow
+│   │   │   └── SKILL.md
+│   │   └── wrap-up
+│   │       └── SKILL.md
+│   ├── config.toml
+│   ├── generate-codex-config.sh
+│   ├── hooks.json
+│   ├── mcp.json
+│   └── session-changed
 ├── .claude
-│   ├── commands
-│   │   ├── tm
-│   │   │   ├── analyze-project.md
-│   │   │   ├── auto-implement-tasks.md
-│   │   │   ├── command-pipeline.md
-│   │   │   ├── next-task.md
-│   │   │   └── smart-workflow.md
-│   │   └── wrap-up.md
-│   ├── session-changed
-│   ├── settings.json
+│   ├── skills -> ../.agents/skills
+│   ├── settings.json -> ../.agents/hooks.json
 │   └── settings.local.json
-├── .forge
+├── .codex
+│   ├── skills -> ../.agents/skills
+│   ├── config.toml -> ../.agents/config.toml
+│   └── hooks.json -> ../.agents/hooks.json
 ├── .github
 │   └── workflows
 │       ├── ci.yml
@@ -42,14 +60,6 @@
 │   ├── CLAUDE.md
 │   ├── config.json
 │   └── state.json
-├── .windsurf
-│   └── rules
-│       ├── cursor_rules.mdc
-│       ├── dev_workflow.mdc
-│       ├── file_structure_maintainence.mdc
-│       ├── folder-structure.mdc
-│       ├── self_improve.mdc
-│       └── taskmaster.mdc
 ├── demo
 │   ├── public
 │   │   ├── favicon.svg
@@ -84,10 +94,10 @@
 │   │   ├── _feature-template.md
 │   │   ├── core-parsing.md
 │   │   ├── currency-data.md
+│   │   ├── demo-site-seo.md
 │   │   ├── errors.md
 │   │   └── patterns.md
 │   └── infra
-│       ├── changelog.md
 │       ├── decisions.md
 │       ├── file-tree.md
 │       └── testing.md
@@ -152,6 +162,8 @@
 │   └── uncommonCurrencies.test.ts
 ├── .DS_Store
 ├── .gitignore
+├── .mcp.json -> .agents/mcp.json
+├── AGENTS.md
 ├── CLAUDE.md
 ├── eslint.config.cjs
 ├── jest.config.js

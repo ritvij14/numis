@@ -1,7 +1,7 @@
-Auto Implement Tasks
-
-Arguments: $ARGUMENTS
-Enhanced auto-implementation with intelligent code generation and testing.
+---
+description: Enhanced auto-implementation with intelligent code generation and testing.
+allowed-tools: Bash, Read, Edit, Write, mcp__task-master-ai__get_task, mcp__task-master-ai__set_task_status, mcp__task-master-ai__update_task, mcp__task-master-ai__update_subtask
+---
 
 Arguments: $ARGUMENTS
 
@@ -66,8 +66,6 @@ Step 2/5: Implementing core logic ✓
 Step 3/5: Adding error handling ⚡ (in progress)
 Step 4/5: Writing tests ⏳
 Step 5/5: Integration testing ⏳
-
-Current: Adding try-catch blocks and validation...
 ```
 
 ### 5. **Quality Assurance**
@@ -86,14 +84,12 @@ If issues arise:
 - Suggestion generation
 - Fallback strategies
 - Manual intervention points
-- Learning from failures
 
 ### 7. **Post-Implementation**
 
 After completion:
-- Generate PR description
-- Update documentation
-- Log lessons learned
+- Update task status to done
+- Update documentation if behavior changed
 - Suggest follow-up tasks
 - Update task relationships
 

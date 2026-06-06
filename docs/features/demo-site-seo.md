@@ -132,4 +132,3 @@ None. The injection script uses only Node.js built-in modules (`fs`, `path`).
 ## Related
 
 - [[docs/infra/decisions.md]] — Architecture decision: SPA Crawler Visibility via noscript
-- [[docs/infra/changelog.md]] — 2026-05-19 entry with full change list

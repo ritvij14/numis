@@ -1,7 +1,7 @@
-Analyze Project
-
-Arguments: $ARGUMENTS
-Advanced project analysis with actionable insights and recommendations.
+---
+description: Advanced project analysis with actionable insights and recommendations.
+allowed-tools: Bash, Read, mcp__task-master-ai__get_tasks, mcp__task-master-ai__get_task, mcp__task-master-ai__analyze_project_complexity, mcp__task-master-ai__complexity_report
+---
 
 Arguments: $ARGUMENTS
 

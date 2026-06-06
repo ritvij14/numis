@@ -1,13 +1,13 @@
-Command Pipeline
-
-Arguments: $ARGUMENTS
-Execute a pipeline of commands based on a specification.
+---
+description: Execute a pipeline of Taskmaster commands based on a specification.
+allowed-tools: Bash, Read, mcp__task-master-ai__get_tasks, mcp__task-master-ai__next_task, mcp__task-master-ai__set_task_status, mcp__task-master-ai__expand_task, mcp__task-master-ai__analyze_project_complexity
+---
 
 Arguments: $ARGUMENTS
 
 ## Command Pipeline Execution
 
-Parse pipeline specification from arguments. Supported formats:
+Parse pipeline specification from $ARGUMENTS. Supported formats:
 
 ### Simple Pipeline
 `init → expand-all → sprint-plan`
@@ -75,6 +75,3 @@ if:idle>1day → prompt-update
 4. Handle conditions and loops
 5. Aggregate results
 6. Show summary
-
-This enables complex workflows like:
-`parse-prd → expand-all → filter:complex>70 → assign:senior → sprint-plan:weighted`

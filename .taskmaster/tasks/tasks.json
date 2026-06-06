@@ -2096,7 +2096,52 @@
         "status": "pending",
         "dependencies": [],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Inventory all regex patterns in src/patterns/",
+            "description": "Create a complete inventory of every regex pattern used across all files in src/patterns/ directory. Extract raw regex literals, RegExp constructors, and any dynamically constructed patterns. Document file location, line numbers, and the purpose of each pattern.",
+            "dependencies": [],
+            "details": "1. Use grep/ripgrep to find all regex patterns: search for /pattern/ literals, new RegExp(), and template literal constructions. 2. Create a structured inventory (JSON or markdown) with fields: file, line, pattern string, context/purpose, and whether it's user-facing or internal. 3. Include patterns from parseAll.ts MONETARY_PATTERNS, any range patterns, and helper utilities. 4. Verify completeness by checking imports and re-exports across the module graph.",
+            "status": "pending",
+            "testStrategy": null
+          },
+          {
+            "id": 2,
+            "title": "Integrate safe-regex and build automated ReDoS scanner",
+            "description": "Install safe-regex library and create a script that programmatically tests every inventoried regex pattern for ReDoS vulnerabilities using both static analysis and dynamic timeout-based detection.",
+            "dependencies": [
+              1
+            ],
+            "details": "1. Install safe-regex as a dev dependency. 2. Build a test runner script (src/test/redos-scanner.ts) that loads each pattern from the inventory. 3. For each pattern, run safe-regex analysis to detect exponential/worst-case backtracking. 4. Implement dynamic timeout tests: for patterns safe-regex flags, generate pathological inputs (long 'a's, nested separators like 'a-a-a-a', repeated words) and measure execution time. 5. Use worker threads or timeouts to catch hanging patterns safely. 6. Output a report with PASS/FAIL/NEEDS_REVIEW for each pattern.",
+            "status": "pending",
+            "testStrategy": "Run scanner against all patterns; verify safe-regex correctly identifies known-bad patterns like (a+)+; confirm timeout mechanism catches catastrophic backtracking within 5 seconds."
+          },
+          {
+            "id": 3,
+            "title": "Develop targeted ReDoS payload test suite with time thresholds",
+            "description": "Create a comprehensive Jest test suite that feeds known ReDoS attack payloads to each regex matcher and asserts execution completes within 100ms, using the Jest infrastructure already configured in Task 4.",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "1. Create src/patterns/__tests__/redos.test.ts using the existing Jest/ts-jest setup (Task 4). 2. Build payload generators for: long repeated words ('aaaaaaaa...'), nested separators ('$1-$1-$1-$1...'), exponential-match strings, and crafted monetary-like strings. 3. Parametrize tests to run each payload against every pattern in the inventory. 4. Use jest.setTimeout and performance.now() or Date to enforce <100ms execution threshold per match attempt. 5. Test both positive and negative cases (should match vs should not match). 6. Include edge cases: empty strings, unicode, very long inputs (10k+ chars).",
+            "status": "pending",
+            "testStrategy": "All tests must pass: safe patterns complete <100ms, vulnerable patterns are caught and marked for fixing. Use fast-check (Task 26) to generate additional random payloads and confirm no timeouts occur."
+          },
+          {
+            "id": 4,
+            "title": "Document findings and create remediation plan for vulnerable patterns",
+            "description": "Produce final audit documentation classifying each pattern as SAFE, FIXED, or NEEDS_FIX with specific remediation guidance. Update or replace vulnerable patterns with ReDoS-safe alternatives using atomic groups or possessive quantifiers where possible.",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "1. Create AUDIT_REPORT.md with sections: Executive Summary, Pattern-by-Pattern Analysis, Test Results, Remediation Plan. 2. For each VULNERABLE pattern: explain the attack vector (e.g., nested quantifiers), provide minimal failing payload, suggest fix strategy (rewrite to atomic group (?>) if supported, use unrolled loops, or replace with linear-time parser). 3. For patterns that cannot be easily fixed, document risk assessment and input length limits. 4. Implement fixes directly in source files: refactor (a+)* to a++ or equivalent safe constructs; consider RE2 or linear-time alternative for complex cases. 5. Re-run full scanner and test suite to verify fixes. 6. Update code comments with ReDoS-safety notes for future maintainers.",
+            "status": "pending",
+            "testStrategy": "After fixes, re-run the scanner from subtask 2 and test suite from subtask 3: all previously-failing patterns must now pass. Add regression tests for each fixed pattern with the specific payload that caused the original vulnerability."
+          }
+        ]
       },
       {
         "id": 76,
