@@ -82,6 +82,14 @@ export class RegexPipeline {
    * @param options Optional configuration including defaultCurrency
    */
   run(input: string, options?: RunOptions): PipelineContext {
+    // Defense-in-depth: reject pathologically long inputs before any regex runs
+    const MAX_INPUT_LENGTH = 5000;
+    if (input.length > MAX_INPUT_LENGTH) {
+      throw new MoneyParseError(
+        `Input length (${input.length}) exceeds maximum allowed (${MAX_INPUT_LENGTH}).`
+      );
+    }
+
     let ctx: PipelineContext = {
       original: input,
       defaultCurrency: options?.defaultCurrency,
@@ -145,7 +153,7 @@ export class RegexPipeline {
 // ---------------------------------------------------------------------------
 import { getCurrencyByCode } from "./currencyData";
 import { getNameToCodeMap } from "./currencyMapBuilder";
-import { ValueOverflowError } from "./errors";
+import { MoneyParseError, ValueOverflowError } from "./errors";
 import { matchContextualPhrase } from "./patterns/contextualPhrases";
 import { matchNumericWordCombo } from "./patterns/numericWordCombos";
 import { matchSlangTerm } from "./patterns/slangTerms";
@@ -153,7 +161,7 @@ import { matchFractionalWordedNumber } from "./patterns/wordedNumbers";
 import { matchRegionalFormat } from "./patterns/regionalFormats";
 import { detectNegative } from "./patterns/negativeNumbers";
 import { matchMinorUnitOnly } from "./patterns/minorUnitsOnly";
-import { matchComparisonOperator, matchRange } from "./patterns/ranges";
+import { matchComparisonOperator, matchRange, rangeSeparatorRegex } from "./patterns/ranges";
 
 // ---------------------------------------------------------------------------
 // Currency helpers
@@ -299,7 +307,6 @@ const comparisonDetectionStep: PipelineStep = (input, ctx) => {
 };
 
 /** 1) Range detection step - runs before numeric detection to identify range expressions */
-const rangeSeparatorRegex = /\s*(?:-|–|—|to|through)\s*/i;
 const rangeDetectionStep: PipelineStep = (input, ctx) => {
   const out = clone(ctx);
 

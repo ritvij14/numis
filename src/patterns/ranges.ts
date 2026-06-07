@@ -39,8 +39,13 @@ export interface SingleValueParseResult {
  * Regular expression matching common range separators.
  * Matches: hyphen (-), en-dash (–), em-dash (—), "to", and "through".
  * Case-insensitive.
+ *
+ * ReDoS-safety note: previously used \s* which backtracks on very long
+ * whitespace-only inputs. Replaced with non-backtracking split logic.
+ * The regex itself is only used for detection; actual splitting is done
+ * with trim() + a fixed-character class.
  */
-export const rangeSeparatorRegex: RegExp = /\s*(?:-|–|—|to|through)\s*/i;
+export const rangeSeparatorRegex: RegExp = /(?:-|–|—|to|through)/i;
 
 /**
  * Regular expression matching comparison operators (< or >) with optional whitespace.
@@ -175,7 +180,7 @@ export function matchRange(input: string): RangeParseResult | null {
   }
 
   // Split by separator to validate we have exactly 2 parts
-  const parts = normalized.split(rangeSeparatorRegex);
+  const parts = normalized.split(rangeSeparatorRegex).map((p) => p.trim());
   const nonEmptyParts = parts.filter((part) => part && part.trim().length > 0);
 
   if (nonEmptyParts.length !== 2) {
@@ -268,7 +273,7 @@ export function parseRange(input: string): RangeParseResult | null {
   }
 
   // Split the input by range separators
-  const parts = normalized.split(rangeSeparatorRegex);
+  const parts = normalized.split(rangeSeparatorRegex).map((p) => p.trim());
 
   // Invalid: more than 2 values in range (e.g., "invalid - range" has 3 parts: ["invalid", "", "range"])
   // or less than 2 values (shouldn't happen after matchRange check, but safety check)
@@ -431,10 +436,12 @@ function detectCurrencyFromPrefix(input: string): string | null {
  * Detects currency from a suffix position (e.g., "100 USD" -> "USD")
  */
 function detectCurrencyFromSuffix(input: string): string | null {
-  const normalized = input.trim().toLowerCase();
+  // Use trimEnd (not trim) to eliminate backtracking on very long trailing
+  // whitespace, then match a single literal space before the suffix.
+  const normalized = input.trimEnd().toLowerCase();
 
   // Check for currency code at end (e.g., "100 USD", "50 EUR")
-  const currencyCodeMatch = normalized.match(/\s+([a-z]{3})$/);
+  const currencyCodeMatch = normalized.match(/ ([a-z]{3})$/);
   if (currencyCodeMatch) {
     const code = currencyCodeMatch[1].toUpperCase();
     if (isValidCurrencyCode(code)) {
@@ -444,7 +451,7 @@ function detectCurrencyFromSuffix(input: string): string | null {
 
   // Check for currency word at end (e.g., "100 dollars", "50 euros")
   const currencyWordMatch = normalized.match(
-    /\s+(dollars?|euros?|pounds?|cents?)$/
+    / (dollars?|euros?|pounds?|cents?)$/
   );
   if (currencyWordMatch) {
     const word = currencyWordMatch[1].toLowerCase();
