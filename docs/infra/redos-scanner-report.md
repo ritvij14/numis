@@ -1,6 +1,6 @@
 # ReDoS Scanner Report — numis
 
-**Date:** 2026-06-08T09:16:09.808Z
+**Date:** 2026-06-08T13:44:16.414Z
 **Scanner:** safe-regex (static) + dynamic timeout (3000ms)
 **Inventory:** /home/ritvij14/numis/docs/infra/redos-inventory.md
 
@@ -29,7 +29,7 @@ new RegExp(`[${Object.keys(SYMBOL_TO_CODE).map(s => `\\${s}`).join("")}]`)
 /(?:\b|^)(\d+(?:\.\d+)?)(?:\b|$)/
 ```
 - **safe-regex:** UNSAFE
-- **Dynamic worst time:** 0.10ms
+- **Dynamic worst time:** 0.19ms
 - **Worst payload:** long-a
 
 ### src/patterns/abbreviations.ts:45
@@ -44,7 +44,7 @@ new RegExp(`(?:(?<codeBefore>${codePattern})\\s+(?<amountAfterCode>${numberPatte
 /^\d+(?:\.\d+)?$/
 ```
 - **safe-regex:** UNSAFE
-- **Dynamic worst time:** 0.04ms
+- **Dynamic worst time:** 0.05ms
 - **Worst payload:** long-a
 
 ### src/patterns/contextualPhrases.ts:58
@@ -52,8 +52,8 @@ new RegExp(`(?:(?<codeBefore>${codePattern})\\s+(?<amountAfterCode>${numberPatte
 /^\d+(?:\.\d+)?$/
 ```
 - **safe-regex:** UNSAFE
-- **Dynamic worst time:** 0.01ms
-- **Worst payload:** ambiguous-sep
+- **Dynamic worst time:** 0.02ms
+- **Worst payload:** long-digits
 
 ### src/patterns/contextualPhrases.ts:243
 ```typescript
@@ -81,7 +81,7 @@ new RegExp(`\\b(((?:a
 /^(\d+(?:\.\d+)?)\s+(hundred|thousand|million|billion|trillion)(?:\s+\w+)*/i
 ```
 - **safe-regex:** UNSAFE
-- **Dynamic worst time:** 0.11ms
+- **Dynamic worst time:** 0.10ms
 - **Worst payload:** long-a
 
 ### src/patterns/minorUnitsOnly.ts:55
@@ -97,15 +97,15 @@ new RegExp(`\\b(((?:a
 /\b(?:a|an|the|\d+(?:\.\d+)?|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion)\s+(?:dollar|dollars|euro|euros|pound|pounds|yen|yuan|peso|pesos|rupee|rupees|franc|francs|krona|kronor|shekel|shekels|dinar|dinars|dirham|dirhams|[A-Z]{3})\s+(?:and\s+)?(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)\s+(?:cent|cents|penny|pennies|pence)\b/i
 ```
 - **safe-regex:** UNSAFE
-- **Dynamic worst time:** 0.76ms
-- **Worst payload:** padded
+- **Dynamic worst time:** 0.44ms
+- **Worst payload:** long-a
 
 ### src/patterns/numericWordCombos.ts:74
 ```typescript
 /^(\d+(?:,\d{3})*(?:\.\d+)?)(bn|[kmb])$/i
 ```
 - **safe-regex:** UNSAFE
-- **Dynamic worst time:** 0.07ms
+- **Dynamic worst time:** 0.10ms
 - **Worst payload:** long-a
 
 ### src/patterns/numbersWithSeparators.ts:26
@@ -113,7 +113,7 @@ new RegExp(`\\b(((?:a
 /^(\d{1,3}(,\d{3})*(\.\d+)?|\d+\.\d+|\d+)$/
 ```
 - **safe-regex:** UNSAFE
-- **Dynamic worst time:** 0.07ms
+- **Dynamic worst time:** 0.06ms
 - **Worst payload:** long-a
 
 ### src/patterns/numbersWithSeparators.ts:80
@@ -122,14 +122,14 @@ new RegExp(`\\b(((?:a
 ```
 - **safe-regex:** UNSAFE
 - **Dynamic worst time:** 0.09ms
-- **Worst payload:** ambiguous-sep
+- **Worst payload:** long-a
 
 ### src/patterns/ranges.ts:230
 ```typescript
 /^\d{1,2},\d{2}(?:,\d{2})*,\d{3}(?:\.\d+)?$/
 ```
 - **safe-regex:** UNSAFE
-- **Dynamic worst time:** 0.07ms
+- **Dynamic worst time:** 0.06ms
 - **Worst payload:** long-a
 
 ### src/patterns/ranges.ts:318
@@ -137,7 +137,7 @@ new RegExp(`\\b(((?:a
 /\b(\d+(?:\.\d+)?)\s*(k|thousand|m|mn|million|b|bn|billion)\b/i
 ```
 - **safe-regex:** UNSAFE
-- **Dynamic worst time:** 0.37ms
+- **Dynamic worst time:** 0.17ms
 - **Worst payload:** dollar-trail
 
 ### src/patterns/ranges.ts:328
@@ -145,7 +145,7 @@ new RegExp(`\\b(((?:a
 /^(\d+(?:\.\d+)?)/
 ```
 - **safe-regex:** UNSAFE
-- **Dynamic worst time:** 0.05ms
+- **Dynamic worst time:** 0.04ms
 - **Worst payload:** long-a
 
 ### src/patterns/regionalFormats.ts:97
@@ -161,7 +161,7 @@ new RegExp(`(?:(?<symbolBefore>${symbolPattern})\\s*(?<amountAfterSymbol>${numbe
 ```
 - **safe-regex:** UNSAFE
 - **Dynamic worst time:** 0.01ms
-- **Worst payload:** repeated-word
+- **Worst payload:** padded
 
 ### src/patterns/regionalFormats.ts:250
 ```typescript
@@ -288,57 +288,57 @@ rangeSeparatorRegex.test(...)
 
 | # | File | Line | Type | safe-regex | Dynamic worst | Payload |
 |---|------|------|------|------------|---------------|---------|
-| 2 | src/regexPipeline.ts | 196 | inline_literal | SAFE | 0.07ms | long-a |
-| 3 | src/regexPipeline.ts | 278 | literal | SAFE | 0.06ms | long-a |
-| 4 | src/regexPipeline.ts | 302 | literal | SAFE | 120.75ms | long-spaces |
-| 5 | src/regexPipeline.ts | 338 | inline_literal | SAFE | 0.08ms | long-a |
-| 6 | src/regexPipeline.ts | 353 | inline_literal | SAFE | 0.07ms | long-a |
-| 7 | src/regexPipeline.ts | 395 | inline_literal | SAFE | 0.06ms | long-a |
-| 9 | src/regexPipeline.ts | 481 | literal | SAFE | 0.42ms | long-a |
+| 2 | src/regexPipeline.ts | 196 | inline_literal | SAFE | 0.06ms | long-a |
+| 3 | src/regexPipeline.ts | 278 | literal | SAFE | 0.13ms | long-digits |
+| 4 | src/regexPipeline.ts | 302 | literal | SAFE | 136.09ms | long-spaces |
+| 5 | src/regexPipeline.ts | 338 | inline_literal | SAFE | 0.07ms | long-a |
+| 6 | src/regexPipeline.ts | 353 | inline_literal | SAFE | 0.06ms | long-a |
+| 7 | src/regexPipeline.ts | 395 | inline_literal | SAFE | 0.17ms | long-a |
+| 9 | src/regexPipeline.ts | 481 | literal | SAFE | 1.45ms | long-a |
 | 12 | src/patterns/abbreviations.ts | 94 | inline_literal | SAFE | 0.01ms | long-a |
-| 13 | src/patterns/contextualPhrases.ts | 36 | inline_literal | SAFE | 0.06ms | long-a |
-| 16 | src/patterns/contextualPhrases.ts | 81 | inline_literal | SAFE | 2.50ms | long-a |
-| 17 | src/patterns/contextualPhrases.ts | 125 | inline_literal | SAFE | 0.86ms | long-a |
-| 27 | src/patterns/minorUnitsOnly.ts | 40 | inline_literal | SAFE | 0.02ms | long-a |
-| 29 | src/patterns/minorUnitsOnly.ts | 169 | RegExp_constructor | SAFE | 0.06ms | long-a |
-| 32 | src/patterns/negativeNumbers.ts | 33 | literal | SAFE | 0.06ms | long-a |
-| 33 | src/patterns/negativeNumbers.ts | 51 | literal | SAFE | 0.06ms | long-a |
-| 34 | src/patterns/negativeNumbers.ts | 73 | literal | SAFE | 0.03ms | long-a |
-| 35 | src/patterns/negativeNumbers.ts | 83 | literal | SAFE | 0.02ms | symbol-bomb |
-| 36 | src/patterns/numericWordCombos.ts | 44 | inline_literal | SAFE | 0.67ms | long-digits |
+| 13 | src/patterns/contextualPhrases.ts | 36 | inline_literal | SAFE | 0.05ms | long-a |
+| 16 | src/patterns/contextualPhrases.ts | 81 | inline_literal | SAFE | 0.28ms | long-a |
+| 17 | src/patterns/contextualPhrases.ts | 125 | inline_literal | SAFE | 1.45ms | dollar-trail |
+| 27 | src/patterns/minorUnitsOnly.ts | 40 | inline_literal | SAFE | 0.02ms | long-spaces |
+| 29 | src/patterns/minorUnitsOnly.ts | 169 | RegExp_constructor | SAFE | 0.05ms | long-a |
+| 32 | src/patterns/negativeNumbers.ts | 33 | literal | SAFE | 0.05ms | long-a |
+| 33 | src/patterns/negativeNumbers.ts | 51 | literal | SAFE | 0.12ms | nested-periods |
+| 34 | src/patterns/negativeNumbers.ts | 73 | literal | SAFE | 0.04ms | long-a |
+| 35 | src/patterns/negativeNumbers.ts | 83 | literal | SAFE | 0.01ms | long-a |
+| 36 | src/patterns/numericWordCombos.ts | 44 | inline_literal | SAFE | 0.62ms | nested-periods |
 | 39 | src/patterns/numericWordCombos.ts | 109 | RegExp_constructor | SAFE | 0.05ms | long-a |
 | 42 | src/patterns/plainNumbers.ts | 35 | literal | SAFE | 0.01ms | long-digits |
-| 43 | src/patterns/plainNumbers.ts | 65 | literal | SAFE | 0.05ms | long-a |
-| 44 | src/patterns/ranges.ts | 43 | literal | SAFE | 171.75ms | long-spaces |
-| 45 | src/patterns/ranges.ts | 49 | literal | SAFE | 0.02ms | long-a |
-| 46 | src/patterns/ranges.ts | 69 | inline_literal | SAFE | 0.05ms | long-a |
-| 47 | src/patterns/ranges.ts | 72 | inline_literal | SAFE | 0.04ms | long-a |
-| 48 | src/patterns/ranges.ts | 91 | inline_literal | SAFE | 0.08ms | long-a |
-| 50 | src/patterns/ranges.ts | 202 | inline_literal | SAFE | 0.34ms | hyphen-bomb |
-| 54 | src/patterns/ranges.ts | 379 | inline_literal | SAFE | 0.72ms | long-a |
-| 55 | src/patterns/ranges.ts | 408 | inline_literal | SAFE | 0.04ms | long-a |
-| 56 | src/patterns/ranges.ts | 418 | inline_literal | SAFE | 0.04ms | long-a |
-| 57 | src/patterns/ranges.ts | 437 | inline_literal | SAFE | 191.93ms | long-spaces |
-| 58 | src/patterns/ranges.ts | 447 | inline_literal | SAFE | 185.28ms | long-spaces |
-| 59 | src/patterns/ranges.ts | 693 | inline_literal | SAFE | 0.01ms | padded |
+| 43 | src/patterns/plainNumbers.ts | 65 | literal | SAFE | 0.06ms | long-a |
+| 44 | src/patterns/ranges.ts | 43 | literal | SAFE | 125.76ms | long-spaces |
+| 45 | src/patterns/ranges.ts | 49 | literal | SAFE | 0.01ms | repeated-word |
+| 46 | src/patterns/ranges.ts | 69 | inline_literal | SAFE | 0.08ms | long-a |
+| 47 | src/patterns/ranges.ts | 72 | inline_literal | SAFE | 0.79ms | ambiguous-sep |
+| 48 | src/patterns/ranges.ts | 91 | inline_literal | SAFE | 0.06ms | long-a |
+| 50 | src/patterns/ranges.ts | 202 | inline_literal | SAFE | 0.24ms | long-a |
+| 54 | src/patterns/ranges.ts | 379 | inline_literal | SAFE | 0.05ms | long-a |
+| 55 | src/patterns/ranges.ts | 408 | inline_literal | SAFE | 0.06ms | long-a |
+| 56 | src/patterns/ranges.ts | 418 | inline_literal | SAFE | 0.06ms | long-a |
+| 57 | src/patterns/ranges.ts | 437 | inline_literal | SAFE | 185.95ms | long-spaces |
+| 58 | src/patterns/ranges.ts | 447 | inline_literal | SAFE | 318.13ms | long-spaces |
+| 59 | src/patterns/ranges.ts | 693 | inline_literal | SAFE | 0.02ms | long-spaces |
 | 60 | src/patterns/ranges.ts | 757 | inline_literal | SAFE | 0.11ms | long-a |
-| 61 | src/patterns/regionalFormats.ts | 64 | inline_literal | SAFE | 0.05ms | long-a |
-| 62 | src/patterns/regionalFormats.ts | 71 | inline_literal | SAFE | 0.06ms | long-a |
-| 66 | src/patterns/regionalFormats.ts | 120 | inline_literal | SAFE | 0.04ms | long-a |
-| 67 | src/patterns/regionalFormats.ts | 156 | inline_literal | SAFE | 0.94ms | ambiguous-sep |
-| 68 | src/patterns/regionalFormats.ts | 167 | inline_literal | SAFE | 0.01ms | mixed-format |
-| 69 | src/patterns/regionalFormats.ts | 185 | inline_literal | SAFE | 0.01ms | dollar-trail |
-| 70 | src/patterns/regionalFormats.ts | 193 | inline_literal | SAFE | 0.13ms | nested-periods |
-| 72 | src/patterns/regionalFormats.ts | 249 | inline_literal | SAFE | 0.10ms | symbol-bomb |
-| 75 | src/patterns/slangTerms.ts | 48 | inline_literal | SAFE | 0.03ms | long-spaces |
+| 61 | src/patterns/regionalFormats.ts | 64 | inline_literal | SAFE | 0.07ms | long-a |
+| 62 | src/patterns/regionalFormats.ts | 71 | inline_literal | SAFE | 0.07ms | long-a |
+| 66 | src/patterns/regionalFormats.ts | 120 | inline_literal | SAFE | 0.03ms | long-a |
+| 67 | src/patterns/regionalFormats.ts | 156 | inline_literal | SAFE | 0.07ms | long-a |
+| 68 | src/patterns/regionalFormats.ts | 167 | inline_literal | SAFE | 0.01ms | padded |
+| 69 | src/patterns/regionalFormats.ts | 185 | inline_literal | SAFE | 0.01ms | padded |
+| 70 | src/patterns/regionalFormats.ts | 193 | inline_literal | SAFE | 0.10ms | nested-periods |
+| 72 | src/patterns/regionalFormats.ts | 249 | inline_literal | SAFE | 0.05ms | long-a |
+| 75 | src/patterns/slangTerms.ts | 48 | inline_literal | SAFE | 0.01ms | long-spaces |
 | 77 | src/patterns/slangTerms.ts | 154 | RegExp_constructor | SAFE | 0.02ms | repeated-word |
-| 79 | src/patterns/symbols.ts | 373 | inline_literal | SAFE | 0.01ms | repeated-word |
-| 82 | src/patterns/symbols.ts | 423 | inline_literal | SAFE | 0.01ms | padded |
+| 79 | src/patterns/symbols.ts | 373 | inline_literal | SAFE | 0.03ms | repeated-word |
+| 82 | src/patterns/symbols.ts | 423 | inline_literal | SAFE | 0.01ms | long-a |
 | 83 | src/patterns/wordedNumbers.ts | 123 | inline_literal | SAFE | 0.01ms | long-spaces |
 | 84 | src/patterns/wordedNumbers.ts | 126 | inline_literal | SAFE | 0.05ms | long-a |
-| 85 | src/patterns/wordedNumbers.ts | 138 | inline_literal | SAFE | 0.90ms | long-a |
+| 85 | src/patterns/wordedNumbers.ts | 138 | inline_literal | SAFE | 0.02ms | long-spaces |
 | 87 | src/patterns/wordedNumbers.ts | 386 | RegExp_constructor | SAFE | 0.03ms | repeated-word |
-| 89 | src/patterns/wordedNumbers.ts | 411 | RegExp_constructor | SAFE | 0.04ms | repeated-word |
+| 89 | src/patterns/wordedNumbers.ts | 411 | RegExp_constructor | SAFE | 0.08ms | padded |
 
 ---
 *Generated by scripts/redos-scanner.cjs*
