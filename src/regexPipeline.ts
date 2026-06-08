@@ -157,7 +157,7 @@ import { MoneyParseError, ValueOverflowError } from "./errors";
 import { matchContextualPhrase } from "./patterns/contextualPhrases";
 import { matchNumericWordCombo } from "./patterns/numericWordCombos";
 import { matchSlangTerm } from "./patterns/slangTerms";
-import { matchFractionalWordedNumber } from "./patterns/wordedNumbers";
+import { matchFractionalWordedNumber, matchWordedNumber } from "./patterns/wordedNumbers";
 import { matchRegionalFormat } from "./patterns/regionalFormats";
 import { detectNegative } from "./patterns/negativeNumbers";
 import { matchMinorUnitOnly } from "./patterns/minorUnitsOnly";
@@ -485,14 +485,10 @@ const numericDetectionStep: PipelineStep = (input, ctx) => {
   // ---------------------------------------------------------------------
   // 9) Worded numbers ("one hundred twenty", "two thousand")
   // ---------------------------------------------------------------------
-  const wordNumberRegex =
-    /\b((?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion)(?:[\s-](?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion))*)\b/i;
-  const wordMatch = wordNumberRegex.exec(cleaned);
-  if (wordMatch) {
-    const parsed = wordsToNumber(wordMatch[1]);
-    if (parsed !== null) {
-      out.amount = parsed;
-    }
+  const wordedMatch = matchWordedNumber(cleaned);
+  if (wordedMatch) {
+    out.amount = wordedMatch.value;
+    return out;
   }
 
   return out;
