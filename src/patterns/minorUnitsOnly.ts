@@ -51,6 +51,11 @@ function parseAmount(tokens: string[]): number | null {
   const candidate = tokens.join(" ").trim();
   if (!candidate) return null;
 
+  // Standalone article "a" implies one (e.g., "a cent" -> 1 cent -> 0.01)
+  if (candidate === "a") {
+    return 1;
+  }
+
   // Numeric amount: "75", "50"
   if (/^\d+(?:\.\d+)?$/.test(candidate)) {
     return parseFloat(candidate);
