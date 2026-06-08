@@ -231,7 +231,13 @@ export function parseContextualPhrase(input: string): ContextualParseResult {
 }
 
 /**
+ * Maximum tokens to look before/after a currency token when scanning text.
+ */
+const WINDOW_SIZE = 30;
+
+/**
  * Attempts to match and parse a contextual phrase from text.
+ * Uses a linear token-scan approach — no dynamic regex.
  * Returns null if not found.
  */
 export function matchContextualPhrase(
@@ -240,82 +246,61 @@ export function matchContextualPhrase(
   if (!input || typeof input !== "string") return null;
 
   const normalized = normalize(input);
-  const currencyPattern = (() => {
-    const keys = Array.from(new Set(Object.keys(getNameToCodeMap())));
-    return `(?:${keys.join("|")}|[a-z]{3})`;
-  })();
-  const minorPattern = (() => {
-    const keys = Array.from(new Set(Object.keys(MINOR_UNIT_ALIASES)));
-    return `(?:${keys.join("|")})`;
-  })();
+  const tokens = normalized.split(" ").filter(Boolean);
+  if (tokens.length === 0) return null;
 
-  // Number words for matching amounts (major and minor)
-  const numberWords =
-    "zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion|trillion";
+  // 1. Find every currency token position
+  const currencyPositions: { index: number; code: string }[] = [];
+  for (let i = 0; i < tokens.length; i++) {
+    const code = lookupCurrency(tokens[i]);
+    if (code) {
+      currencyPositions.push({ index: i, code });
+    }
+  }
 
-  // Fraction words for matching fractional amounts with magnitudes
-  const fractionWords = "half|halves|quarter|quarters|third|thirds";
+  // 2. Try each currency position, sliding start forward until parse succeeds
+  //    This handles leading garbage like "I paid a dollar..."
+  for (const { index } of currencyPositions) {
+    const earliest = Math.max(0, index - WINDOW_SIZE);
+    const furthest = Math.min(tokens.length, index + WINDOW_SIZE + 1);
 
-  // Pattern to match worded numbers (one or more number words with spaces/hyphens)
-  const wordedNumberPattern = `(?:${numberWords})(?:[\\s-]+(?:and\\s+)?(?:${numberWords}))*`;
+    for (let start = earliest; start <= index; start++) {
+      const windowTokens = tokens.slice(start, furthest);
+      const windowText = windowTokens.join(" ");
 
-  // Pattern to match digit followed by magnitude words (e.g., "2 million", "5 thousand")
-  const digitMagnitudePattern = `\\d+(?:\\.\\d+)?\\s+(?:hundred|thousand|million|billion|trillion)(?:\\s+(?:${numberWords}))*`;
-
-  // Pattern to match fractional magnitudes (e.g., "quarter million", "half of a billion")
-  const fractionalMagnitudePattern = `(?:(?:${numberWords})\\s+)?(?:${fractionWords})(?:\\s+(?:of\\s+)?(?:a\\s+)?(?:hundred|thousand|million|billion|trillion))?`;
-
-  // The amount pattern allows:
-  // 1. Digit + magnitude words: "2 million", "5 thousand"
-  // 2. Fractional magnitudes: "quarter million", "half of a billion"
-  // 3. Worded numbers: "three thousand", "one hundred fifty"
-  // 4. Digits: "100", "3.50"
-  // 5. Optional (when preceded by article): "a dollar" means 1 dollar
-  const amountPattern = `(?:${digitMagnitudePattern}|${fractionalMagnitudePattern}|${wordedNumberPattern}|\\d+(?:\\.\\d+)?)?`;
-
-  // Pattern for matching digit+magnitude WITHOUT currency (e.g., "10 million", "5 thousand")
-  const digitMagnitudeNoCurrency = `\\d+(?:\\.\\d+)?\\s+(?:hundred|thousand|million|billion|trillion)`;
-
-  const pattern = new RegExp(
-    `\\b(((?:a|an|the)\\s+${amountPattern}\\s*${currencyPattern}|(?:${digitMagnitudePattern}|${fractionalMagnitudePattern}|${wordedNumberPattern}|\\d+(?:\\.\\d+)?)\\s+${currencyPattern}|${digitMagnitudeNoCurrency})(?:\\s+(?:and\\s+)?(?:${wordedNumberPattern}|\\d+(?:\\.\\d+)?)\\s+${minorPattern}|\\s+(?:${numberWords})(?:[\\s-](?:${numberWords}))*)?)\\b`,
-    "gi"
-  );
-
-  // Try all matches until we find one that parses successfully
-  const matches = normalized.matchAll(pattern);
-  for (const match of matches) {
-    try {
-      return parseContextualPhrase(match[1]);
-    } catch (e) {
-      // Check if this is the case of digit + magnitude without currency
-      // e.g., "10 million" - parseContextualPhrase throws because no currency found
-      // Also handles "3 million dirhams" where currency comes AFTER magnitude
-      if (e instanceof Error && e.message.includes("Unrecognized currency")) {
-        // Try to parse just the magnitude value without currency
-        // The (?:\s+\w+)* allows for optional currency word(s) after magnitude (e.g., "3 million dirhams")
-        const digitMagMatch = /^(\d+(?:\.\d+)?)\s+(hundred|thousand|million|billion|trillion)(?:\s+\w+)*/i.exec(
-          match[1]
-        );
-        if (digitMagMatch) {
-          const numericPart = parseFloat(digitMagMatch[1]);
-          const magnitudeWord = digitMagMatch[2].toLowerCase();
-          const magnitudeValues: Record<string, number> = {
-            hundred: 100,
-            thousand: 1000,
-            million: 1000000,
-            billion: 1000000000,
-            trillion: 1000000000000,
-          };
-          const value = numericPart * magnitudeValues[magnitudeWord];
-          return {
-            value,
-            currency: "", // No currency found
-            raw: match[1],
-          };
-        }
+      try {
+        const result = parseContextualPhrase(windowText);
+        const rawLen = result.raw.split(" ").length;
+        return {
+          ...result,
+          raw: tokens.slice(start, start + rawLen).join(" "),
+        };
+      } catch {
+        // Try shifting start one token later (narrowing prefix)
+        continue;
       }
-      // Continue to next match for other errors
-      continue;
+    }
+  }
+
+  // 3. Digit+magnitude without currency (e.g., "10 million", "5 thousand")
+  //    These have no currency token, so we scan for digit+magnitude patterns
+  const magnitudeValues: Record<string, number> = {
+    hundred: 100,
+    thousand: 1000,
+    million: 1000000,
+    billion: 1000000000,
+    trillion: 1000000000000,
+  };
+
+  for (let i = 0; i < tokens.length - 1; i++) {
+    const numMatch = /^\d+(?:\.\d+)?$/.test(tokens[i]);
+    const mag = tokens[i + 1];
+    if (numMatch && magnitudeValues[mag]) {
+      const value = parseFloat(tokens[i]) * magnitudeValues[mag];
+      // Capture any trailing words as part of the raw match (up to WINDOW_SIZE)
+      const end = Math.min(tokens.length, i + WINDOW_SIZE);
+      const raw = tokens.slice(i, end).join(" ");
+      return { value, currency: "", raw };
     }
   }
 
