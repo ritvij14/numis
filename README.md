@@ -256,6 +256,17 @@ parseMoney("I have 100");
 
 Use `defaultCurrency` option to handle this.
 
+### Input Length Limit
+
+For performance and security, `parseMoney()` and `parseAll()` reject inputs longer than 5000 characters:
+
+```ts
+parseMoney("a".repeat(5001));
+// throws MoneyParseError: Input length (5001) exceeds maximum allowed (5000).
+```
+
+This prevents ReDoS (Regular Expression Denial of Service) attacks on pathological inputs.
+
 ### Ambiguous Formats
 
 `"1.500"` could be 1.5 (US) or 1,500 (European):

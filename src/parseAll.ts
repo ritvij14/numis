@@ -5,6 +5,7 @@
  * including range expressions, as single parsed results.
  */
 
+import { MoneyParseError } from "./errors";
 import { parseAbbreviation } from "./patterns/abbreviations";
 import { parseContextualPhrase } from "./patterns/contextualPhrases";
 import { matchNumericWordCombo } from "./patterns/numericWordCombos";
@@ -289,6 +290,14 @@ export const MONETARY_PATTERNS: MonetaryPattern[] = [
  * ```
  */
 export function parseAll(input: string): MonetaryExpression[] {
+  // Defense-in-depth: reject pathologically long inputs before any regex runs
+  const MAX_INPUT_LENGTH = 5000;
+  if (input.length > MAX_INPUT_LENGTH) {
+    throw new MoneyParseError(
+      `Input length (${input.length}) exceeds maximum allowed (${MAX_INPUT_LENGTH}).`
+    );
+  }
+
   const results: MonetaryExpression[] = [];
   const processedRanges: { start: number; end: number }[] = [];
 

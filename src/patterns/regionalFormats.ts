@@ -348,6 +348,9 @@ export function parseRegionalFormat(input: string, defaultCurrency?: string): Re
  * @returns Parse result or null if not found
  */
 export function matchRegionalFormat(input: string, defaultCurrency?: string): RegionalFormatParseResult | null {
+  // ReDoS defense: regional format strings are never this long in practice
+  if (input.length > 500) return null;
+
   try {
     return parseRegionalFormat(input, defaultCurrency);
   } catch {
