@@ -22,8 +22,8 @@ const path = require("path");
 
 const TIMEOUT_MS = 3000;
 const MAX_PAYLOAD_LEN = 50000;
-const REPORT_PATH = path.join(__dirname, "..", "REDOS_SCANNER_REPORT.md");
-const INVENTORY_PATH = path.join(__dirname, "..", "REDOS_INVENTORY.md");
+const REPORT_PATH = path.join(__dirname, "..", "docs", "infra", "redos-scanner-report.md");
+const INVENTORY_PATH = path.join(__dirname, "..", "docs", "infra", "redos-inventory.md");
 
 const RED = "\x1b[31m";
 const GREEN = "\x1b[32m";

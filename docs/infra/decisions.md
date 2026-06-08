@@ -174,12 +174,14 @@ The numis regex pipeline processes arbitrary user input through 50+ regex patter
 2. Inputs exceeding the limit throw `MoneyParseError` with a clear message before any regex runs.
 3. No regex pattern changes — this is a pure boundary guard.
 4. Document the limit in README.md, demo site, and architecture decisions.
+5. Consolidate all ReDoS audit artifacts (inventory, scanner, reports) into a single living document at [`docs/infra/redos-audit.md`](./redos-audit.md). The inventory lives at [`docs/infra/redos-inventory.md`](./redos-inventory.md) and the scanner is `npm run redos-scan`.
 
 **Consequences:**
 - **Positive:**
   - Eliminates the entire class of ReDoS attacks based on extreme input length
   - Fails fast (sub-millisecond) — no regex backtracking can occur
   - Simple to reason about and maintain
+  - One authoritative doc for the full audit story
 - **Negative:**
   - Legitimate inputs over 5000 chars are rejected (extremely rare for monetary parsing)
   - Adds one more error type callers must handle
