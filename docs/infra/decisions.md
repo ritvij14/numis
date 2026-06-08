@@ -30,10 +30,11 @@ When adding a new decision, use this format:
 | Date | Decision | Status |
 |------|----------|--------|
 | 2026-04-05 | Range Detection in RegexPipeline | Accepted |
-| 2026-05-19 | SPA Crawler Visibility via <noscript> | Accepted |
+| 2026-05-19 | SPA Crawler Visibility via `<noscript>` | Accepted |
 | 2026-06-06 | Shared Agent Configuration Directory | Accepted |
 | 2026-06-06 | Taskmaster AI Provider: ollama/kimi-k2.6:cloud | Accepted |
 | 2026-06-06 | CLAUDE.md Delegates to AGENTS.md | Accepted |
+| 2026-06-07 | ReDoS Defense — 5000-Character Input Cap | Accepted |
 
 ---
 
@@ -157,3 +158,28 @@ Switch all three Taskmaster model roles (main, research, fallback) to `provider:
   - Pattern is consistent with the `ai-broker-assistant` project
 - **Negative:**
   - `CLAUDE.md` is effectively a stub — contributors unfamiliar with the `@import` convention may not realise `AGENTS.md` is the real file
+
+---
+
+### ReDoS Defense — 5000-Character Input Cap
+
+**Date:** 2026-06-07
+**Status:** Accepted
+
+**Context:**
+The numis regex pipeline processes arbitrary user input through 50+ regex patterns. While static analysis (safe-regex) and dynamic timing tests showed no catastrophic ReDoS vulnerabilities in normal operation, defense-in-depth requires a hard limit on input length to prevent pathological payloads from ever reaching the regex engine.
+
+**Decision:**
+1. Add a 5000-character input length cap at the entry points of `RegexPipeline.run()` and `parseAll()`.
+2. Inputs exceeding the limit throw `MoneyParseError` with a clear message before any regex runs.
+3. No regex pattern changes — this is a pure boundary guard.
+4. Document the limit in README.md, demo site, and architecture decisions.
+
+**Consequences:**
+- **Positive:**
+  - Eliminates the entire class of ReDoS attacks based on extreme input length
+  - Fails fast (sub-millisecond) — no regex backtracking can occur
+  - Simple to reason about and maintain
+- **Negative:**
+  - Legitimate inputs over 5000 chars are rejected (extremely rare for monetary parsing)
+  - Adds one more error type callers must handle

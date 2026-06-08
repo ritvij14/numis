@@ -189,7 +189,7 @@ export default function App() {
               </label>
               <textarea
                 id="input"
-                placeholder="e.g. The total cost is $123.45"
+                placeholder="e.g. The total cost is $123.45 (max 5000 characters)"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 className="min-h-[200px] w-full resize-y border-0 bg-transparent p-4 sm:px-6 text-sm font-mono leading-relaxed text-slate-700 placeholder:text-slate-300 focus:outline-none focus:ring-0"
