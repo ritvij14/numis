@@ -1,6 +1,6 @@
 /**
  * Minor Units Only Pattern Parser
- * =================================
+ * ================================
  * Handles standalone minor unit expressions like "75 cents", "50 pence", "99 pennies".
  * These patterns represent fractional currency amounts without an explicit major unit.
  *
@@ -50,6 +50,11 @@ function parseAmount(tokens: string[]): number | null {
 
   const candidate = tokens.join(" ").trim();
   if (!candidate) return null;
+
+  // Standalone article "a" implies one (e.g., "a cent" -> 1 cent -> 0.01)
+  if (candidate === "a") {
+    return 1;
+  }
 
   // Numeric amount: "75", "50"
   if (/^\d+(?:\.\d+)?$/.test(candidate)) {
@@ -161,54 +166,9 @@ export function parseMinorUnitOnly(
   };
 }
 
-/**
- * Builds a regex pattern to match minor-unit-only expressions.
- * Matches patterns like: <number> <minor-unit>
- */
-function buildMinorUnitRegex(): RegExp {
-  const minorUnitTokens = Object.keys(MINOR_UNIT_MAP).join("|");
-
-  // Amount tokens: numeric or common worded numbers
-  const amountTokens = [
-    "\\d+(?:\\.\\d+)?",
-    "one",
-    "two",
-    "three",
-    "four",
-    "five",
-    "six",
-    "seven",
-    "eight",
-    "nine",
-    "ten",
-    "eleven",
-    "twelve",
-    "thirteen",
-    "fourteen",
-    "fifteen",
-    "sixteen",
-    "seventeen",
-    "eighteen",
-    "nineteen",
-    "twenty",
-    "thirty",
-    "forty",
-    "fifty",
-    "sixty",
-    "seventy",
-    "eighty",
-    "ninety",
-  ].join("|");
-
-  // Pattern: <amount> <minor-unit>
-  // Example: "75 cents", "fifty pence"
-  // Use negative lookbehind to avoid matching "a dollar and 75 cents"
-  const pattern = `(?:${amountTokens})(?:[\\s-]+(?:${amountTokens}))*\\s+(?:${minorUnitTokens})`;
-
-  return new RegExp(`\\b(${pattern})\\b`, "gi");
-}
-
-const MINOR_UNIT_REGEX = buildMinorUnitRegex();
+// Safe regex to locate minor unit words as whole words. Only 5 flat alternations — bounded
+// complexity with no catastrophic backtracking risk.
+const MINOR_UNIT_FINDER = /\b(cent|cents|penny|pennies|pence)\b/g;
 
 /**
  * Attempts to match and parse a minor-unit-only expression from text.
@@ -245,15 +205,31 @@ export function matchMinorUnitOnly(
     return null;
   }
 
-  MINOR_UNIT_REGEX.lastIndex = 0;
-  const match = MINOR_UNIT_REGEX.exec(normalized);
-  if (!match) {
-    return null;
+  // Scan for minor unit tokens using a safe bounded regex.
+  // For each occurrence, try progressively longer amounts (up to a safe limit)
+  // immediately preceding the minor unit to mimic the old greedy regex behavior.
+  MINOR_UNIT_FINDER.lastIndex = 0;
+  let finderMatch: RegExpExecArray | null;
+  while ((finderMatch = MINOR_UNIT_FINDER.exec(normalized)) !== null) {
+    const token = finderMatch[1];
+    const endPos = finderMatch.index;
+    const preceding = normalized.slice(0, endPos).trimEnd();
+    const precedingTokens = preceding.split(/\s+/).filter((t) => t.length > 0);
+
+    // Try longest amount candidates first (greedy). The maximum valid worded
+    // minor-unit amount is well under 15 tokens for any real-world currency scale.
+    const maxK = Math.min(precedingTokens.length, 15);
+    for (let k = maxK; k >= 1; k--) {
+      const amountTokens = precedingTokens.slice(-k);
+      const candidate = `${amountTokens.join(" ")} ${token}`;
+      try {
+        const result = parseMinorUnitOnly(candidate, defaultCurrency);
+        return result;
+      } catch {
+        // Candidate didn't parse — try a shorter amount for this occurrence.
+      }
+    }
   }
 
-  try {
-    return parseMinorUnitOnly(match[1], defaultCurrency);
-  } catch {
-    return null;
-  }
+  return null;
 }
