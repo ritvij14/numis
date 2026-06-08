@@ -296,12 +296,21 @@ describe("ReDoS payload test suite", () => {
     });
 
     test("rejects compound pattern fast (negative lookahead path)", () => {
-      const prefix = repeat("x ", 2480); // stays under 5k cap with suffix
+      const prefix = repeat("x ", 2480); // stays under the 5k cap with suffix
       const payload = prefix + "a dollar and 75 cents";
       assertFast(
         () => matchMinorUnitOnly(payload),
         "matchMinorUnitOnly(compound reject)"
       );
+    });
+
+    test("rejects repeated 'fifty ' 2000 times (ReDoS regression)", () => {
+      const start = performance.now();
+      const payload = repeat("fifty ", 2000);
+      const result = matchMinorUnitOnly(payload);
+      const elapsed = performance.now() - start;
+      expect(result).toBeNull();
+      expect(elapsed).toBeLessThan(50);
     });
   });
 
