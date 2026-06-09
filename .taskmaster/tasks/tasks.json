@@ -2215,10 +2215,11 @@
         "description": "After the ReDoS audit is complete, add a dedicated CI job that runs the ReDoS payload tests against every pattern on every push/PR. This ensures future regex changes do not reintroduce catastrophic backtracking.",
         "details": "",
         "testStrategy": "CI workflow step that runs jest --testPathPattern=\"redos\" and fails if any test exceeds a timing threshold.",
-        "status": "pending",
+        "status": "cancelled",
         "dependencies": [],
         "priority": "low",
-        "subtasks": []
+        "subtasks": [],
+        "notes": "[Archived 2026-06-09] ReDoS tests already run in CI via the general test suite (test/redos.payloads.test.ts, redos.inputCap.test.ts, redos.contextualPhrases.test.ts, redos.wordedNumbers.test.ts). No dedicated CI job needed — npm test covers it."
       }
     ],
     "metadata": {
