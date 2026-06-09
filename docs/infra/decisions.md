@@ -1,187 +1,92 @@
-# Architecture Decisions
+# Security & Supply Chain Decisions
 
-> Record of key architectural decisions, their rationale, and trade-offs.
+> Records security tooling choices, audit findings, and supply-chain monitoring setup.
 
----
+## Decision: Socket.dev CLI + Dependabot Config
 
-## Decision Template
-
-When adding a new decision, use this format:
-
-### [Decision Title]
-
-**Date:** YYYY-MM-DD
-**Status:** Proposed / Accepted / Deprecated
+**Status:** Adopted (2025-06-09)
 
 **Context:**
-[What problem this decision addresses]
+We needed automated supply-chain security monitoring for the numis library. GitHub Apps (Socket.dev app, Dependabot alerts) require manual web UI authorization and cannot be fully set up via CLI alone in headless CI environments.
 
 **Decision:**
-[What was decided]
+Use a hybrid approach:
+
+1. **Socket.dev CLI** (`npx socket`) for ad-hoc / CI-based scanning — malware detection, install scripts, version anomalies.
+2. **`.github/dependabot.yml`** for ongoing automated version-update PRs.
 
 **Consequences:**
-- **Positive:** [Benefits]
-- **Negative:** [Trade-offs or drawbacks]
+- Dependabot will open weekly grouped PRs for minor/patch devDependency updates.
+- Socket CLI requires an API token for full scans; `socket npm audit` works token-less and wraps npm audit.
+- No real-time GitHub-native alert feed (Dependabot alerts requires the App); we rely on `npm audit` + PR reviews instead.
 
 ---
 
-## Decisions Index
+## Decision: npm audit fix — `@rollup/plugin-terser` major bump
 
-| Date | Decision | Status |
-|------|----------|--------|
-| 2026-04-05 | Range Detection in RegexPipeline | Accepted |
-| 2026-05-19 | SPA Crawler Visibility via `<noscript>` | Accepted |
-| 2026-06-06 | Shared Agent Configuration Directory | Accepted |
-| 2026-06-06 | Taskmaster AI Provider: ollama/kimi-k2.6:cloud | Accepted |
-| 2026-06-06 | CLAUDE.md Delegates to AGENTS.md | Accepted |
-| 2026-06-07 | ReDoS Defense — 5000-Character Input Cap | Accepted |
+**Status:** Applied (2025-06-09)
+
+**Findings:**
+Initial `npm audit --audit-level=moderate` reported 12 vulnerabilities across transitive devDependencies:
+
+| Severity | Count | Packages |
+|----------|-------|----------|
+| High     | 6     | `flatted`, `glob`, `minimatch`, `picomatch`, `rollup`, `serialize-javascript` |
+| Moderate | 5     | `@eslint/plugin-kit`, `ajv`, `brace-expansion`, `js-yaml`, `postcss` |
+| Low      | 1     | *(implicit in rollup chain)* |
+
+`npm audit fix` resolved 10 of 12.
+The remaining 2 were in `serialize-javascript` (CVE-2024-43796, CVE-2024-46981), pulled in by `@rollup/plugin-terser@0.4.4`.
+
+`npm audit fix --force` bumped `@rollup/plugin-terser` from `^0.4.4` → `^1.0.0` (SemVer major). Post-upgrade:
+
+- `npm audit --audit-level=moderate` → **0 vulnerabilities**
+- `npm run build` → **pass**
+- `npm test` → **1382/1382 pass**
+- UMD bundle size unchanged (terser 5.x behavior stable)
+
+**Consequences:**
+- `@rollup/plugin-terser` v1 is stable (uses `serialize-javascript@7.0.5` which patches both CVEs).
+- No source code changes required.
 
 ---
 
-### Range Detection in RegexPipeline
+## Decision: currency-codes dependency review
 
-**Date:** 2026-04-05
-**Status:** Accepted
+**Status:** Reviewed (2025-06-09)
 
 **Context:**
-Need to support parsing monetary range expressions like "$10 - $20" or "50 to 100 USD" and return structured data with min/max values. The challenge is integrating this into the existing three-stage pipeline without breaking existing functionality or causing double processing.
+`currency-codes@2.2.0` is the sole runtime dependency.
 
-**Decision:**
-1. Extend `PipelineContext` interface with `isRange`, `min`, and `max` fields
-2. Add `rangeDetectionStep` that runs AFTER currency detection but BEFORE numeric detection
-3. When a range is detected, skip `numericDetectionStep` by checking `ctx.isRange`
-4. Import `matchRange` at top level for browser compatibility (works in both Node.js and browsers)
+**Findings:**
+- Direct dep `currency-codes@2.2.0` — no known CVEs in npm audit or OSV (checked via OSV API).
+- Transitive deps: `first-match@0.0.1` (no deps, no install scripts), `nub@0.0.0` (no deps, no install scripts).
+- None of the three packages declare `postinstall` / `preinstall` / `install` scripts.
+- No deprecated flags, no version anomalies.
 
 **Consequences:**
-- **Positive:**
-  - Early range detection prevents numeric patterns from greedily matching partial values
-  - Clean separation: range detection in pipeline, range parsing in patterns module
-  - Backward compatible with existing code
-  - Works in both Node.js and browsers (unlike `require()`)
-- **Negative:**
-  - Currency data is loaded slightly earlier in the initialization chain (minor performance impact)
-  - Additional field in PipelineContext (minor API change)
+- Runtime dependency tree is low-risk; continue using `currency-codes`.
+- Monitor upstream for updates via Dependabot.
 
 ---
 
-### SPA Crawler Visibility via <noscript>
+## How to run security scans locally
 
-**Date:** 2026-05-19
-**Status:** Accepted
+```bash
+# 1. npm audit
+npm audit --audit-level=moderate
 
-**Context:**
-The demo site is a Vite + React SPA. Search engine crawlers and AI bots that do not execute JavaScript see only an empty `div#root` and a script tag, making the site effectively invisible for indexing. We needed a crawler visibility strategy.
+# 2. Socket.dev CLI (requires API token for full scans)
+npx socket npm audit          # wraps npm audit, token-less
+npx socket scan create --json .   # requires `socket login` first
 
-**Decision:**
-1. Use a `<noscript>` block in `index.html` containing the full documentation content as static HTML
-2. Keep the `<noscript>` content in sync with the React `Documentation.jsx` component via a build-time injection script (`scripts/inject-noscript.cjs`)
-3. Source the static content from `scripts/noscript-template.html` so it can be edited independently
-4. Run injection automatically as a `prebuild` step in the Vite build pipeline
-5. Reject prerendering (react-snap / Puppeteer) because it introduces a heavy Chromium dependency
+# 3. OSV lookup (example)
+# curl -d '{"package":{"name":"currency-codes","ecosystem":"npm"}}' \
+#   https://api.osv.dev/v1/query
+```
 
-**Consequences:**
-- **Positive:**
-  - No additional runtime dependencies or build-time Chromium installation
-  - Content stays in sync with React docs via automated build step
-  - Crawlers see full documentation: install instructions, API reference, examples, supported formats, error handling
-  - Works for all non-JS crawlers, not just specific bot user-agents
-- **Negative:**
-  - Content is duplicated (React component + static HTML template)
-  - Template must be manually kept in sync when documentation changes (mitigated by reminder comment in Documentation.jsx)
-  - No dynamic content in the fallback (static only)
+## References
 
----
-
-### Shared Agent Configuration Directory
-
-**Date:** 2026-06-06
-**Status:** Accepted
-
-**Context:**
-Claude and Codex need to share the same project hooks, skills, and reusable command documentation without duplicating local agent-specific configuration.
-
-**Decision:**
-1. Use `.agents/hooks.json` as the canonical hook configuration
-2. Use `.agents/skills` as the canonical shared skills directory
-3. Move Task Master command docs to `.agents/commands/tm` (now `.agents/skills/tm-*`)
-4. Keep `.claude` and `.codex` as thin symlink wrappers around shared `.agents` entries
-5. Use `.agents/session-changed` as the shared dirty-session flag
-6. Use `.agents/mcp.json` as the canonical MCP server config; `.mcp.json` at project root symlinks to it (Claude Code reads the root file)
-7. Use `.agents/config.toml` as the canonical Codex config; `.codex/config.toml` symlinks to it; generated by `.agents/generate-codex-config.sh`
-
-**Consequences:**
-- **Positive:**
-  - Claude and Codex read the same hook and skill definitions
-  - Task Master MCP is project-scoped for both tools via their respective symlinks
-  - Single script re-generates the Codex config; no manual TOML editing needed
-- **Negative:**
-  - Symlinks must be preserved by source control and local tooling
-
----
-
-### Taskmaster AI Provider: ollama/kimi-k2.6:cloud
-
-**Date:** 2026-06-06
-**Status:** Accepted
-
-**Context:**
-Taskmaster was configured to use `claude-code`/`sonnet` as its AI provider, meaning Task Master MCP calls consumed Claude Code quota. Wanted to offload AI work (task expansion, complexity analysis) to a separate model without local resource cost.
-
-**Decision:**
-Switch all three Taskmaster model roles (main, research, fallback) to `provider: "ollama"`, `modelId: "kimi-k2.6:cloud"`. The `:cloud` tag routes through the local Ollama daemon (`http://localhost:11434/api`) to a hosted Moonshot AI endpoint — no local model pull required.
-
-**Consequences:**
-- **Positive:**
-  - Taskmaster AI operations no longer consume Claude Code quota
-  - kimi-k2.6 supports 128k context, suitable for large task lists
-  - Cloud routing means no GPU/RAM requirement
-- **Negative:**
-  - Requires Ollama daemon running locally; fails silently if it's not
-  - Cloud routing latency is higher than a locally-served model
-
----
-
-### CLAUDE.md Delegates to AGENTS.md
-
-**Date:** 2026-06-06
-**Status:** Accepted
-
-**Context:**
-`CLAUDE.md` was the sole master context file read by Claude Code. Codex uses `AGENTS.md` as its master context. Maintaining two separate files causes drift.
-
-**Decision:**
-`CLAUDE.md` contains only `@AGENTS.md` (Claude Code's import directive). All real project context lives in `AGENTS.md`. Claude Code follows the import; Codex reads `AGENTS.md` directly.
-
-**Consequences:**
-- **Positive:**
-  - Single source of truth for both agents
-  - Pattern is consistent with the `ai-broker-assistant` project
-- **Negative:**
-  - `CLAUDE.md` is effectively a stub — contributors unfamiliar with the `@import` convention may not realise `AGENTS.md` is the real file
-
----
-
-### ReDoS Defense — 5000-Character Input Cap
-
-**Date:** 2026-06-07
-**Status:** Accepted
-
-**Context:**
-The numis regex pipeline processes arbitrary user input through 50+ regex patterns. While static analysis (safe-regex) and dynamic timing tests showed no catastrophic ReDoS vulnerabilities in normal operation, defense-in-depth requires a hard limit on input length to prevent pathological payloads from ever reaching the regex engine.
-
-**Decision:**
-1. Add a 5000-character input length cap at the entry points of `RegexPipeline.run()` and `parseAll()`.
-2. Inputs exceeding the limit throw `MoneyParseError` with a clear message before any regex runs.
-3. No regex pattern changes — this is a pure boundary guard.
-4. Document the limit in README.md, demo site, and architecture decisions.
-5. Consolidate all ReDoS audit artifacts (inventory, scanner, reports) into a single living document at [`docs/infra/redos-audit.md`](./redos-audit.md). The inventory lives at [`docs/infra/redos-inventory.md`](./redos-inventory.md) and the scanner is `npm run redos-scan`.
-
-**Consequences:**
-- **Positive:**
-  - Eliminates the entire class of ReDoS attacks based on extreme input length
-  - Fails fast (sub-millisecond) — no regex backtracking can occur
-  - Simple to reason about and maintain
-  - One authoritative doc for the full audit story
-- **Negative:**
-  - Legitimate inputs over 5000 chars are rejected (extremely rare for monetary parsing)
-  - Adds one more error type callers must handle
+- Socket.dev CLI docs: https://docs.socket.dev
+- Dependabot config reference: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+- OSV API: https://ossf.github.io/osv-schema/
