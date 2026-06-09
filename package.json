@@ -38,6 +38,9 @@
     "typescript"
   ],
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "currency-codes": "^2.2.0"
   },

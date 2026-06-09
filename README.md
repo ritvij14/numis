@@ -25,6 +25,13 @@ parseMoney("$12.50");
 
 ---
 
+## Requirements
+
+- **Node.js** >= 18.0.0 (tested on 20.x)
+- **npm** >= 9 (recommended)
+
+---
+
 ## Features
 
 ### Single Values
