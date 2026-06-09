@@ -58,7 +58,14 @@ export type PipelineStep = (
   ctx: PipelineContext
 ) => PipelineContext;
 
-/** Utility to clone a simple object (shallow). */
+/**
+ * Creates a shallow clone of a simple object.
+ *
+ * @warning Because this is a **shallow** clone, mutations to nested
+ * objects will bleed across pipeline stages. Steps should avoid
+ * mutating properties of nested objects, or perform their own deep
+ * clone when needed.
+ */
 const clone = <T extends object>(obj: T): T => ({ ...obj });
 
 export interface RunOptions {
