@@ -2146,10 +2146,10 @@
       {
         "id": 76,
         "title": "Add input length limits to public API",
-        "description": "Add a configurable maxInputLength option (default 10,000 chars) to parseMoney() and parseAll(). Reject or truncate inputs exceeding the limit to prevent ReDoS and memory exhaustion. Update ParseOptions and types.",
+        "description": "Add a configurable maxInputLength option (default 10,000 chars) to parseMoney() and parseAll(). Reject or truncate inputs exceeding the limit to prevent ReDoS and memory exhaustion. Update ParseOptions and types. [Archived — hardcoded 5000-char cap already implemented and sufficient.]",
         "details": "",
         "testStrategy": "Write tests asserting: (1) inputs under limit parse normally, (2) inputs over limit return null/throw with a clear error, (3) custom limit is respected.",
-        "status": "pending",
+        "status": "cancelled",
         "dependencies": [],
         "priority": "high",
         "subtasks": []
