@@ -58,7 +58,14 @@ export type PipelineStep = (
   ctx: PipelineContext
 ) => PipelineContext;
 
-/** Utility to clone a simple object (shallow). */
+/**
+ * Creates a shallow clone of a simple object.
+ *
+ * @warning Because this is a **shallow** clone, mutations to nested
+ * objects will bleed across pipeline stages. Steps should avoid
+ * mutating properties of nested objects, or perform their own deep
+ * clone when needed.
+ */
 const clone = <T extends object>(obj: T): T => ({ ...obj });
 
 export interface RunOptions {
@@ -157,7 +164,7 @@ import { MoneyParseError, ValueOverflowError } from "./errors";
 import { matchContextualPhrase } from "./patterns/contextualPhrases";
 import { matchNumericWordCombo } from "./patterns/numericWordCombos";
 import { matchSlangTerm } from "./patterns/slangTerms";
-import { matchFractionalWordedNumber } from "./patterns/wordedNumbers";
+import { matchFractionalWordedNumber, matchWordedNumber } from "./patterns/wordedNumbers";
 import { matchRegionalFormat } from "./patterns/regionalFormats";
 import { detectNegative } from "./patterns/negativeNumbers";
 import { matchMinorUnitOnly } from "./patterns/minorUnitsOnly";
@@ -190,85 +197,8 @@ const SYMBOL_REGEX = new RegExp(
 );
 
 // ---------------------------------------------------------------------------
-// Numeric helpers (word-to-number + suffix multipliers)
+// Numeric helpers (suffix multipliers)
 // ---------------------------------------------------------------------------
-/**
- * Converts an English worded number ("one hundred twenty three", "five thousand") to its numeric value.
- * Handles the most common cases needed for monetary amounts (units, tens, hundreds, thousands, millions, billions).
- * Returns `null` if the string cannot be parsed confidently.
- */
-const wordsToNumber = (words: string): number | null => {
-  if (!words) return null;
-  const tokens = words
-    .toLowerCase()
-    .replace(/-/g, " ")
-    .replace(/ and /g, " ")
-    .trim()
-    .split(/\s+/);
-
-  const SMALL: Record<string, number> = {
-    zero: 0,
-    one: 1,
-    two: 2,
-    three: 3,
-    four: 4,
-    five: 5,
-    six: 6,
-    seven: 7,
-    eight: 8,
-    nine: 9,
-    ten: 10,
-    eleven: 11,
-    twelve: 12,
-    thirteen: 13,
-    fourteen: 14,
-    fifteen: 15,
-    sixteen: 16,
-    seventeen: 17,
-    eighteen: 18,
-    nineteen: 19,
-    twenty: 20,
-    thirty: 30,
-    forty: 40,
-    fifty: 50,
-    sixty: 60,
-    seventy: 70,
-    eighty: 80,
-    ninety: 90,
-  };
-  const MAGNITUDE: Record<string, number> = {
-    hundred: 100,
-    thousand: 1_000,
-    million: 1_000_000,
-    billion: 1_000_000_000,
-  };
-
-  let total = 0;
-  let current = 0;
-  for (const token of tokens) {
-    if (SMALL[token] !== undefined) {
-      current += SMALL[token];
-    } else if (token === "hundred") {
-      current *= 100;
-    } else if (MAGNITUDE[token]) {
-      total += current * MAGNITUDE[token];
-      current = 0;
-    } else {
-      // Unknown token – bail out to avoid false positives
-      return null;
-    }
-  }
-  const result = total + current;
-
-  // Check for overflow
-  if (result > Number.MAX_SAFE_INTEGER) {
-    throw new ValueOverflowError(
-      `Number ${result} exceeds maximum safe integer (${Number.MAX_SAFE_INTEGER})`
-    );
-  }
-
-  return result;
-};
 
 /** 0) Negative number detection step - must run first */
 const negativeDetectionStep: PipelineStep = (input, ctx) => {
@@ -485,14 +415,10 @@ const numericDetectionStep: PipelineStep = (input, ctx) => {
   // ---------------------------------------------------------------------
   // 9) Worded numbers ("one hundred twenty", "two thousand")
   // ---------------------------------------------------------------------
-  const wordNumberRegex =
-    /\b((?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion)(?:[\s-](?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion))*)\b/i;
-  const wordMatch = wordNumberRegex.exec(cleaned);
-  if (wordMatch) {
-    const parsed = wordsToNumber(wordMatch[1]);
-    if (parsed !== null) {
-      out.amount = parsed;
-    }
+  const wordedMatch = matchWordedNumber(cleaned);
+  if (wordedMatch) {
+    out.amount = wordedMatch.value;
+    return out;
   }
 
   return out;

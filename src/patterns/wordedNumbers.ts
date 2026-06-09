@@ -366,54 +366,51 @@ export function parseWordedNumber(input: string): number {
   return result;
 }
 
-/**
- * Builds a regex pattern that matches fractional worded numbers in text.
- */
-function buildFractionalWordedNumberRegex(): RegExp {
-  const fractionWords = Object.keys(FRACTIONS).join("|");
-  const multiplierWords = Object.keys(FRACTION_MULTIPLIERS).join("|");
-  const scaleWords = Object.keys(SCALES).join("|");
+// ---------------------------------------------------------------------------
+// Tokenization-first candidate scanning (ReDoS-safe)
+// ---------------------------------------------------------------------------
 
-  // Match patterns like:
-  // - "half", "quarter", "third"
-  // - "a half", "a quarter"
-  // - "two thirds", "three quarters"
-  // - "two-thirds", "three-quarters" (with hyphens)
-  // - "quarter million", "half billion" (with magnitude)
-  // - "quarter of a million", "two thirds of a billion" (with "of a" + magnitude)
-  const pattern = `(?:a\\s+)?(?:(?:${multiplierWords})(?:[\\s-])+)?(?:${fractionWords})(?:\\s+(?:of\\s+)?(?:a\\s+)?(?:${scaleWords}))?`;
+/** Set of all known worded-number tokens for validation. */
+const ALL_WORDED_WORDS = new Set([
+  ...Object.keys(BASIC_NUMBERS),
+  ...Object.keys(TENS),
+  ...Object.keys(SCALES),
+  "a",
+  "and",
+]);
 
-  return new RegExp(`\\b(${pattern})\\b`, "gi");
+/** Set of all known fractional-word tokens for validation. */
+const ALL_FRACTION_WORDS = new Set([
+  ...Object.keys(FRACTIONS),
+  ...Object.keys(FRACTION_MULTIPLIERS),
+  ...Object.keys(SCALES),
+  "a",
+  "of",
+]);
+
+function isValidWordedToken(token: string): boolean {
+  const lower = token.toLowerCase();
+  if (lower.includes("-")) {
+    return lower.split("-").every((part) => part.length > 0 && ALL_WORDED_WORDS.has(part));
+  }
+  return ALL_WORDED_WORDS.has(lower);
 }
 
-/**
- * Builds a regex pattern that matches worded numbers in text.
- * This regex is quite complex as it needs to handle various combinations.
- */
-function buildWordedNumberRegex(): RegExp {
-  const allWords = [
-    ...Object.keys(BASIC_NUMBERS),
-    ...Object.keys(TENS),
-    ...Object.keys(SCALES),
-    "a",
-    "and",
-  ];
-
-  // Create a pattern that matches one or more number words with optional hyphens and spaces
-  // This is a greedy pattern that will match sequences of number-related words
-  const wordsPattern = allWords.join("|");
-
-  // Match sequences of number words, allowing for:
-  // - spaces between words
-  // - hyphens between words (e.g., twenty-three)
-  // - the word "and" between numbers
-  const pattern = `(?:(?:${wordsPattern})(?:[\\s-](?:and[\\s-])?(?:${wordsPattern}))*)`;
-  return new RegExp(`\\b(${pattern})\\b`, "gi");
+function isValidFractionToken(token: string): boolean {
+  const lower = token.toLowerCase();
+  if (lower.includes("-")) {
+    return lower.split("-").every((part) => part.length > 0 && ALL_FRACTION_WORDS.has(part));
+  }
+  return ALL_FRACTION_WORDS.has(lower);
 }
 
-// Pre-compile the regexes for performance
-const FRACTIONAL_WORDED_NUMBER_REGEX = buildFractionalWordedNumberRegex();
-const WORDED_NUMBER_REGEX = buildWordedNumberRegex();
+// Maximum token count for a realistic worded-number phrase.
+// Longest practical English worded number is well under 30 tokens.
+const MAX_WORDED_WINDOW = 30;
+
+// Maximum token count for a realistic fractional phrase.
+// e.g. "two thirds of a billion" = 5 tokens; cap generously at 12.
+const MAX_FRACTION_WINDOW = 12;
 
 /**
  * Attempts to match and parse a fractional worded number from a string.
@@ -429,23 +426,38 @@ export function matchFractionalWordedNumber(
     return null;
   }
 
-  // Reset the regex lastIndex to avoid state issues with global flag
-  FRACTIONAL_WORDED_NUMBER_REGEX.lastIndex = 0;
+  const tokens = input.split(/\s+/).filter((t) => t.length > 0);
 
-  const match = FRACTIONAL_WORDED_NUMBER_REGEX.exec(input);
-  if (!match) {
-    return null;
+  let i = 0;
+  while (i < tokens.length) {
+    // Skip tokens that are not valid fractional words
+    while (i < tokens.length && !isValidFractionToken(tokens[i])) {
+      i++;
+    }
+    if (i >= tokens.length) break;
+
+    // Build maximal run of consecutive valid fractional tokens
+    let j = i;
+    while (j < tokens.length && isValidFractionToken(tokens[j])) {
+      j++;
+    }
+
+    // Only try prefixes up to the bounded window to avoid O(n²) on long garbage runs.
+    const windowEnd = Math.min(j, i + MAX_FRACTION_WINDOW);
+    for (let end = windowEnd - 1; end >= i; end--) {
+      const candidate = tokens.slice(i, end + 1).join(" ");
+      try {
+        const value = parseFractionalWordedNumber(candidate);
+        return { value, raw: candidate };
+      } catch {
+        // continue
+      }
+    }
+
+    i = j;
   }
 
-  try {
-    const value = parseFractionalWordedNumber(match[1]);
-    return {
-      value,
-      raw: match[1],
-    };
-  } catch {
-    return null;
-  }
+  return null;
 }
 
 export function matchWordedNumber(
@@ -455,21 +467,36 @@ export function matchWordedNumber(
     return null;
   }
 
-  // Reset the regex lastIndex to avoid state issues with global flag
-  WORDED_NUMBER_REGEX.lastIndex = 0;
+  const tokens = input.split(/\s+/).filter((t) => t.length > 0);
 
-  const match = WORDED_NUMBER_REGEX.exec(input);
-  if (!match) {
-    return null;
+  let i = 0;
+  while (i < tokens.length) {
+    // Skip tokens that are not valid worded-number words
+    while (i < tokens.length && !isValidWordedToken(tokens[i])) {
+      i++;
+    }
+    if (i >= tokens.length) break;
+
+    // Build maximal run of consecutive valid worded-number tokens
+    let j = i;
+    while (j < tokens.length && isValidWordedToken(tokens[j])) {
+      j++;
+    }
+
+    // Only try prefixes up to the bounded window to avoid O(n²) on long garbage runs.
+    const windowEnd = Math.min(j, i + MAX_WORDED_WINDOW);
+    for (let end = windowEnd - 1; end >= i; end--) {
+      const candidate = tokens.slice(i, end + 1).join(" ");
+      try {
+        const value = parseWordedNumber(candidate);
+        return { value, raw: candidate };
+      } catch {
+        // continue
+      }
+    }
+
+    i = j;
   }
 
-  try {
-    const value = parseWordedNumber(match[1]);
-    return {
-      value,
-      raw: match[1],
-    };
-  } catch {
-    return null;
-  }
+  return null;
 }
