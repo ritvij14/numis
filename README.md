@@ -20,8 +20,15 @@ parseMoney("$12.50");
 ```
 
 **Works in:**
-- Node.js >= 18
+- Node.js >= 18 (tested on 22.x)
 - Modern browsers (ESM and CJS)
+
+---
+
+## Requirements
+
+- Node.js >= 18 (tested on 22.x)
+- npm >= 9
 
 ---
 
