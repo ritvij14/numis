@@ -2165,10 +2165,11 @@
         "description": "Run npm audit --audit-level=moderate. Check the currency-codes package (and any transitive deps) for known CVEs via Snyk or OSV. Document findings and upgrade any vulnerable packages.",
         "details": "",
         "testStrategy": "Verify that npm audit exits clean after fixes. Add a CI step to run npm audit.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [],
+        "updatedAt": "2026-06-10T00:00:00.000Z"
       },
       {
         "id": "78",
@@ -2188,10 +2189,11 @@
         "description": "Run npm pack --dry-run. Ensure only dist/, README.md, LICENSE, and package.json are published. Confirm that src/, test/, demo/, docs/, scripts/, .claude/, .taskmaster/, and .github/ are excluded from the published tarball.",
         "details": "",
         "testStrategy": "Inspect the dry-run output and assert no sensitive or unnecessary files are included.",
-        "status": "pending",
+        "status": "cancelled",
         "dependencies": [],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "updatedAt": "2026-06-10T00:00:00.000Z"
       },
       {
         "id": "80",
@@ -2199,10 +2201,11 @@
         "description": "Audit MoneyParseError and ValueOverflowError messages. Ensure they do not leak internal regex patterns, file paths, or implementation details that could aid an attacker. Keep messages user-friendly but opaque.",
         "details": "",
         "testStrategy": "Assert that error.message does not contain regex source strings, internal variable names, or stack frames from src/patterns/.",
-        "status": "pending",
+        "status": "cancelled",
         "dependencies": [],
         "priority": "medium",
-        "subtasks": []
+        "subtasks": [],
+        "updatedAt": "2026-06-10T00:00:00.000Z"
       },
       {
         "id": "81",
@@ -2210,10 +2213,11 @@
         "description": "Integrate Socket.dev GitHub App or enable Dependabot alerts on the repository to monitor currency-codes and build-time dependencies for malware, install scripts, and version anomalies. Document the choice in docs/infra/decisions.md.",
         "details": "",
         "testStrategy": "Verify that a PR adding a risky dependency triggers an alert/comment from the monitoring tool.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [],
         "priority": "low",
-        "subtasks": []
+        "subtasks": [],
+        "updatedAt": "2026-06-10T00:00:00.000Z"
       },
       {
         "id": "82",
