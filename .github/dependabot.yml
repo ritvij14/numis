@@ -10,13 +10,13 @@ updates:
       include: "scope"
     ignore:
       - dependency-name: "@types/node"
-        update-types: ["semver-patch", "semver-minor", "semver-major"]
+        update-types: ["version-update:semver-patch", "version-update:semver-minor", "version-update:semver-major"]
       - dependency-name: "typescript"
-        update-types: ["semver-patch", "semver-minor", "semver-major"]
+        update-types: ["version-update:semver-patch", "version-update:semver-minor", "version-update:semver-major"]
       - dependency-name: "jest"
-        update-types: ["semver-patch", "semver-minor", "semver-major"]
+        update-types: ["version-update:semver-patch", "version-update:semver-minor", "version-update:semver-major"]
       - dependency-name: "tailwindcss"
-        update-types: ["semver-patch", "semver-minor", "semver-major"]
+        update-types: ["version-update:semver-patch", "version-update:semver-minor", "version-update:semver-major"]
     groups:
       dev-dependencies:
         patterns:
