@@ -9,7 +9,7 @@ import { MoneyParseError } from "./errors";
 import { parseAbbreviation } from "./patterns/abbreviations";
 import { parseContextualPhrase } from "./patterns/contextualPhrases";
 import { matchNumericWordCombo } from "./patterns/numericWordCombos";
-import { parseRange, parseComparisonOperator } from "./patterns/ranges";
+import { parseRange, parseComparisonOperator, parseSingleValue } from "./patterns/ranges";
 import { parseSymbol } from "./patterns/symbols";
 
 export { RangeParseResult } from "./types";
@@ -301,33 +301,40 @@ export function parseAll(input: string): MonetaryExpression[] {
   const results: MonetaryExpression[] = [];
   const processedRanges: { start: number; end: number }[] = [];
 
-  // First, handle "between X and Y" style patterns specifically
-  // This is a common format that parseRange doesn't recognize (since "and" isn't a range separator)
-  const betweenAndRegex =
-    /\b(?:between|from|range\s+of)\s+([$€£¥₹]?\s*\d+(?:,\d{3})*(?:\.\d+)?)\s+and\s+([$€£¥₹]?\s*\d+(?:,\d{3})*(?:\.\d+)?(?:(?:\s+(?:dollars?|euros?|pounds?))?))/gi;
+  // First, handle contextual phrase ranges: "between X and Y", "from X to Y"
+  // Use a generous capture and let parseSingleValue extract the actual value+currency
+  const contextualRangeRegex =
+    /\b(?:between|from|range\s+of)\s+(.{1,40}?)\s+(?:and|to|through)\s+(.{1,40}?)(?=\s|$|,|\.|;)/gi;
   let match: RegExpExecArray | null;
 
-  while ((match = betweenAndRegex.exec(input)) !== null) {
-    const rangeText = match[0];
+  while ((match = contextualRangeRegex.exec(input)) !== null) {
+    let rangeText = match[0];
     const startIndex = match.index;
-    const endIndex = startIndex + rangeText.length;
+    let endIndex = startIndex + rangeText.length;
 
-    // Extract the two values manually since parseRange doesn't handle "and" as separator
-    const firstValue = match[1].replace(/[$€£¥₹]\s*/, "").replace(/,/g, "");
-    const secondValue = match[2].replace(/[$€£¥₹]\s*/, "").replace(/,/g, "");
+    const leftParsed = parseSingleValue(match[1].trim());
+    const rightParsed = parseSingleValue(match[2].trim());
 
-    const firstNum = parseFloat(firstValue);
-    const secondNum = parseFloat(secondValue);
+    if (leftParsed && rightParsed) {
+      // Extend the match to include trailing currency words (e.g., "200 dollars")
+      const suffixMatch = input
+        .slice(endIndex)
+        .match(
+          /^(\s+(?:dollars?|euros?|pounds?|cents?|bucks?|quid|dirhams?|rupees?|francs?|yen|yuan|usd|eur|gbp|chf|inr|cny|jpy|krw))/i
+        );
+      if (suffixMatch) {
+        rangeText += suffixMatch[1];
+        endIndex += suffixMatch[1].length;
+      }
 
-    if (!isNaN(firstNum) && !isNaN(secondNum)) {
       results.push({
         type: "range",
         raw: rangeText,
         startIndex,
         endIndex,
-        min: Math.min(firstNum, secondNum),
-        max: Math.max(firstNum, secondNum),
-        currency: undefined,
+        min: Math.min(leftParsed.value, rightParsed.value),
+        max: Math.max(leftParsed.value, rightParsed.value),
+        currency: leftParsed.currency ?? rightParsed.currency ?? undefined,
         isRange: true,
       });
       processedRanges.push({ start: startIndex, end: endIndex });
@@ -337,6 +344,11 @@ export function parseAll(input: string): MonetaryExpression[] {
   // Then, find all range expressions using parseRange
   const rangeMatches = findRangeMatches(input);
   for (const rangeMatch of rangeMatches) {
+    // Skip if this position overlaps with a range we already found
+    if (isOverlapping(rangeMatch.startIndex, rangeMatch.endIndex, processedRanges)) {
+      continue;
+    }
+
     results.push({
       type: "range",
       raw: rangeMatch.raw,
@@ -354,6 +366,55 @@ export function parseAll(input: string): MonetaryExpression[] {
   }
 
   // Then, find single value expressions, skipping ranges
+  // Include negative variants: prefix with -, minus, negative, or parentheses notation
+  // IMPORTANT: only match when a currency symbol or word is present — plain numbers
+  // like "10 - 20" must NOT be captured as negative values.
+  const negativeSingleRegex =
+    /(?:^|(?<=\s))(?:[-−–—]|minus\s+|negative\s+|\()\s*(?:[$€£¥₹₽₩₺₣₱₦₴₸₫₪]\s*(?:\d+(?:,\d{3})*(?:\.\d+)?|\d+)|(?:\d+(?:,\d{3})*(?:\.\d+)?|\d+)\s*(?:dollars?|euros?|pounds?|cents?|bucks?|quid|dirhams?|rupees?|francs?|yen|yuan|usd|eur|gbp|chf|inr|cny|jpy|krw))\b/gi;
+
+  let negMatch: RegExpExecArray | null;
+  while ((negMatch = negativeSingleRegex.exec(input)) !== null) {
+    const rawText = negMatch[0];
+    const startIndex = negMatch.index;
+    const endIndex = startIndex + rawText.length;
+
+    if (isOverlapping(startIndex, endIndex, processedRanges)) continue;
+
+    // Determine what kind of negative pattern this is
+    const trimmed = rawText.trimStart();
+    const isParen = trimmed[0] === "(";
+    const isMinusWord = /^minus\b/i.test(trimmed);
+    const isNegativeWord = /^negative\b/i.test(trimmed);
+
+    // Strip the negative indicator to get the clean value string
+    let cleanValue: string;
+    if (isParen) {
+      cleanValue = rawText.replace(/^\(/, "").replace(/\)$/, "").trim();
+    } else if (isMinusWord) {
+      cleanValue = rawText.replace(/^minus\s+/i, "").trim();
+    } else if (isNegativeWord) {
+      cleanValue = rawText.replace(/^negative\s+/i, "").trim();
+    } else {
+      cleanValue = rawText.replace(/^[-−–—]\s*/, "").trim();
+    }
+
+    // Try to parse the clean value with existing single-value logic
+    const parsed = parseSingleValue(cleanValue);
+    if (parsed && parsed.value !== undefined) {
+      results.push({
+        type: "single",
+        raw: rawText,
+        startIndex,
+        endIndex,
+        amount: -Math.abs(parsed.value),
+        currency: parsed.currency,
+        isRange: false,
+      });
+      processedRanges.push({ start: startIndex, end: endIndex });
+    }
+  }
+
+  // Standard single value expressions (positive)
   for (const pattern of MONETARY_PATTERNS) {
     if (pattern.isRange) continue; // Already handled above
 
@@ -467,13 +528,14 @@ function findRangeMatches(input: string): Array<{
     }
   }
 
-  // Strategy 3: Look for contextual ranges (e.g., "between $100 and $200", "from 50 to 100")
-  // This pattern captures the full phrase including "between", "from", etc.
-  // Updated to also handle "and" as a separator
-  const contextualRangeRegex =
-    /\b(?:between|from|range\s+of)\s+([$€£¥₹]?\s*\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:-|–|—|to|through|and)\s+([$€£¥₹]?\s*\d+(?:,\d{3})*(?:\.\d+)?(?:(?:\s+|\s*-\s*)(?:dollars?|euros?|pounds?))?)/gi;
+  // Strategy 3: Contextual phrase ranges are now handled directly in parseAll()
+  // (between/ X and Y / from X to Y) — see the contextualRangeRegex in parseAll().
 
-  while ((match = contextualRangeRegex.exec(input)) !== null) {
+  // Strategy 3b: Magnitude on BOTH sides (e.g., "5k to 10k", "1M - 2M", "1 million to 10 million")
+  const magnitudeBothSidesRegex =
+    /\b(\d+(?:\.\d+)?)\s*(k|thousand|m|mn|million|b|bn|billion)(?:\s*)(?:-|–|—|to|through)(?:\s*)(\d+(?:\.\d+)?)\s*(k|thousand|m|mn|million|b|bn|billion)\b/gi;
+
+  while ((match = magnitudeBothSidesRegex.exec(input)) !== null) {
     const rangeText = match[0];
     const parsed = parseRange(rangeText);
     if (parsed && parsed.min !== null && parsed.max !== null) {

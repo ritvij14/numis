@@ -1,4 +1,4 @@
-import { parseMoney } from "numis";
+import { parseAll, parseMoney } from "numis";
 import { useEffect, useState } from "react";
 import "../style.css";
 import Documentation from "./Documentation";
@@ -22,6 +22,7 @@ const COMMON_CURRENCIES = [
 export default function App() {
   const [text, setText] = useState("");
   const [defaultCurrency, setDefaultCurrency] = useState("");
+  const [mode, setMode] = useState("single");
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
 
@@ -34,8 +35,13 @@ export default function App() {
       }
       try {
         const options = defaultCurrency ? { defaultCurrency } : undefined;
-        const parsed = parseMoney(text, options) || null;
-        setResult(parsed);
+        if (mode === "all") {
+          const parsed = parseAll(text, options);
+          setResult(parsed);
+        } else {
+          const parsed = parseMoney(text, options) || null;
+          setResult(parsed);
+        }
         setError(null);
       } catch (err) {
         setResult(null);
@@ -43,10 +49,14 @@ export default function App() {
       }
     }, 300);
     return () => clearTimeout(handler);
-  }, [text, defaultCurrency]);
+  }, [text, defaultCurrency, mode]);
 
-  const wasDefaulted = result?.currencyWasDefault === true;
-  const isRange = result?.isRange === true;
+  const isAllMode = mode === "all";
+  const singleResult = isAllMode ? null : result;
+  const allResults = isAllMode ? result || [] : [];
+
+  const wasDefaulted = (r) => r?.currencyWasDefault === true;
+  const isRange = (r) => r?.isRange === true;
 
   return (
     <div className="w-full">
@@ -160,6 +170,31 @@ export default function App() {
               Live Playground
             </div>
             <div className="flex items-center gap-3">
+              {/* Mode toggle */}
+              <div className="flex items-center rounded-md border border-slate-200 bg-slate-50 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setMode("single")}
+                  className={`px-3 py-1.5 text-xs font-medium transition-colors ${
+                    mode === "single"
+                      ? "bg-white text-slate-900 shadow-sm"
+                      : "text-slate-500 hover:text-slate-700"
+                  }`}
+                >
+                  parseMoney
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMode("all")}
+                  className={`px-3 py-1.5 text-xs font-medium transition-colors ${
+                    mode === "all"
+                      ? "bg-white text-slate-900 shadow-sm"
+                      : "text-slate-500 hover:text-slate-700"
+                  }`}
+                >
+                  parseAll
+                </button>
+              </div>
               <label className="text-xs font-medium text-slate-500">
                 Default currency
               </label>
@@ -200,7 +235,7 @@ export default function App() {
             <div className="flex flex-col bg-slate-900">
               <div className="flex items-center justify-between px-4 py-2.5 sm:px-6 border-b border-slate-800">
                 <span className="text-xs font-medium text-slate-400">
-                  Result
+                  {isAllMode ? "Results" : "Result"}
                 </span>
                 <span className="text-[10px] font-mono text-slate-500">
                   JSON
@@ -216,32 +251,76 @@ export default function App() {
                   <p className="text-sm text-slate-500 italic">
                     Type something above to see parsed output...
                   </p>
+                ) : isAllMode ? (
+                  <div>
+                    {allResults.length === 0 ? (
+                      <p className="text-sm text-slate-500 italic">
+                        No monetary expressions found.
+                      </p>
+                    ) : (
+                      <div className="space-y-4">
+                        {allResults.map((item, idx) => (
+                          <div
+                            key={idx}
+                            className="rounded-lg border border-slate-800 bg-slate-950/50 p-3"
+                          >
+                            <div className="mb-2 flex flex-wrap gap-2">
+                              <span className="inline-flex items-center rounded-full border border-slate-700 bg-slate-900 px-2 py-0.5 text-[11px] font-medium text-slate-400">
+                                #{idx + 1}
+                              </span>
+                              {wasDefaulted(item) && (
+                                <span className="inline-flex items-center rounded-full border border-amber-800 bg-amber-950/40 px-2.5 py-0.5 text-[11px] font-medium text-amber-400">
+                                  Defaulted: {item.currency}
+                                </span>
+                              )}
+                              {item.currency && !wasDefaulted(item) && (
+                                <span className="inline-flex items-center rounded-full border border-emerald-800 bg-emerald-950/40 px-2.5 py-0.5 text-[11px] font-medium text-emerald-400">
+                                  Detected: {item.currency}
+                                </span>
+                              )}
+                              {isRange(item) && (
+                                <span className="inline-flex items-center rounded-full border border-purple-800 bg-purple-950/40 px-2.5 py-0.5 text-[11px] font-medium text-purple-400">
+                                  Range: {item.min} – {item.max}
+                                </span>
+                              )}
+                              {item.isNegative && (
+                                <span className="inline-flex items-center rounded-full border border-rose-800 bg-rose-950/40 px-2.5 py-0.5 text-[11px] font-medium text-rose-400">
+                                  Negative
+                                </span>
+                              )}
+                            </div>
+                            <SyntaxHighlighter data={item} />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <div>
                     {/* Status badges */}
                     <div className="mb-3 flex flex-wrap gap-2">
-                      {wasDefaulted && (
+                      {wasDefaulted(singleResult) && (
                         <span className="inline-flex items-center rounded-full border border-amber-800 bg-amber-950/40 px-2.5 py-0.5 text-[11px] font-medium text-amber-400">
-                          Defaulted: {result.currency}
+                          Defaulted: {singleResult.currency}
                         </span>
                       )}
-                      {result.currency && !wasDefaulted && (
+                      {singleResult.currency && !wasDefaulted(singleResult) && (
                         <span className="inline-flex items-center rounded-full border border-emerald-800 bg-emerald-950/40 px-2.5 py-0.5 text-[11px] font-medium text-emerald-400">
-                          Detected: {result.currency}
+                          Detected: {singleResult.currency}
                         </span>
                       )}
-                      {isRange && (
+                      {isRange(singleResult) && (
                         <span className="inline-flex items-center rounded-full border border-purple-800 bg-purple-950/40 px-2.5 py-0.5 text-[11px] font-medium text-purple-400">
-                          Range: {result.min} – {result.max}
+                          Range: {singleResult.min} – {singleResult.max}
                         </span>
                       )}
-                      {result.isNegative && (
+                      {singleResult.isNegative && (
                         <span className="inline-flex items-center rounded-full border border-rose-800 bg-rose-950/40 px-2.5 py-0.5 text-[11px] font-medium text-rose-400">
                           Negative
                         </span>
                       )}
                     </div>
-                    <SyntaxHighlighter data={result} />
+                    <SyntaxHighlighter data={singleResult} />
                   </div>
                 )}
               </div>
