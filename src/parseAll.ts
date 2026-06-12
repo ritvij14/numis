@@ -309,7 +309,7 @@ export function parseAll(input: string): MonetaryExpression[] {
 
   while ((match = contextualRangeRegex.exec(input)) !== null) {
     let rangeText = match[0];
-    let startIndex = match.index;
+    const startIndex = match.index;
     let endIndex = startIndex + rangeText.length;
 
     const leftParsed = parseSingleValue(match[1].trim());
